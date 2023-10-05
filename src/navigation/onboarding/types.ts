@@ -4,12 +4,14 @@ export enum OnboardingScreen {
   Landing = 'Landing',
   Welcome = 'Welcome',
   Login = 'Login',
+  Signup = 'Signup',
 }
 
 export type OnboardingStackParamList = {
   Landing: undefined;
   Welcome: undefined;
   Login: undefined;
+  Signup: undefined;
 };
 
 export type OnboardingNavigationProp = NavigationProp<OnboardingStackParamList>;

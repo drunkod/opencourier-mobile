@@ -14,7 +14,9 @@ type Props = OnboardingScreenProp<OnboardingScreen.Welcome>;
 export const WelcomeScreen = ({ navigation }: Props) => {
   const { top } = useSafeAreaInsets();
 
-  const onSignUp = () => {};
+  const onSignUp = () => {
+    navigation.navigate(OnboardingScreen.Signup);
+  };
 
   const onLogIn = () => {
     navigation.navigate(OnboardingScreen.Login);

@@ -1,12 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {
-  View,
-  SafeAreaView,
-  ScrollView,
-  Text,
-  Switch,
-  TouchableOpacity,
-} from 'react-native';
+import { View, SafeAreaView, ScrollView, Text } from 'react-native';
 import {
   OnboardingScreen,
   OnboardingScreenProp,
@@ -15,33 +8,22 @@ import { BackNavButton } from '@app/components/BackNavButton/BackNavButton';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Button, ButtonType } from '@app/components/Button/Button';
 import { TextField } from '@app/components/TextField/TextField';
-import { styles } from './Login.styles';
+import { styles } from './Signup.styles';
 import { validateEmail } from '@app/utilities/text';
 
-type Props = OnboardingScreenProp<OnboardingScreen.Login>;
+type Props = OnboardingScreenProp<OnboardingScreen.Signup>;
 
-export const LoginScreen = ({ navigation }: Props) => {
-  const [rememberLogin, setRememberLogin] = useState<boolean>(false);
+export const SignupScreen = ({ navigation }: Props) => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [emailIsValid, setEmailIsValid] = useState<boolean>(false);
   const { top } = useSafeAreaInsets();
 
+  const handleContinue = () => {};
+
   useEffect(() => {
     setEmailIsValid(validateEmail(email));
   }, [email]);
-
-  const handleContinue = () => {};
-
-  const handleSwitchChange = (value: boolean) => {
-    setRememberLogin(value);
-  };
-
-  const handleForgotPassword = () => {};
-
-  const onBackHandle = () => {
-    navigation.goBack();
-  };
 
   return (
     <View style={styles.container}>
@@ -49,7 +31,7 @@ export const LoginScreen = ({ navigation }: Props) => {
         <ScrollView
           style={styles.scroll}
           contentContainerStyle={styles.scrollContent}>
-          <Text style={styles.textTitle}>Log in</Text>
+          <Text style={styles.textTitle}>Sign up</Text>
           <TextField
             emailValid={emailIsValid}
             emailCheck
@@ -69,18 +51,9 @@ export const LoginScreen = ({ navigation }: Props) => {
             title="Continue"
             onPress={handleContinue}
           />
-          <View style={styles.containerSwitch}>
-            <Switch value={rememberLogin} onValueChange={handleSwitchChange} />
-            <Text style={styles.textRemember}>Remember login for 2 weeks</Text>
-          </View>
-          <TouchableOpacity
-            style={styles.containerForgot}
-            onPress={handleForgotPassword}>
-            <Text style={styles.textForgot}>Forgot password</Text>
-          </TouchableOpacity>
         </ScrollView>
         <BackNavButton
-          onPress={onBackHandle}
+          onPress={() => navigation.goBack()}
           style={[styles.backButton, { top: top + 10 }]}
         />
       </SafeAreaView>
