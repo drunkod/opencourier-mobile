@@ -16,7 +16,9 @@ export const WelcomeScreen = ({ navigation }: Props) => {
 
   const onSignUp = () => {};
 
-  const onLogIn = () => {};
+  const onLogIn = () => {
+    navigation.navigate(OnboardingScreen.Login);
+  };
 
   return (
     <View style={styles.container}>
