@@ -13,7 +13,7 @@ export enum ButtonType {
   red,
   green,
   black,
-  transparent,
+  white,
   yellow,
 }
 
@@ -37,30 +37,47 @@ export const Button = ({
   const backgroundColor = useMemo(() => {
     switch (type) {
       case ButtonType.black:
-        return Colors.black;
       case ButtonType.green:
-        return Colors.black;
       case ButtonType.red:
-        return Colors.black;
-      case ButtonType.transparent:
-        return Colors.black;
       case ButtonType.yellow:
-        return Colors.black;
+        return Colors.black1;
+      case ButtonType.white:
+        return Colors.white;
     }
   }, [type]);
 
   const textColor = useMemo(() => {
     switch (type) {
       case ButtonType.black:
-        return Colors.white;
       case ButtonType.green:
-        return Colors.white;
       case ButtonType.red:
         return Colors.white;
-      case ButtonType.transparent:
-        return Colors.black;
+      case ButtonType.white:
       case ButtonType.yellow:
-        return Colors.black;
+        return Colors.black1;
+    }
+  }, [type]);
+
+  const borderColor = useMemo(() => {
+    switch (type) {
+      case ButtonType.black:
+      case ButtonType.green:
+      case ButtonType.red:
+      case ButtonType.white:
+      case ButtonType.yellow:
+        return Colors.black1;
+    }
+  }, [type]);
+
+  const borderWidth = useMemo(() => {
+    switch (type) {
+      case ButtonType.black:
+        return 0;
+      case ButtonType.green:
+      case ButtonType.red:
+      case ButtonType.white:
+      case ButtonType.yellow:
+        return 2;
     }
   }, [type]);
 
@@ -69,7 +86,15 @@ export const Button = ({
       activeOpacity={0.9}
       onPress={onPress}
       disabled={disabled}
-      style={[styles.container, style, { backgroundColor: backgroundColor }]}>
+      style={[
+        styles.container,
+        style,
+        {
+          backgroundColor: backgroundColor,
+          borderWidth: borderWidth,
+          borderColor: borderColor,
+        },
+      ]}>
       <Text style={[styles.textTitle, { color: textColor }, textStyle]}>
         {title}
       </Text>

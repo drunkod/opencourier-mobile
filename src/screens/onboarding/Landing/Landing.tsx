@@ -51,6 +51,10 @@ export const LandingScreen = ({ navigation }: Props) => {
     setPage(position.nativeEvent.position);
   };
 
+  const onContinue = () => {
+    navigation.navigate(OnboardingScreen.Welcome);
+  };
+
   const PageItem = useCallback(
     ({ title, image, description }: Page) => (
       <View style={styles.pageContent} key={title}>
@@ -93,7 +97,7 @@ export const LandingScreen = ({ navigation }: Props) => {
           style={styles.buttonContinue}
           type={ButtonType.black}
           title="Continue"
-          onPress={() => undefined}
+          onPress={onContinue}
         />
       </SafeAreaView>
     </View>
