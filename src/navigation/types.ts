@@ -2,10 +2,12 @@ import { NavigationProp, RouteProp } from '@react-navigation/native';
 
 export enum RootScreen {
   Loading = 'Loading',
+  Onboarding = 'Onboarding',
 }
 
 export type RootStackParamList = {
   Loading: undefined;
+  Onboarding: undefined;
 };
 
 export type RootNavigationProp = NavigationProp<RootStackParamList>;

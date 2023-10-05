@@ -1,24 +1,21 @@
-import React from 'react';
-import { View, StyleSheet, Image } from 'react-native';
+import React, { useEffect } from 'react';
+import { View, Image } from 'react-native';
 import { RootScreen, RootScreenProp } from '@app/navigation/types';
 import { Images } from '@app/utilities/images';
-import { Colors } from '@app/styles/colors';
+import { styles } from './Loading.styles';
 
 type Props = RootScreenProp<RootScreen.Loading>;
 
 export const LoadingScreen = ({ navigation }: Props) => {
+  useEffect(() => {
+    setTimeout(() => {
+      navigation.navigate(RootScreen.Onboarding);
+    }, 1000);
+  }, [navigation]);
+
   return (
     <View style={styles.container}>
       <Image source={Images.Logo} />
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: Colors.white,
-  },
-});
