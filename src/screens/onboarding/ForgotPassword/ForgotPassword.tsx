@@ -8,14 +8,13 @@ import { BackNavButton } from '@app/components/BackNavButton/BackNavButton';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Button, ButtonType } from '@app/components/Button/Button';
 import { TextField } from '@app/components/TextField/TextField';
-import { styles } from './Signup.styles';
+import { styles } from './ForgotPassword.styles';
 import { validateEmail } from '@app/utilities/text';
 
-type Props = OnboardingScreenProp<OnboardingScreen.Signup>;
+type Props = OnboardingScreenProp<OnboardingScreen.ForgotPassword>;
 
-export const SignupScreen = ({ navigation }: Props) => {
+export const ForgotPasswordScreen = ({ navigation }: Props) => {
   const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
   const [emailIsValid, setEmailIsValid] = useState<boolean>(false);
   const { top } = useSafeAreaInsets();
 
@@ -35,19 +34,13 @@ export const SignupScreen = ({ navigation }: Props) => {
         <ScrollView
           style={styles.scroll}
           contentContainerStyle={styles.scrollContent}>
-          <Text style={styles.textTitle}>Sign up</Text>
+          <Text style={styles.textTitle}>Forgot password</Text>
           <TextField
             emailValid={emailIsValid}
             emailCheck
             placeholder="Email"
             value={email}
             onChangeText={setEmail}
-          />
-          <TextField
-            secureTextEntry
-            placeholder="Password"
-            value={password}
-            onChangeText={setPassword}
           />
           <Button
             style={styles.buttonLogin}

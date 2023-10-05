@@ -5,6 +5,7 @@ export enum OnboardingScreen {
   Welcome = 'Welcome',
   Login = 'Login',
   Signup = 'Signup',
+  ForgotPassword = 'ForgotPassword',
 }
 
 export type OnboardingStackParamList = {
@@ -12,6 +13,7 @@ export type OnboardingStackParamList = {
   Welcome: undefined;
   Login: undefined;
   Signup: undefined;
+  ForgotPassword: undefined;
 };
 
 export type OnboardingNavigationProp = NavigationProp<OnboardingStackParamList>;
