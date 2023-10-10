@@ -16,3 +16,20 @@ export enum HomeEmptyState {
   History = 'History',
   WaitingNewOrders = 'WaitingNewOrders',
 }
+
+export enum SideMenuItem {
+  Location = 'Real-time location',
+  AutoOrders = 'Auto accept orders',
+  Orders = 'Orders',
+  Earnings = 'Earnings',
+  Payout = 'Payout method',
+  Support = 'Support',
+  Settings = 'Settings',
+  Logout = 'Log-out',
+}
+
+export type Organization = {
+  name: string;
+  id: string;
+  imageUrl: string;
+};

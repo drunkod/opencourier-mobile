@@ -14,7 +14,7 @@ export const styles = StyleSheet.create({
     borderColor: Colors.gray1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: Colors.gray1,
+    backgroundColor: Colors.white,
   },
   containerStatus: {
     position: 'absolute',
@@ -37,5 +37,15 @@ export const styles = StyleSheet.create({
     fontWeight: '700',
     fontSize: 8,
     color: Colors.white,
+  },
+  statusIndicatorSmall: {
+    width: 12,
+    height: 12,
+    borderWidth: 1,
+    borderColor: Colors.white,
+    borderRadius: 6,
+    position: 'absolute',
+    right: 0,
+    bottom: 0,
   },
 });

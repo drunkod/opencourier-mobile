@@ -1,15 +1,18 @@
 import React from 'react';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { MainScreens, MainStackParamList } from './types';
+import { MainScreens } from './types';
 import { HomeScreen } from '@app/screens/Home/Home';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import { SideMenu } from '@app/screens/SideMenu/SideMenu';
 
-const MainStackNavigator = createNativeStackNavigator<MainStackParamList>();
+const MainStackNavigator = createDrawerNavigator();
 
 const DEFAULT_OPTIONS = { headerShown: false };
 
 export const MainStack = () => {
   return (
-    <MainStackNavigator.Navigator>
+    <MainStackNavigator.Navigator
+      initialRouteName={MainScreens.Home}
+      drawerContent={props => <SideMenu {...props} />}>
       <MainStackNavigator.Screen
         name={MainScreens.Home}
         component={HomeScreen}

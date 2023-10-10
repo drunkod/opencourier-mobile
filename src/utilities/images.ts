@@ -11,6 +11,16 @@ import search from '@app/assets/icons/MagnifyingGlass.png';
 import arrowRight from '@app/assets/icons/CaretRight.png';
 import car from '@app/assets/icons/car.png';
 import box from '@app/assets/icons/box.png';
+import mapPin from '@app/assets/icons/MapPin.png';
+import recycle from '@app/assets/icons/ArrowsClockwise.png';
+import arrowRightBlack from '@app/assets/icons/Action.png';
+import orders from '@app/assets/icons/Note.png';
+import earnings from '@app/assets/icons/PiggyBank.png';
+import payout from '@app/assets/icons/Cardholder.png';
+import support from '@app/assets/icons/Question.png';
+import settings from '@app/assets/icons/GearSix.png';
+import logout from '@app/assets/icons/SignOut.png';
+import dropdown from '@app/assets/icons/CaretDown.png';
 
 export const Images = {
   Logo: logo,
@@ -25,4 +35,14 @@ export const Images = {
   ArrowRightSmall: arrowRight,
   Car: car,
   Box: box,
+  MapPin: mapPin,
+  Recycle: recycle,
+  ArrowRightBlack: arrowRightBlack,
+  Orders: orders,
+  Earnings: earnings,
+  Payout: payout,
+  Support: support,
+  Settings: settings,
+  Logout: logout,
+  Dropdown: dropdown,
 };

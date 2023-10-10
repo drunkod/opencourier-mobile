@@ -16,9 +16,15 @@ type Props = {
   style?: StyleProp<ViewStyle>;
   onPress: () => void;
   userStatus: UserStatus;
+  discreteStatusIndicator?: boolean;
 };
 
-export const ProfileBadge = ({ style, onPress, userStatus }: Props) => {
+export const ProfileBadge = ({
+  style,
+  onPress,
+  userStatus,
+  discreteStatusIndicator,
+}: Props) => {
   const backgroundColor = useMemo(() => {
     switch (userStatus) {
       case UserStatus.Online:
@@ -31,15 +37,31 @@ export const ProfileBadge = ({ style, onPress, userStatus }: Props) => {
   }, [userStatus]);
 
   return (
-    <TouchableOpacity style={[styles.container, style]} onPress={onPress}>
+    <TouchableOpacity
+      style={[styles.container, style]}
+      onPress={onPress}
+      disabled={discreteStatusIndicator}>
       <View style={styles.containerImage}>
         <Image source={Images.User} />
       </View>
-      <View
-        style={[styles.containerStatus, { backgroundColor: backgroundColor }]}>
-        <Text style={styles.textStatus}>{userStatus}</Text>
-        <Image source={Images.ArrowRightSmall} style={styles.arrow} />
-      </View>
+      {discreteStatusIndicator && (
+        <View
+          style={[
+            styles.statusIndicatorSmall,
+            { backgroundColor: backgroundColor },
+          ]}
+        />
+      )}
+      {!discreteStatusIndicator && (
+        <View
+          style={[
+            styles.containerStatus,
+            { backgroundColor: backgroundColor },
+          ]}>
+          <Text style={styles.textStatus}>{userStatus}</Text>
+          <Image source={Images.ArrowRightSmall} style={styles.arrow} />
+        </View>
+      )}
     </TouchableOpacity>
   );
 };
