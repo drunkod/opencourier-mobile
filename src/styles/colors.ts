@@ -4,6 +4,13 @@ export const Colors = {
   black1: '#393938',
   transparent: 'transparent',
   gray1: '#E9E7E2',
+  gray2: '#797877',
   red1: '#DC4C44',
   red2: '#FAE1DF',
+  green1: '#64AC77',
+  green2: '#5B9D6C',
+  green3: '#CFE5D5',
+  orange1: '#F9A51A',
+  onlineGradientArray: ['#65C466', '#84D085', '#B7E3B7', '#B7E3B700'],
+  offlineGradientArray: ['#919296', '#B2B2B2', '#E3E3E3E5', '#E8E8E800'],
 };

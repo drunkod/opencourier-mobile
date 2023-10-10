@@ -17,6 +17,7 @@ import { Button, ButtonType } from '@app/components/Button/Button';
 import { TextField } from '@app/components/TextField/TextField';
 import { styles } from './Login.styles';
 import { validateEmail } from '@app/utilities/text';
+import { RootScreen } from '@app/navigation/types';
 
 type Props = OnboardingScreenProp<OnboardingScreen.Login>;
 
@@ -31,7 +32,9 @@ export const LoginScreen = ({ navigation }: Props) => {
     setEmailIsValid(validateEmail(email));
   }, [email]);
 
-  const handleContinue = () => {};
+  const handleContinue = () => {
+    navigation.navigate(RootScreen.Main);
+  };
 
   const handleSwitchChange = (value: boolean) => {
     setRememberLogin(value);

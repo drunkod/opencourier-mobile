@@ -6,6 +6,11 @@ import onboardingMoped from '@app/assets/icons/illustration-moped.png';
 import onboardingFood from '@app/assets/icons/illustration-food-order.png';
 import arrowLeft from '@app/assets/icons/ArrowLeft.png';
 import checkmark from '@app/assets/icons/Checkmark.png';
+import user from '@app/assets/icons/User.png';
+import search from '@app/assets/icons/MagnifyingGlass.png';
+import arrowRight from '@app/assets/icons/CaretRight.png';
+import car from '@app/assets/icons/car.png';
+import box from '@app/assets/icons/box.png';
 
 export const Images = {
   Logo: logo,
@@ -15,4 +20,9 @@ export const Images = {
   OnboardingFood: onboardingFood,
   ArrowLeft: arrowLeft,
   Checkmark: checkmark,
+  User: user,
+  Search: search,
+  ArrowRightSmall: arrowRight,
+  Car: car,
+  Box: box,
 };
