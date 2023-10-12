@@ -1,12 +1,12 @@
 import React, { useMemo, useState } from 'react';
 import { View } from 'react-native';
 import { styles } from './Home.styles';
-import { MainScreenProp, MainScreens } from '@app/navigation/main/types';
 import { HomeHeader } from '@app/components/HomeHeader/HomeHeader';
 import { HomeEmptyState, HomeTabItem, UserStatus } from '@app/types/types';
 import { HomeEmptyStateComponent } from '@app/components/HomeEmptyState/HomeEmptyState';
+import { DrawerScreenProp, DrawerScreens } from '@app/navigation/drawer/types';
 
-type Props = MainScreenProp<MainScreens.Home>;
+type Props = DrawerScreenProp<DrawerScreens.Home>;
 
 export const HomeScreen = ({ navigation }: Props) => {
   const [selectedTab, setSelectedTab] = useState<HomeTabItem>(HomeTabItem.New);

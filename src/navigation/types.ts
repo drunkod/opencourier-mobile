@@ -1,4 +1,5 @@
 import { NavigationProp, RouteProp } from '@react-navigation/native';
+import { MainStackParamList } from './main/types';
 
 export enum RootScreen {
   Loading = 'Loading',
@@ -12,7 +13,9 @@ export type RootStackParamList = {
   Main: undefined;
 };
 
-export type RootNavigationProp = NavigationProp<RootStackParamList>;
+export type RootNavigationProp = NavigationProp<
+  RootStackParamList & MainStackParamList
+>;
 
 export type RootRouteProp<T extends RootScreen> = RouteProp<
   RootStackParamList,

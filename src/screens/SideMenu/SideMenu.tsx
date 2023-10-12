@@ -9,15 +9,10 @@ import { UserStatusSelector } from '@app/components/UserStatusSelector/UserStatu
 import { SideMenuItemSwitch } from '@app/components/SideMenuItemSwitch/SideMenuItemSwitch';
 import { SideMenuItemPlain } from '@app/components/SideMenuItemPlain/SideMenuItemPlain';
 import { OrganizationSelect } from '@app/components/OrganizationSelect/OrganizationSelect';
+import { MainScreens } from '@app/navigation/main/types';
+import { TEST_ORG_ARRAY } from '@app/utilities/testData';
 
 type Props = RootScreenProp<RootScreen.Loading>;
-
-const org: Organization = {
-  name: 'BOS Pescatarian',
-  id: '111',
-  imageUrl:
-    'https://w7.pngwing.com/pngs/380/764/png-transparent-paper-box-computer-icons-symbol-random-icons-miscellaneous-angle-text.png',
-};
 
 const section1 = [SideMenuItem.Location, SideMenuItem.AutoOrders];
 const section2 = [
@@ -33,6 +28,9 @@ export const SideMenu = ({ navigation }: Props) => {
   const [userStatus, setUserStatus] = useState<UserStatus>(UserStatus.Online);
   const [realTimeLocation, setRealTimeLocation] = useState<boolean>(false);
   const [autoAcceptOrders, setAutoAcceptOrders] = useState<boolean>(false);
+  const [selectedOrg, setSelectedOrg] = useState<Organization>(
+    TEST_ORG_ARRAY[0],
+  );
 
   const isSwitchOn = (item: SideMenuItem) => {
     switch (item) {
@@ -53,6 +51,10 @@ export const SideMenu = ({ navigation }: Props) => {
     }
   };
 
+  const organizationSelected = (org: Organization) => {
+    setSelectedOrg(org);
+  };
+
   return (
     <DrawerContentScrollView>
       <View style={styles.container}>
@@ -66,8 +68,13 @@ export const SideMenu = ({ navigation }: Props) => {
         </View>
         <OrganizationSelect
           style={styles.cell}
-          organization={org}
-          onPress={() => undefined}
+          organization={selectedOrg}
+          onPress={() =>
+            navigation.navigate(MainScreens.SelectOrganizationModal, {
+              preselected: selectedOrg,
+              onOrganizationSelect: organizationSelected,
+            })
+          }
           onSearch={() => undefined}
         />
         <UserStatusSelector

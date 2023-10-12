@@ -7,6 +7,7 @@ export const Colors = {
   gray2: '#797877',
   gray3: '#A5A4A0',
   gray4: '#D0D5DD',
+  gray5: '#838383',
   red1: '#DC4C44',
   red2: '#FAE1DF',
   green1: '#64AC77',
@@ -16,4 +17,5 @@ export const Colors = {
   onlineGradientArray: ['#65C466', '#84D085', '#B7E3B7', '#B7E3B700'],
   offlineGradientArray: ['#919296', '#B2B2B2', '#E3E3E3E5', '#E8E8E800'],
   yellow1: '#FAE48E',
+  transparentModalBackground: 'rgba(0, 0, 0, 0.3)',
 };

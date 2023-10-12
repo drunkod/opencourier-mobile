@@ -32,4 +32,5 @@ export type Organization = {
   name: string;
   id: string;
   imageUrl: string;
+  iconUrl?: string;
 };
