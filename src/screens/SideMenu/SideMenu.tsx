@@ -11,6 +11,7 @@ import { SideMenuItemPlain } from '@app/components/SideMenuItemPlain/SideMenuIte
 import { OrganizationSelect } from '@app/components/OrganizationSelect/OrganizationSelect';
 import { MainScreens } from '@app/navigation/main/types';
 import { TEST_ORG_ARRAY } from '@app/utilities/testData';
+import { OrganizationScreens } from '@app/navigation/organizationNavigation/types';
 
 type Props = RootScreenProp<RootScreen.Loading>;
 
@@ -70,7 +71,7 @@ export const SideMenu = ({ navigation }: Props) => {
           style={styles.cell}
           organization={selectedOrg}
           onPress={() =>
-            navigation.navigate(MainScreens.SelectOrganizationModal, {
+            navigation.navigate(RootScreen.SelectOrganizationModal, {
               preselected: selectedOrg,
               onOrganizationSelect: organizationSelected,
             })

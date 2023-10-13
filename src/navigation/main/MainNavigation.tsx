@@ -1,6 +1,5 @@
 import React from 'react';
 import { MainScreens } from './types';
-import { SelectOrganizationModal } from '@app/screens/SelectOrganizationModal/SelectOrganizationModal';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { DrawerStack } from '../drawer/DrawerNavigation';
 
@@ -15,11 +14,6 @@ export const MainStack = () => {
         name={MainScreens.Drawer}
         component={DrawerStack}
         options={DEFAULT_OPTIONS}
-      />
-      <MainStackNavigator.Screen
-        name={MainScreens.SelectOrganizationModal}
-        component={SelectOrganizationModal}
-        options={{ presentation: 'transparentModal', headerShown: false }}
       />
     </MainStackNavigator.Navigator>
   );
