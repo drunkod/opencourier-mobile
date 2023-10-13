@@ -1,4 +1,4 @@
-import { Organization } from '@app/types/types';
+import { Order, OrderStatus, Organization } from '@app/types/types';
 
 export const TEST_IMAGE_URL =
   'https://w7.pngwing.com/pngs/380/764/png-transparent-paper-box-computer-icons-symbol-random-icons-miscellaneous-angle-text.png';
@@ -27,5 +27,53 @@ export const TEST_ORG_ARRAY: Organization[] = [
     id: '4',
     imageUrl: TEST_IMAGE_URL,
     iconUrl: TEST_IMAGE_URL,
+  },
+];
+
+export const TEST_ORDERS_HISTORY: Order[] = [
+  {
+    id: '1',
+    deliveredTo: {
+      firstname: 'User 1',
+      lastname: '',
+      profilePictureUrl:
+        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRVA_HrQLjkHiJ2Ag5RGuwbFeDKRLfldnDasw&usqp=CAU',
+    },
+    date: Date(),
+    status: OrderStatus.Delivered,
+    restaurant: {
+      name: 'Restaurant 1',
+    },
+    price: 30.33,
+  },
+  {
+    id: '2',
+    deliveredTo: {
+      firstname: 'User 2',
+      lastname: '',
+      profilePictureUrl:
+        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRVA_HrQLjkHiJ2Ag5RGuwbFeDKRLfldnDasw&usqp=CAU',
+    },
+    date: Date(),
+    status: OrderStatus.Canceled,
+    restaurant: {
+      name: 'Restaurant 2',
+    },
+    price: 10.81,
+  },
+  {
+    id: '3',
+    deliveredTo: {
+      firstname: 'User 3',
+      lastname: '',
+      profilePictureUrl:
+        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRVA_HrQLjkHiJ2Ag5RGuwbFeDKRLfldnDasw&usqp=CAU',
+    },
+    date: Date(),
+    status: OrderStatus.Delivered,
+    restaurant: {
+      name: 'Restaurant 3',
+    },
+    price: 11.21,
   },
 ];

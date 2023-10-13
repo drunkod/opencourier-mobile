@@ -6,7 +6,6 @@ export enum RootScreen {
   Loading = 'Loading',
   Onboarding = 'Onboarding',
   Main = 'Main',
-  OrganizationFlow = 'OrganizationFlow',
   SelectOrganizationModal = 'SelectOrganizationModal',
   SearchOrganization = 'SearchOrganization',
 }
@@ -15,7 +14,6 @@ export type RootStackParamList = {
   Loading: undefined;
   Onboarding: undefined;
   Main: undefined;
-  OrganizationFlow: undefined;
   SelectOrganizationModal: {
     preselected: Organization;
     onOrganizationSelect: (org: Organization) => void;

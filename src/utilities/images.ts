@@ -23,6 +23,9 @@ import logout from '@app/assets/icons/SignOut.png';
 import dropdown from '@app/assets/icons/CaretDown.png';
 import plus from '@app/assets/icons/PlusCircle.png';
 import checkmarkGreen from '@app/assets/icons/CheckCircle.png';
+import calendar from '@app/assets/icons/CalendarBlank.png';
+import storefront from '@app/assets/icons/Storefront.png';
+import money from '@app/assets/icons/Money.png';
 
 export const Images = {
   Logo: logo,
@@ -49,4 +52,7 @@ export const Images = {
   Dropdown: dropdown,
   Plus: plus,
   CheckmarkGreen: checkmarkGreen,
+  Calendar: calendar,
+  Storefront: storefront,
+  Money: money,
 };

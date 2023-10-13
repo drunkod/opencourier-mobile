@@ -34,3 +34,27 @@ export type Organization = {
   imageUrl: string;
   iconUrl?: string;
 };
+
+export enum OrderStatus {
+  Delivered = 'Delivered',
+  Canceled = 'Canceled',
+}
+
+export type User = {
+  firstname: string;
+  lastname: string;
+  profilePictureUrl: string;
+};
+
+export type Restaurant = {
+  name: string;
+};
+
+export type Order = {
+  date: string;
+  id: string;
+  status: OrderStatus;
+  deliveredTo: User;
+  restaurant: Restaurant;
+  price: number;
+};
