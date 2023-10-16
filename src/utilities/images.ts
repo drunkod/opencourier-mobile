@@ -26,6 +26,11 @@ import checkmarkGreen from '@app/assets/icons/CheckCircle.png';
 import calendar from '@app/assets/icons/CalendarBlank.png';
 import storefront from '@app/assets/icons/Storefront.png';
 import money from '@app/assets/icons/Money.png';
+import restaurantGray from '@app/assets/icons/Vector.png';
+import houseGray from '@app/assets/icons/HouseLine.png';
+import chats from '@app/assets/icons/ChatsCircle.png';
+import distance from '@app/assets/icons/Path.png';
+import clock from '@app/assets/icons/ClockAfternoon.png';
 
 export const Images = {
   Logo: logo,
@@ -55,4 +60,9 @@ export const Images = {
   Calendar: calendar,
   Storefront: storefront,
   Money: money,
+  RestaurantGray: restaurantGray,
+  HouseGray: houseGray,
+  Chats: chats,
+  Distance: distance,
+  Clock: clock,
 };

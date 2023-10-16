@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { FlatList, View } from 'react-native';
 import { styles } from './Home.styles';
 import { HomeHeader } from '@app/components/HomeHeader/HomeHeader';
@@ -10,8 +10,10 @@ import {
 } from '@app/types/types';
 import { HomeEmptyStateComponent } from '@app/components/HomeEmptyState/HomeEmptyState';
 import { DrawerScreenProp, DrawerScreens } from '@app/navigation/drawer/types';
-import { TEST_ORDERS_HISTORY } from '@app/utilities/testData';
+import { TEST_NEW_ORDERS, TEST_ORDERS_HISTORY } from '@app/utilities/testData';
 import { HistoryCell } from '@app/components/HistoryCell/HistoryCell';
+import { NewOrderCell } from '@app/components/NewOrderCell/NewOrderCell';
+import { getAutoAcceptOrdersStorage } from '@app/utilities/storage';
 
 type Props = DrawerScreenProp<DrawerScreens.Home>;
 
@@ -22,6 +24,9 @@ export const HomeScreen = ({ navigation }: Props) => {
   const [searchText, setSearchText] = useState<string>('');
   const [dataSourceHistory, setDataSourceHistory] =
     useState<Order[]>(TEST_ORDERS_HISTORY);
+  const [dataSourceNew, setDataSourceNew] = useState<Order[]>(TEST_NEW_ORDERS);
+  const [dataSource, setDataSource] = useState<Order[]>([]);
+  const [autoAcceptOrders, setAutoAcceptOrders] = useState<boolean>(false);
 
   const onProfilePress = () => {
     navigation.toggleDrawer();
@@ -43,17 +48,52 @@ export const HomeScreen = ({ navigation }: Props) => {
   const showEmptyState = useMemo(() => {
     switch (selectedTab) {
       case HomeTabItem.New:
-        return true;
+        return dataSourceNew.length === 0;
       case HomeTabItem.InProgress:
         return true;
       case HomeTabItem.History:
         return dataSourceHistory.length === 0;
     }
-  }, [selectedTab, dataSourceHistory]);
+  }, [selectedTab, dataSourceHistory, dataSourceNew]);
+
+  useEffect(() => {
+    switch (selectedTab) {
+      case HomeTabItem.New:
+        setDataSource(dataSourceNew);
+        break;
+      case HomeTabItem.InProgress:
+        break;
+      case HomeTabItem.History:
+        setDataSource(dataSourceHistory);
+        break;
+    }
+  }, [selectedTab, dataSourceHistory, dataSourceNew]);
 
   const renderItem = ({ item }: { item: Order }) => {
-    return <HistoryCell order={item} onPress={() => undefined} />;
+    switch (selectedTab) {
+      case HomeTabItem.New:
+        return (
+          <NewOrderCell
+            autoAcceptOrders={autoAcceptOrders}
+            order={item}
+            onAccept={() => console.warn('ACCEPTED')}
+            onDecline={() => console.warn('DECLINED')}
+          />
+        );
+      case HomeTabItem.InProgress:
+        return <HistoryCell order={item} onPress={() => undefined} />;
+      case HomeTabItem.History:
+        setDataSource(dataSourceHistory);
+        return <HistoryCell order={item} onPress={() => undefined} />;
+    }
   };
+
+  useEffect(() => {
+    (async () => {
+      const accept = await getAutoAcceptOrdersStorage();
+      setAutoAcceptOrders(accept);
+    })();
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -73,7 +113,7 @@ export const HomeScreen = ({ navigation }: Props) => {
       {!showEmptyState && (
         <FlatList
           keyExtractor={(item, index) => index.toString()}
-          data={dataSourceHistory}
+          data={dataSource}
           renderItem={renderItem}
         />
       )}

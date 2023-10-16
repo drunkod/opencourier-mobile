@@ -44,10 +44,12 @@ export type User = {
   firstname: string;
   lastname: string;
   profilePictureUrl: string;
+  address: string;
 };
 
 export type Restaurant = {
   name: string;
+  address: string;
 };
 
 export type Order = {

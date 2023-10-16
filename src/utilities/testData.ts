@@ -77,3 +77,40 @@ export const TEST_ORDERS_HISTORY: Order[] = [
     price: 11.21,
   },
 ];
+
+export const TEST_NEW_ORDERS: Order[] = [
+  {
+    id: 'id1',
+    deliveredTo: {
+      address: 'Street Number 5, Region, Country, ZIPCODE',
+      firstname: 'User 1',
+      lastname: '',
+      profilePictureUrl:
+        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRVA_HrQLjkHiJ2Ag5RGuwbFeDKRLfldnDasw&usqp=CAU',
+    },
+    date: Date(),
+    status: OrderStatus.Delivered,
+    restaurant: {
+      name: 'Restaurant 3',
+      address: 'Street Number 5, Region, Country, ZIPCODE',
+    },
+    price: 11.21,
+  },
+  {
+    id: 'id2',
+    deliveredTo: {
+      address: 'Street Number 5, Region, Country, ZIPCODE',
+      firstname: 'User 1',
+      lastname: '',
+      profilePictureUrl:
+        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRVA_HrQLjkHiJ2Ag5RGuwbFeDKRLfldnDasw&usqp=CAU',
+    },
+    date: Date(),
+    status: OrderStatus.Delivered,
+    restaurant: {
+      name: 'Restaurant 3',
+      address: 'Street Number 5, Region, Country, ZIPCODE',
+    },
+    price: 512.21,
+  },
+];

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text } from 'react-native';
 import { RootScreen, RootScreenProp } from '@app/navigation/types';
 import { styles } from './SideMenu.styles';
@@ -12,6 +12,11 @@ import { OrganizationSelect } from '@app/components/OrganizationSelect/Organizat
 import { MainScreens } from '@app/navigation/main/types';
 import { TEST_ORG_ARRAY } from '@app/utilities/testData';
 import { OrganizationScreens } from '@app/navigation/organizationNavigation/types';
+import {
+  getAutoAcceptOrders,
+  getAutoAcceptOrdersStorage,
+  setAutoAcceptOrdersStorage,
+} from '@app/utilities/storage';
 
 type Props = RootScreenProp<RootScreen.Loading>;
 
@@ -46,6 +51,7 @@ export const SideMenu = ({ navigation }: Props) => {
   const handleSwitchValueChange = (item: SideMenuItem, value: boolean) => {
     switch (item) {
       case SideMenuItem.AutoOrders:
+        setAutoAcceptOrdersStorage(value);
         return setAutoAcceptOrders(value);
       case SideMenuItem.Location:
         return setRealTimeLocation(value);
@@ -55,6 +61,13 @@ export const SideMenu = ({ navigation }: Props) => {
   const organizationSelected = (org: Organization) => {
     setSelectedOrg(org);
   };
+
+  useEffect(() => {
+    (async () => {
+      const accept = await getAutoAcceptOrdersStorage();
+      setAutoAcceptOrders(accept);
+    })();
+  }, []);
 
   return (
     <DrawerContentScrollView>
