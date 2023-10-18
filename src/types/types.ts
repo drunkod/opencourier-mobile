@@ -59,4 +59,28 @@ export type Order = {
   deliveredTo: User;
   restaurant: Restaurant;
   price: number;
+  deliveryInstructions?: DeliveryType[];
+  pickupInstructions?: PickupInstruction[];
+  restaurantNotes?: string[];
+  clientNotes?: string[];
+};
+
+export enum DeliveryType {
+  LeaveAtDoor = 'Leave at door',
+  MeetOutside = 'Meet outside',
+  MeetInside = 'Meet inside',
+  MeetAtDoor = 'Meet at door',
+  CallOnArrival = 'Call on arrival',
+}
+
+export enum PickupType {
+  LineupThirdPartyPickup = 'Line up for third-party pickup',
+  ParkThirdPartyLot = 'Park in third-party lot',
+  DontOpenBags = `Don't open bags for checklist`,
+  CallOnArrival = 'Call on arrival',
+}
+
+export type PickupInstruction = {
+  type: PickupType;
+  count?: number;
 };

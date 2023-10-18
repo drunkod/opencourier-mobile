@@ -31,6 +31,17 @@ import houseGray from '@app/assets/icons/HouseLine.png';
 import chats from '@app/assets/icons/ChatsCircle.png';
 import distance from '@app/assets/icons/Path.png';
 import clock from '@app/assets/icons/ClockAfternoon.png';
+import caretDown from '@app/assets/icons/CaretUp.png';
+import PhoneOutgoing from '@app/assets/icons/PhoneOutgoing.png';
+import Hamburger from '@app/assets/icons/Hamburger.png';
+import CheckFat from '@app/assets/icons/CheckFat.png';
+import PlusCircle from '@app/assets/icons/Content.png';
+import Door from '@app/assets/icons/Door.png';
+import Park from '@app/assets/icons/Park.png';
+import Buildings from '@app/assets/icons/Buildings.png';
+import HandWave from '@app/assets/icons/HandWaving.png';
+import PhoneCall from '@app/assets/icons/PhoneCall.png';
+import ChatBubble from '@app/assets/icons/ChatBubble.png';
 
 export const Images = {
   Logo: logo,
@@ -65,4 +76,15 @@ export const Images = {
   Chats: chats,
   Distance: distance,
   Clock: clock,
+  CaretDown: caretDown,
+  PhoneOutgoing: PhoneOutgoing,
+  Hamburger: Hamburger,
+  CheckFat: CheckFat,
+  PlusCircle: PlusCircle,
+  Door: Door,
+  Park: Park,
+  Buildings: Buildings,
+  HandWave: HandWave,
+  PhoneCall: PhoneCall,
+  ChatBubble: ChatBubble,
 };
