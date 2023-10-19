@@ -42,6 +42,8 @@ import Buildings from '@app/assets/icons/Buildings.png';
 import HandWave from '@app/assets/icons/HandWaving.png';
 import PhoneCall from '@app/assets/icons/PhoneCall.png';
 import ChatBubble from '@app/assets/icons/ChatBubble.png';
+import Checkbox from '@app/assets/icons/Checkbox.png';
+import CheckboxEmpty from '@app/assets/icons/CheckboxEmpty.png';
 
 export const Images = {
   Logo: logo,
@@ -87,4 +89,6 @@ export const Images = {
   HandWave: HandWave,
   PhoneCall: PhoneCall,
   ChatBubble: ChatBubble,
+  CheckboxEmpty: CheckboxEmpty,
+  Checkbox: Checkbox,
 };

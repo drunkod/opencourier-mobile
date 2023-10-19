@@ -116,5 +116,11 @@ export const TEST_NEW_ORDERS: Order[] = [
       DeliveryType.MeetInside,
       DeliveryType.MeetOutside,
     ],
+    items: [
+      { name: 'Item 1' },
+      { name: 'Item 2' },
+      { name: 'Item 3' },
+      { name: 'Item 4' },
+    ],
   },
 ];

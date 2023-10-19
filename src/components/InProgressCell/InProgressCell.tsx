@@ -24,6 +24,7 @@ type Props = {
   onMarkAsDelivered: (order: Order) => void;
   onChatRestaurant: (order: Order) => void;
   onChatCustomer: (order: Order) => void;
+  onMapPress: (order: Order) => void;
 };
 
 export const InProgressCell = ({
@@ -35,6 +36,7 @@ export const InProgressCell = ({
   onMarkAsDelivered,
   onChatRestaurant,
   onChatCustomer,
+  onMapPress,
 }: Props) => {
   const [topExpanded, setTopExpanded] = useState<boolean>(false);
   const [bottomExpanded, setBottomExpanded] = useState<boolean>(false);
@@ -115,7 +117,9 @@ export const InProgressCell = ({
           </View>
 
           <View style={styles.containerMap}>
-            <View style={styles.map} />
+            <TouchableOpacity onPress={() => onMapPress(order)}>
+              <View style={styles.map} />
+            </TouchableOpacity>
             <View style={styles.containerAway}>
               <View style={styles.containerTextAway}>
                 <Image source={Images.Distance} />

@@ -63,6 +63,7 @@ export type Order = {
   pickupInstructions?: PickupInstruction[];
   restaurantNotes?: string[];
   clientNotes?: string[];
+  items: OrderItem[];
 };
 
 export enum DeliveryType {
@@ -83,4 +84,14 @@ export enum PickupType {
 export type PickupInstruction = {
   type: PickupType;
   count?: number;
+};
+
+export enum MapLinkingOptions {
+  apple = 'Apple Maps',
+  google = 'Google Maps',
+  waze = 'Waze',
+}
+
+export type OrderItem = {
+  name: string;
 };

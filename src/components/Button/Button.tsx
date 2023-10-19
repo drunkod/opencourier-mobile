@@ -40,6 +40,9 @@ export const Button = ({
   icon,
 }: Props) => {
   const backgroundColor = useMemo(() => {
+    if (disabled) {
+      return Colors.gray8;
+    }
     switch (type) {
       case ButtonType.black:
         return Colors.black1;
@@ -53,9 +56,12 @@ export const Button = ({
       case ButtonType.gray:
         return Colors.gray8;
     }
-  }, [type]);
+  }, [type, disabled]);
 
   const textColor = useMemo(() => {
+    if (disabled) {
+      return Colors.gray9;
+    }
     switch (type) {
       case ButtonType.black:
       case ButtonType.green:
@@ -67,7 +73,24 @@ export const Button = ({
       case ButtonType.gray:
         return Colors.gray9;
     }
-  }, [type]);
+  }, [type, disabled]);
+
+  const iconTint = useMemo(() => {
+    if (disabled) {
+      return Colors.gray9;
+    }
+    switch (type) {
+      case ButtonType.black:
+      case ButtonType.green:
+      case ButtonType.red:
+        return Colors.white;
+      case ButtonType.white:
+      case ButtonType.yellow:
+        return Colors.black1;
+      case ButtonType.gray:
+        return Colors.gray9;
+    }
+  }, [type, disabled]);
 
   const borderColor = useMemo(() => {
     switch (type) {
@@ -110,7 +133,9 @@ export const Button = ({
           borderColor: borderColor,
         },
       ]}>
-      {icon && <Image source={icon} style={styles.icon} />}
+      {icon && (
+        <Image source={icon} style={[styles.icon, { tintColor: iconTint }]} />
+      )}
       <Text style={[styles.textTitle, { color: textColor }, textStyle]}>
         {title}
       </Text>
