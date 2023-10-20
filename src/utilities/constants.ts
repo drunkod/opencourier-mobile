@@ -16,3 +16,5 @@ export const MAP_ACTION_SHEET_OPTIONS_ANDROID = [
   MapLinkingOptions.waze,
   'Cancel',
 ];
+
+export const ADD_NOTE_CELL = 'const_add_note_cell';

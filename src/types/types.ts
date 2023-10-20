@@ -95,3 +95,10 @@ export enum MapLinkingOptions {
 export type OrderItem = {
   name: string;
 };
+
+export enum CustomerNotes {
+  PreventLeaks = 'Prevent Leaks',
+  BellnotRung = 'Bell Not Rung',
+  HandleWithCare = 'Handle with care: Hot!',
+  DontBlockDoor = `Don't block door access`,
+}

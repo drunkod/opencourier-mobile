@@ -4,11 +4,15 @@ import { NavigationProp, RouteProp } from '@react-navigation/native';
 export enum MainScreens {
   Drawer = 'Drawer',
   ItemsCollected = 'Items Collected',
+  MarkAsDelivered = 'MarkAsDelivered',
 }
 
 export type MainStackParamList = {
   Drawer: undefined;
   ItemsCollected: {
+    items: OrderItem[];
+  };
+  MarkAsDelivered: {
     items: OrderItem[];
   };
 };

@@ -44,8 +44,18 @@ import PhoneCall from '@app/assets/icons/PhoneCall.png';
 import ChatBubble from '@app/assets/icons/ChatBubble.png';
 import Checkbox from '@app/assets/icons/Checkbox.png';
 import CheckboxEmpty from '@app/assets/icons/CheckboxEmpty.png';
+import DoorOpen from '@app/assets/icons/DoorOpen.png';
+import Fire from '@app/assets/icons/Fire.png';
+import BellSlash from '@app/assets/icons/BellSlash.png';
+import Drop from '@app/assets/icons/Drop.png';
+import Camera from '@app/assets/icons/Camera.png';
 
 export const Images = {
+  Camera: Camera,
+  DoorOpen: DoorOpen,
+  Fire: Fire,
+  BellSlash: BellSlash,
+  Drop: Drop,
   Logo: logo,
   OpenDeli: openDeli,
   OnboardingCar: onboardingCar,

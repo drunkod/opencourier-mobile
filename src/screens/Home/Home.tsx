@@ -112,7 +112,9 @@ export const HomeScreen = ({ navigation }: Props) => {
             }
             onContactCustomer={() => undefined}
             onContactRestaurant={() => undefined}
-            onMarkAsDelivered={() => undefined}
+            onMarkAsDelivered={() =>
+              navigation.navigate(MainScreens.MarkAsDelivered)
+            }
             order={item}
             onMapPress={order => setShowMapActionSheet(order)}
           />
