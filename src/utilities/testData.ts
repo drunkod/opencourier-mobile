@@ -38,49 +38,115 @@ export const TEST_ORG_ARRAY: Organization[] = [
 
 export const TEST_ORDERS_HISTORY: Order[] = [
   {
-    id: '1',
+    id: '#A1B2C3',
     deliveredTo: {
-      firstname: 'User 1',
+      firstname: 'Krystal',
+      address: 'Sunflower St #111 San Antonio, TX 78006',
       lastname: '',
       profilePictureUrl:
         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRVA_HrQLjkHiJ2Ag5RGuwbFeDKRLfldnDasw&usqp=CAU',
     },
-    date: Date(),
+    date: '29 JUL 2022 - 9:10 AM',
     status: OrderStatus.Delivered,
     restaurant: {
-      name: 'Restaurant 1',
+      name: 'Mi Familia Restaurant ',
+      address: '17623 La Cantera Pkwy #103 San Antonio, TX 78249',
     },
-    price: 30.33,
+    price: 30.95,
+    clientNotes: ['Client Note 1', 'Client Note 2'],
+    pickupInstructions: [
+      { type: PickupType.CallOnArrival },
+      { type: PickupType.DontOpenBags },
+      { type: PickupType.ParkThirdPartyLot, count: 3 },
+      { type: PickupType.LineupThirdPartyPickup, count: 3 },
+    ],
+    deliveryInstructions: [
+      DeliveryType.CallOnArrival,
+      DeliveryType.LeaveAtDoor,
+      DeliveryType.MeetAtDoor,
+      DeliveryType.MeetInside,
+      DeliveryType.MeetOutside,
+    ],
+    items: [
+      { name: 'Item 1' },
+      { name: 'Item 2' },
+      { name: 'Item 3' },
+      { name: 'Item 4' },
+    ],
   },
   {
-    id: '2',
+    id: '#W1X2Z4',
     deliveredTo: {
-      firstname: 'User 2',
+      address: 'Sunflower St #111 San Antonio, TX 78006',
+      firstname: 'Emilio',
       lastname: '',
       profilePictureUrl:
         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRVA_HrQLjkHiJ2Ag5RGuwbFeDKRLfldnDasw&usqp=CAU',
     },
-    date: Date(),
+    date: '21 OCT 2022 - 2:05 PM',
     status: OrderStatus.Canceled,
     restaurant: {
-      name: 'Restaurant 2',
+      name: 'Mi Familia Restaurant ',
+      address: '17623 La Cantera Pkwy #103 San Antonio, TX 78249',
     },
-    price: 10.81,
+    price: 13.85,
+    clientNotes: ['Client Note 1', 'Client Note 2'],
+    pickupInstructions: [
+      { type: PickupType.CallOnArrival },
+      { type: PickupType.DontOpenBags },
+      { type: PickupType.ParkThirdPartyLot, count: 3 },
+      { type: PickupType.LineupThirdPartyPickup, count: 3 },
+    ],
+    deliveryInstructions: [
+      DeliveryType.CallOnArrival,
+      DeliveryType.LeaveAtDoor,
+      DeliveryType.MeetAtDoor,
+      DeliveryType.MeetInside,
+      DeliveryType.MeetOutside,
+    ],
+    items: [
+      { name: 'Item 1' },
+      { name: 'Item 2' },
+      { name: 'Item 3' },
+      { name: 'Item 4' },
+    ],
   },
   {
-    id: '3',
+    id: '#H142TY',
     deliveredTo: {
-      firstname: 'User 3',
+      firstname: 'Matt',
+      address: 'Sunflower St #111 San Antonio, TX 78006',
       lastname: '',
       profilePictureUrl:
         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRVA_HrQLjkHiJ2Ag5RGuwbFeDKRLfldnDasw&usqp=CAU',
     },
-    date: Date(),
+    date: '7 JAN 2022 - 3:10 PM',
     status: OrderStatus.Delivered,
     restaurant: {
-      name: 'Restaurant 3',
+      name: 'Mi Familia Restaurant ',
+      address: '17623 La Cantera Pkwy #103 San Antonio, TX 78249',
     },
-    price: 11.21,
+    price: 11.99,
+    clientNotes: ['Client Note 1', 'Client Note 2'],
+    pickupInstructions: [
+      { type: PickupType.CallOnArrival },
+      { type: PickupType.DontOpenBags },
+      { type: PickupType.ParkThirdPartyLot, count: 3 },
+      { type: PickupType.LineupThirdPartyPickup, count: 3 },
+    ],
+    deliveryInstructions: [
+      DeliveryType.CallOnArrival,
+      DeliveryType.LeaveAtDoor,
+      DeliveryType.MeetAtDoor,
+      DeliveryType.MeetInside,
+      DeliveryType.MeetOutside,
+    ],
+    items: [
+      { name: 'Item 1' },
+      { name: 'Item 2' },
+      { name: 'Item 3' },
+      { name: 'Item 4' },
+    ],
   },
 ];
 
@@ -88,17 +154,19 @@ export const TEST_NEW_ORDERS: Order[] = [
   {
     id: 'id1',
     deliveredTo: {
-      address: 'Street Number 5, Region, Country, ZIPCODE',
-      firstname: 'User 1',
+      address: 'Sunflower St #111 San Antonio, TX 78006',
+      firstname: 'James R',
       lastname: '',
+      location: { lat: 51.497583051332, lon: -0.20000902923313477 },
       profilePictureUrl:
         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRVA_HrQLjkHiJ2Ag5RGuwbFeDKRLfldnDasw&usqp=CAU',
     },
     date: Date(),
     status: OrderStatus.Delivered,
     restaurant: {
-      name: 'Restaurant 3',
-      address: 'Street Number 5, Region, Country, ZIPCODE',
+      name: 'La Gloria',
+      address: '17623 La Cantera Pkwy #103 San Antonio, TX 78249',
+      location: { lat: 51.53340136458096, lon: -0.12186910229810398 },
     },
     price: 11.21,
     restaurantNotes: ['Restaurant Note 1', 'Restaurant Note 2'],

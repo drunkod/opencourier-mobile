@@ -59,7 +59,6 @@ export const ProfileBadge = ({
             { backgroundColor: backgroundColor },
           ]}>
           <Text style={styles.textStatus}>{userStatus}</Text>
-          <Image source={Images.ArrowRightSmall} style={styles.arrow} />
         </View>
       )}
     </TouchableOpacity>

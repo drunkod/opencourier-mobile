@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
   StyleProp,
   ViewStyle,
@@ -11,6 +11,8 @@ import { styles } from './NewOrderCell.styles';
 import { Order } from '@app/types/types';
 import { ButtonOrder, ButtonOrderType } from '../ButtonOrder/ButtonOrder';
 import { Images } from '@app/utilities/images';
+import UserContext from '@app/context/userContext';
+import Map from '../Map/Map';
 
 type Props = {
   style?: StyleProp<ViewStyle>;
@@ -18,6 +20,8 @@ type Props = {
   autoAcceptOrders: boolean;
   onAccept: (order: Order) => void;
   onDecline: (order: Order) => void;
+  onCopyCustomer: (order: Order) => void;
+  onCopyRestaurant: (order: Order) => void;
 };
 
 export const NewOrderCell = ({
@@ -26,7 +30,11 @@ export const NewOrderCell = ({
   onAccept,
   onDecline,
   autoAcceptOrders,
+  onCopyCustomer,
+  onCopyRestaurant,
 }: Props) => {
+  const { user } = useContext(UserContext);
+
   return (
     <View style={[styles.container, style]}>
       <Text style={styles.textPrice}>{'$' + order.price}</Text>
@@ -43,22 +51,22 @@ export const NewOrderCell = ({
               <Text style={styles.textName}>{order.restaurant.name}</Text>
               <Text style={styles.textAddress}>{order.restaurant.address}</Text>
             </View>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => onCopyRestaurant(order)}>
               <View style={styles.containerChats}>
                 <Image source={Images.Chats} />
               </View>
             </TouchableOpacity>
           </View>
           <View style={styles.containerMap}>
-            <View style={styles.map} />
+            <Map order={order} user={user} />
             <View style={styles.containerAway}>
               <View style={styles.containerTextAway}>
                 <Image source={Images.Distance} />
-                <Text style={styles.textDistance}>44 miles away</Text>
+                <Text style={styles.textDistance}>3.5 mi away</Text>
               </View>
               <View style={styles.containerTextAway}>
                 <Image source={Images.Clock} />
-                <Text style={styles.textDistance}>3 min away</Text>
+                <Text style={styles.textDistance}>2 min away</Text>
               </View>
             </View>
           </View>
@@ -69,7 +77,7 @@ export const NewOrderCell = ({
                 {order.deliveredTo.address}
               </Text>
             </View>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => onCopyCustomer(order)}>
               <View style={styles.containerChats}>
                 <Image source={Images.Chats} />
               </View>

@@ -1,5 +1,12 @@
-import React, { useEffect, useMemo, useState } from 'react';
-import { FlatList, Linking, Platform, View } from 'react-native';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import {
+  Alert,
+  FlatList,
+  Linking,
+  Platform,
+  RefreshControl,
+  View,
+} from 'react-native';
 import { styles } from './Home.styles';
 import { HomeHeader } from '@app/components/HomeHeader/HomeHeader';
 import {
@@ -7,6 +14,7 @@ import {
   HomeTabItem,
   MapLinkingOptions,
   Order,
+  PickupInstruction,
   UserStatus,
 } from '@app/types/types';
 import { HomeEmptyStateComponent } from '@app/components/HomeEmptyState/HomeEmptyState';
@@ -22,6 +30,7 @@ import {
   MAP_ACTION_SHEET_OPTIONS_IOS,
 } from '@app/utilities/constants';
 import { MainScreens } from '@app/navigation/main/types';
+import Clipboard from '@react-native-clipboard/clipboard';
 
 const data: string[] =
   Platform.OS === 'android'
@@ -37,15 +46,15 @@ export const HomeScreen = ({ navigation }: Props) => {
   const [searchText, setSearchText] = useState<string>('');
   const [dataSourceHistory, setDataSourceHistory] =
     useState<Order[]>(TEST_ORDERS_HISTORY);
-  const [dataSourceNew, setDataSourceNew] = useState<Order[]>(TEST_NEW_ORDERS);
-  const [dataSourceInProgress, setDataSourceInProgress] =
-    useState<Order[]>(TEST_NEW_ORDERS);
+  const [dataSourceNew, setDataSourceNew] = useState<Order[]>([]);
+  const [dataSourceInProgress, setDataSourceInProgress] = useState<Order[]>([]);
 
   const [dataSource, setDataSource] = useState<Order[]>([]);
   const [autoAcceptOrders, setAutoAcceptOrders] = useState<boolean>(false);
   const [showMapActionSheet, setShowMapActionSheet] = useState<
     Order | undefined
   >(undefined);
+  const [refreshing, setRefreshing] = React.useState(false);
 
   const onProfilePress = () => {
     navigation.toggleDrawer();
@@ -89,6 +98,18 @@ export const HomeScreen = ({ navigation }: Props) => {
     }
   }, [selectedTab, dataSourceHistory, dataSourceNew, dataSourceInProgress]);
 
+  const onAcceptNewOrder = (order: Order) => {
+    // SImulate accept order
+    setDataSourceNew([]);
+    setDataSourceInProgress(TEST_NEW_ORDERS);
+  };
+
+  const onDeclineNewOrder = (order: Order) => {
+    // SImulate decline order
+    setDataSourceNew([]);
+    setDataSourceInProgress([]);
+  };
+
   const renderItem = ({ item }: { item: Order }) => {
     switch (selectedTab) {
       case HomeTabItem.New:
@@ -96,32 +117,66 @@ export const HomeScreen = ({ navigation }: Props) => {
           <NewOrderCell
             autoAcceptOrders={autoAcceptOrders}
             order={item}
-            onAccept={() => console.warn('ACCEPTED')}
-            onDecline={() => console.warn('DECLINED')}
+            onAccept={onAcceptNewOrder}
+            onDecline={onDeclineNewOrder}
+            onCopyCustomer={order =>
+              Clipboard.setString(order.deliveredTo.address)
+            }
+            onCopyRestaurant={order =>
+              Clipboard.setString(order.restaurant.address)
+            }
           />
         );
       case HomeTabItem.InProgress:
         return (
           <InProgressCell
-            onChatCustomer={() => undefined}
-            onChatRestaurant={() => undefined}
+            onCopyCustomer={order =>
+              Clipboard.setString(order.deliveredTo.address)
+            }
+            onCopyRestaurant={order =>
+              Clipboard.setString(order.restaurant.address)
+            }
             onConfirmItems={() =>
               navigation.navigate(MainScreens.ItemsCollected, {
                 items: item.items,
               })
             }
-            onContactCustomer={() => undefined}
-            onContactRestaurant={() => undefined}
+            onContactCustomer={() => Linking.openURL(`tel://${12341251511}`)}
+            onContactRestaurant={() => Linking.openURL(`tel://${12341251511}`)}
             onMarkAsDelivered={() =>
               navigation.navigate(MainScreens.MarkAsDelivered)
             }
             order={item}
             onMapPress={order => setShowMapActionSheet(order)}
+            onAddNote={onAddNote}
+            onPickupInstructionPress={onPickupInstructionPress}
           />
         );
       case HomeTabItem.History:
         setDataSource(dataSourceHistory);
         return <HistoryCell order={item} onPress={() => undefined} />;
+    }
+  };
+
+  const onPickupInstructionPress = (
+    order: Order,
+    instruction: PickupInstruction,
+  ) => {
+    var temp = dataSource.filter(obj => obj.id === order.id);
+    if (temp.length > 0 && temp[0].pickupInstructions) {
+      var newInstructions: PickupInstruction[] = temp[0].pickupInstructions.map(
+        ins => {
+          if (ins.type === instruction.type) {
+            return {
+              type: instruction.type,
+              count: instruction.count ? instruction.count + 1 : 2,
+            };
+          }
+          return ins;
+        },
+      );
+      temp[0].pickupInstructions = [...newInstructions];
+      setDataSource(temp);
     }
   };
 
@@ -176,11 +231,60 @@ export const HomeScreen = ({ navigation }: Props) => {
     );
   };
 
+  const addNote = (order: Order, note: string | undefined) => {
+    if (note) {
+      var temp = dataSource.filter(obj => obj.id === order.id);
+      if (temp.length > 0 && temp[0].pickupInstructions) {
+        temp[0].pickupInstructions = [
+          ...temp[0].pickupInstructions,
+          { type: note },
+        ];
+        setDataSource(temp);
+      }
+    }
+  };
+
+  const onAddNote = (order: Order) => {
+    Alert.prompt(
+      'Add Note',
+      '',
+      [
+        {
+          text: 'Cancel',
+          onPress: () => undefined,
+          style: 'cancel',
+        },
+        {
+          text: 'OK',
+          onPress: note => addNote(order, note),
+        },
+      ],
+      'plain-text',
+    );
+  };
+
+  const onRefresh = async () => {
+    // Simulate pull to refresh
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 3000);
+  };
+
   useEffect(() => {
     (async () => {
       const accept = await getAutoAcceptOrdersStorage();
       setAutoAcceptOrders(accept);
     })();
+  }, []);
+
+  useEffect(() => {
+    // Simulate new order after 5 second on home screen
+    setDataSourceNew([]);
+    setDataSourceInProgress([]);
+    setTimeout(() => {
+      setDataSourceNew(TEST_NEW_ORDERS);
+    }, 5000);
   }, []);
 
   return (
@@ -191,8 +295,8 @@ export const HomeScreen = ({ navigation }: Props) => {
         onProfile={onProfilePress}
         onSearch={setIsSearching}
         onTabSelected={setSelectedTab}
-        newCount={2}
-        inProgressCount={1}
+        newCount={dataSourceNew.length}
+        inProgressCount={dataSourceInProgress.length}
         searchShown={isSearching}
         searchText={searchText}
         onSearchTextChange={setSearchText}
@@ -203,6 +307,9 @@ export const HomeScreen = ({ navigation }: Props) => {
           keyExtractor={(item, index) => index.toString()}
           data={dataSource}
           renderItem={renderItem}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
         />
       )}
       {showMapActionSheet !== undefined && showActionSheeet(showMapActionSheet)}

@@ -29,10 +29,6 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  arrow: {
-    width: 8,
-    height: 8,
-  },
   textStatus: {
     fontWeight: '700',
     fontSize: 8,

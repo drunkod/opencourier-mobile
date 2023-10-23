@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import {
   StyleProp,
   ViewStyle,
@@ -8,12 +8,14 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { styles } from './InProgressCell.styles';
-import { Order } from '@app/types/types';
+import { Order, PickupInstruction } from '@app/types/types';
 import { Images } from '@app/utilities/images';
 import { Button, ButtonType } from '../Button/Button';
 import { PickupInstructionCell } from '../PickupInstructionsCell/PickupInstructionCell';
 import { DeliveryInstructionsCell } from '../DeliveryInstructionsCell/DeliveryInstructionsCell';
 import { NoteCell } from '../NoteCell/NoteCell';
+import UserContext from '@app/context/userContext';
+import Map from '../Map/Map';
 
 type Props = {
   style?: StyleProp<ViewStyle>;
@@ -22,9 +24,11 @@ type Props = {
   onContactCustomer: (order: Order) => void;
   onConfirmItems: (order: Order) => void;
   onMarkAsDelivered: (order: Order) => void;
-  onChatRestaurant: (order: Order) => void;
-  onChatCustomer: (order: Order) => void;
+  onCopyRestaurant: (order: Order) => void;
+  onCopyCustomer: (order: Order) => void;
   onMapPress: (order: Order) => void;
+  onAddNote: (order: Order) => void;
+  onPickupInstructionPress: (order: Order, note: PickupInstruction) => void;
 };
 
 export const InProgressCell = ({
@@ -34,12 +38,15 @@ export const InProgressCell = ({
   onContactCustomer,
   onConfirmItems,
   onMarkAsDelivered,
-  onChatRestaurant,
-  onChatCustomer,
+  onCopyRestaurant,
+  onCopyCustomer,
   onMapPress,
+  onAddNote,
+  onPickupInstructionPress,
 }: Props) => {
   const [topExpanded, setTopExpanded] = useState<boolean>(false);
   const [bottomExpanded, setBottomExpanded] = useState<boolean>(false);
+  const { user } = useContext(UserContext);
 
   return (
     <View style={[styles.container, style]}>
@@ -75,25 +82,34 @@ export const InProgressCell = ({
             ]}>
             <View style={styles.containerAddressButton}>
               <Text style={styles.textAddress}>{order.restaurant.address}</Text>
-              <TouchableOpacity onPress={() => onChatRestaurant(order)}>
+              <TouchableOpacity onPress={() => onCopyRestaurant(order)}>
                 <View style={styles.containerChats}>
                   <Image source={Images.Chats} />
                 </View>
               </TouchableOpacity>
             </View>
-            {order.restaurantNotes && (
+            {/* {order.restaurantNotes && (
               <View style={styles.containerNotes}>
                 {order.restaurantNotes.map(note => {
                   return <NoteCell text={note} />;
                 })}
               </View>
-            )}
+            )} */}
             <View style={styles.containerInstructions}>
               {order.pickupInstructions &&
                 order.pickupInstructions.map(item => {
-                  return <PickupInstructionCell instruction={item} />;
+                  return (
+                    <PickupInstructionCell
+                      instruction={item}
+                      onPress={instruction =>
+                        onPickupInstructionPress(order, instruction)
+                      }
+                    />
+                  );
                 })}
-              <TouchableOpacity style={styles.buttonAddNote}>
+              <TouchableOpacity
+                style={styles.buttonAddNote}
+                onPress={() => onAddNote(order)}>
                 <Image source={Images.PlusCircle} />
                 <Text style={styles.textAddNote}>Type a note</Text>
               </TouchableOpacity>
@@ -118,16 +134,16 @@ export const InProgressCell = ({
 
           <View style={styles.containerMap}>
             <TouchableOpacity onPress={() => onMapPress(order)}>
-              <View style={styles.map} />
+              <Map order={order} user={user} />
             </TouchableOpacity>
             <View style={styles.containerAway}>
               <View style={styles.containerTextAway}>
                 <Image source={Images.Distance} />
-                <Text style={styles.textDistance}>44 miles away</Text>
+                <Text style={styles.textDistance}>3.5 mi away</Text>
               </View>
               <View style={styles.containerTextAway}>
                 <Image source={Images.Clock} />
-                <Text style={styles.textDistance}>3 min away</Text>
+                <Text style={styles.textDistance}>2 min away</Text>
               </View>
             </View>
           </View>
@@ -161,7 +177,7 @@ export const InProgressCell = ({
             ]}>
             <View style={styles.containerAddressButton}>
               <Text style={styles.textAddress}>{order.restaurant.address}</Text>
-              <TouchableOpacity onPress={() => onChatCustomer(order)}>
+              <TouchableOpacity onPress={() => onCopyCustomer(order)}>
                 <View style={styles.containerChats}>
                   <Image source={Images.Chats} />
                 </View>

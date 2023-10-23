@@ -45,11 +45,13 @@ export type User = {
   lastname: string;
   profilePictureUrl: string;
   address: string;
+  location?: { lat: number; lon: number };
 };
 
 export type Restaurant = {
   name: string;
   address: string;
+  location?: { lat: number; lon: number };
 };
 
 export type Order = {
@@ -82,7 +84,7 @@ export enum PickupType {
 }
 
 export type PickupInstruction = {
-  type: PickupType;
+  type: string;
   count?: number;
 };
 

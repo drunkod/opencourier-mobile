@@ -1,5 +1,12 @@
 import React, { useMemo } from 'react';
-import { Image, StyleProp, Text, View, ViewStyle } from 'react-native';
+import {
+  Image,
+  StyleProp,
+  Text,
+  TouchableOpacity,
+  View,
+  ViewStyle,
+} from 'react-native';
 import { styles } from './PickupInstructionCell.styles';
 import { PickupInstruction, PickupType } from '@app/types/types';
 import { Images } from '@app/utilities/images';
@@ -7,9 +14,14 @@ import { Images } from '@app/utilities/images';
 type Props = {
   style?: StyleProp<ViewStyle>;
   instruction: PickupInstruction;
+  onPress: (instruction: PickupInstruction) => void;
 };
 
-export const PickupInstructionCell = ({ style, instruction }: Props) => {
+export const PickupInstructionCell = ({
+  style,
+  instruction,
+  onPress,
+}: Props) => {
   const icon = useMemo(() => {
     switch (instruction.type) {
       case PickupType.CallOnArrival:
@@ -30,7 +42,8 @@ export const PickupInstructionCell = ({ style, instruction }: Props) => {
   }, [instruction]);
 
   return (
-    <View
+    <TouchableOpacity
+      onPress={() => onPress(instruction)}
       style={[
         styles.content,
         style,
@@ -50,6 +63,6 @@ export const PickupInstructionCell = ({ style, instruction }: Props) => {
           <Image source={Images.Storefront} style={styles.iconTopRight} />
         </View>
       )}
-    </View>
+    </TouchableOpacity>
   );
 };
