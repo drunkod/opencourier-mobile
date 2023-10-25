@@ -49,8 +49,12 @@ import Fire from '@app/assets/icons/Fire.png';
 import BellSlash from '@app/assets/icons/BellSlash.png';
 import Drop from '@app/assets/icons/Drop.png';
 import Camera from '@app/assets/icons/Camera.png';
+import ArrowCounterClockwise from '@app/assets/icons/ArrowCounterClockwise.png';
+import XCircle from '@app/assets/icons/XCircle.png';
 
 export const Images = {
+  XCircle: XCircle,
+  ArrowCounterClockwise: ArrowCounterClockwise,
   Camera: Camera,
   DoorOpen: DoorOpen,
   Fire: Fire,

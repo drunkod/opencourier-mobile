@@ -284,7 +284,7 @@ export const HomeScreen = ({ navigation }: Props) => {
     setDataSourceInProgress([]);
     setTimeout(() => {
       setDataSourceNew(TEST_NEW_ORDERS);
-    }, 5000);
+    }, 1000);
   }, []);
 
   return (

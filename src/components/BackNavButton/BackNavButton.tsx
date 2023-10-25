@@ -3,15 +3,37 @@ import { Image, StyleProp, ViewStyle, TouchableOpacity } from 'react-native';
 import { Images } from '@app/utilities/images';
 import { styles } from './BackNavButton.styles';
 
+export enum BackButtonType {
+  white,
+  black,
+}
+
 type Props = {
   style?: StyleProp<ViewStyle>;
   onPress: () => void;
+  type?: BackButtonType;
 };
 
-export const BackNavButton = ({ style, onPress }: Props) => {
+export const BackNavButton = ({
+  style,
+  onPress,
+  type = BackButtonType.white,
+}: Props) => {
   return (
-    <TouchableOpacity style={[styles.container, style]} onPress={onPress}>
-      <Image source={Images.ArrowLeft} />
+    <TouchableOpacity
+      style={[
+        type === BackButtonType.white
+          ? styles.containerWhite
+          : styles.containerBlack,
+        style,
+      ]}
+      onPress={onPress}>
+      <Image
+        source={Images.ArrowLeft}
+        style={
+          type === BackButtonType.white ? styles.iconBlack : styles.iconWhite
+        }
+      />
     </TouchableOpacity>
   );
 };

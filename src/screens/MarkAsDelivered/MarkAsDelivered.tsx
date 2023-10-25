@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Image,
   Alert,
+  ImageSourcePropType,
 } from 'react-native';
 import { styles } from './MarkAsDelivered.styles';
 import { MainScreenProp, MainScreens } from '@app/navigation/main/types';
@@ -16,16 +17,26 @@ import { CustomerNotes } from '@app/types/types';
 import { Images } from '@app/utilities/images';
 import { Button, ButtonType } from '@app/components/Button/Button';
 import { ADD_NOTE_CELL } from '@app/utilities/constants';
+import { PhotoCell } from '@app/components/PhotoCell/PhotoCell';
 
 type Props = MainScreenProp<MainScreens.MarkAsDelivered>;
 
+type DataTypes = ImageSourcePropType | string[];
+
 export const MarkAsDelivered = ({ navigation }: Props) => {
-  const [dataSource, setDataSource] = useState<string[]>([
-    CustomerNotes.BellnotRung,
-    CustomerNotes.DontBlockDoor,
-    CustomerNotes.HandleWithCare,
-    CustomerNotes.PreventLeaks,
-    ADD_NOTE_CELL,
+  const [dataSource, setDataSource] = useState<DataTypes[]>([
+    [
+      CustomerNotes.BellnotRung,
+      CustomerNotes.DontBlockDoor,
+      CustomerNotes.HandleWithCare,
+      CustomerNotes.PreventLeaks,
+      ADD_NOTE_CELL,
+    ],
+    Images.ChatBubble,
+    Images.BellSlash,
+    Images.Box,
+    Images.Checkbox,
+    Images.DoorOpen,
   ]);
   const [selectedNotes, setSelectedNotes] = useState<string[]>([]);
 
@@ -43,9 +54,13 @@ export const MarkAsDelivered = ({ navigation }: Props) => {
     return selectedNotes.filter(obj => obj === item).length > 0;
   };
 
-  const addNote = (text: string) => {
-    const temp = dataSource.filter(obj => obj !== ADD_NOTE_CELL);
-    setDataSource([...temp, text, ADD_NOTE_CELL]);
+  const addNote = (text: string | undefined) => {
+    if (text) {
+      var temp = [...dataSource];
+      const noteArray = dataSource[0].filter(obj => obj !== ADD_NOTE_CELL);
+      temp[0] = [...noteArray, text, ADD_NOTE_CELL];
+      setDataSource(temp);
+    }
   };
 
   const onAddNote = () => {
@@ -67,22 +82,59 @@ export const MarkAsDelivered = ({ navigation }: Props) => {
     );
   };
 
-  const renderItem = ({ item }: string) => {
-    if (item === ADD_NOTE_CELL) {
+  const onDeletePhoto = (photo: ImageSourcePropType) => {
+    const temp = dataSource.filter(item => item !== photo);
+    setDataSource(temp);
+  };
+
+  const renderItem = ({ item, index }: DataTypes) => {
+    if (index === 0) {
       return (
-        <TouchableOpacity style={styles.buttonAddNote} onPress={onAddNote}>
-          <Image source={Images.PlusCircle} />
-          <Text style={styles.textAddNote}>Type a note</Text>
-        </TouchableOpacity>
+        <View>
+          <Text style={styles.textNote}>Quick Note</Text>
+          <View style={styles.contentContainerStyle}>
+            {item.map(note => {
+              if (note === ADD_NOTE_CELL) {
+                return (
+                  <TouchableOpacity
+                    style={styles.buttonAddNote}
+                    onPress={onAddNote}>
+                    <Image source={Images.PlusCircle} />
+                    <Text style={styles.textAddNote}>Type a note</Text>
+                  </TouchableOpacity>
+                );
+              }
+
+              return (
+                <QuickNote
+                  text={note}
+                  selected={noteSelected(note)}
+                  onPress={handleNotePress}
+                />
+              );
+            })}
+          </View>
+        </View>
+      );
+    } else {
+      return (
+        <PhotoCell
+          image={item}
+          onDelete={() => onDeletePhoto(item)}
+          onRetake={() =>
+            navigation.navigate(MainScreens.PhotoAttachment, {
+              photo: Images.User,
+              onAttach: onAttachPhoto,
+              onRetake: () => undefined,
+            })
+          }
+        />
       );
     }
-    return (
-      <QuickNote
-        text={item}
-        selected={noteSelected(item)}
-        onPress={handleNotePress}
-      />
-    );
+  };
+
+  const onAttachPhoto = (photo: ImageSourcePropType) => {
+    setDataSource([...dataSource, photo]);
   };
 
   return (
@@ -92,10 +144,10 @@ export const MarkAsDelivered = ({ navigation }: Props) => {
           <Text style={styles.title}>For the customer</Text>
           <BackNavButton onPress={() => navigation.goBack()} />
         </View>
-        <Text style={styles.textNote}>Quick Note</Text>
+
         <FlatList
+          showsVerticalScrollIndicator={false}
           style={[styles.gridContainer]}
-          contentContainerStyle={styles.contentContainerStyle}
           data={dataSource}
           renderItem={renderItem}
           keyExtractor={(item, index) => `${index}`}
@@ -106,11 +158,17 @@ export const MarkAsDelivered = ({ navigation }: Props) => {
           icon={Images.Camera}
           type={ButtonType.black}
           title="Take a photo"
-          onPress={() => undefined}
+          onPress={() =>
+            navigation.navigate(MainScreens.PhotoAttachment, {
+              photo: Images.User,
+              onAttach: onAttachPhoto,
+              onRetake: () => undefined,
+            })
+          }
         />
         <Button
           style={styles.buttonConfirm}
-          disabled={selectedNotes.length !== dataSource.length}
+          disabled={selectedNotes.length !== dataSource[0].length - 1}
           textStyle={styles.buttonTextStyle}
           icon={Images.Checkmark}
           type={ButtonType.green}

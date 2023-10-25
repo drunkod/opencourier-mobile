@@ -58,7 +58,7 @@ export const NewOrderCell = ({
             </TouchableOpacity>
           </View>
           <View style={styles.containerMap}>
-            <Map order={order} user={user} />
+            {user && <Map order={order} user={user} />}
             <View style={styles.containerAway}>
               <View style={styles.containerTextAway}>
                 <Image source={Images.Distance} />

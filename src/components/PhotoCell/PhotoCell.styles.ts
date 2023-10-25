@@ -1,0 +1,39 @@
+import { Colors } from '@app/styles/colors';
+import { StyleSheet } from 'react-native';
+
+export const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    marginVertical: 4,
+  },
+  containerImage: {
+    width: 93,
+    height: 93,
+  },
+  image: {
+    width: 93,
+    height: 93,
+    borderRadius: 8,
+    borderWidth: 3,
+    borderColor: Colors.gray13,
+  },
+  containerHorizontal: {
+    flexDirection: 'row',
+    height: 35,
+    alignItems: 'center',
+  },
+  text: {
+    fontWeight: '700',
+    color: Colors.black1,
+    marginLeft: 8,
+  },
+  arrow: {
+    width: 16,
+    height: 16,
+    tintColor: Colors.black1,
+  },
+  containerRight: {
+    paddingLeft: 30,
+    justifyContent: 'center',
+  },
+});

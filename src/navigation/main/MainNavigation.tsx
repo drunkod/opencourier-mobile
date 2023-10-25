@@ -4,6 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { DrawerStack } from '../drawer/DrawerNavigation';
 import { ItemsCollected } from '@app/screens/ItemsCollected/ItemsCollected';
 import { MarkAsDelivered } from '@app/screens/MarkAsDelivered/MarkAsDelivered';
+import { PhotoAttachment } from '@app/screens/PhotoAttachment/PhotoAttachment';
 
 const MainStackNavigator = createNativeStackNavigator();
 
@@ -25,6 +26,11 @@ export const MainStack = () => {
       <MainStackNavigator.Screen
         name={MainScreens.MarkAsDelivered}
         component={MarkAsDelivered}
+        options={DEFAULT_OPTIONS}
+      />
+      <MainStackNavigator.Screen
+        name={MainScreens.PhotoAttachment}
+        component={PhotoAttachment}
         options={DEFAULT_OPTIONS}
       />
     </MainStackNavigator.Navigator>
