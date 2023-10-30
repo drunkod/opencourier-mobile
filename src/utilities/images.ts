@@ -53,8 +53,10 @@ import ArrowCounterClockwise from '@app/assets/icons/ArrowCounterClockwise.png';
 import XCircle from '@app/assets/icons/XCircle.png';
 import CameraBlack from '@app/assets/icons/CameraBlack.png';
 import Flashlight from '@app/assets/icons/Flashlight.png';
+import X from '@app/assets/icons/X.png';
 
 export const Images = {
+  X: X,
   CameraBlack: CameraBlack,
   Flashlight: Flashlight,
   XCircle: XCircle,

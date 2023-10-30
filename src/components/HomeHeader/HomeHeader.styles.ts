@@ -69,4 +69,7 @@ export const styles = StyleSheet.create({
   waiting: {
     marginBottom: 16,
   },
+  orderDelivered: {
+    marginBottom: 16,
+  },
 });

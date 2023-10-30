@@ -10,6 +10,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import { HomeTabs } from '../HomeTabs/HomeTabs';
 import { SearchBar } from '../SearchBar/SearchBar';
 import { WaitingForOrders } from '../WaitingForOrders/WaitingForOrders';
+import { OrderDelivered } from '../OrderDelivered/OrderDelivered';
 
 type Props = {
   style?: StyleProp<ViewStyle>;
@@ -23,6 +24,8 @@ type Props = {
   searchShown: boolean;
   onSearchTextChange: (text: string) => void;
   searchText: string;
+  orderDeliveredNotification: boolean;
+  onCloseOrderDeliveredNotification: () => void;
 };
 
 export const HomeHeader = ({
@@ -37,6 +40,8 @@ export const HomeHeader = ({
   searchShown,
   onSearchTextChange,
   searchText,
+  orderDeliveredNotification = false,
+  onCloseOrderDeliveredNotification,
 }: Props) => {
   const { top } = useSafeAreaInsets();
 
@@ -57,6 +62,14 @@ export const HomeHeader = ({
       {selectedTab === HomeTabItem.New && userStatus === UserStatus.Online && (
         <WaitingForOrders style={styles.waiting} />
       )}
+
+      {orderDeliveredNotification && (
+        <OrderDelivered
+          onClose={onCloseOrderDeliveredNotification}
+          style={styles.orderDelivered}
+        />
+      )}
+
       <View style={styles.containerButtons}>
         <ProfileBadge userStatus={userStatus} onPress={onProfile} />
         <Text style={styles.textTitle}>Open Deli</Text>

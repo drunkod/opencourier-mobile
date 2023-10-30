@@ -55,6 +55,7 @@ export const HomeScreen = ({ navigation }: Props) => {
     Order | undefined
   >(undefined);
   const [refreshing, setRefreshing] = React.useState(false);
+  const [orderDeliveredNotif, setOrderDeliveredNotif] = useState<boolean>(true);
 
   const onProfilePress = () => {
     navigation.toggleDrawer();
@@ -290,6 +291,10 @@ export const HomeScreen = ({ navigation }: Props) => {
   return (
     <View style={styles.container}>
       <HomeHeader
+        orderDeliveredNotification={orderDeliveredNotif}
+        onCloseOrderDeliveredNotification={() =>
+          setOrderDeliveredNotif(!orderDeliveredNotif)
+        }
         userStatus={userStatus}
         selectedTab={selectedTab}
         onProfile={onProfilePress}
