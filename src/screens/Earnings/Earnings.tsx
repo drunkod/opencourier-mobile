@@ -17,6 +17,7 @@ import { Images } from '@app/utilities/images';
 import { TEST_EARNINGS_ORDERS } from '@app/utilities/testData';
 import { Button, ButtonType } from '@app/components/Button/Button';
 import { formatMockDate } from '@app/utilities/dates';
+import { MainScreens } from '@app/navigation/main/types';
 
 type Props = DrawerScreenProp<DrawerScreens.Earnings>;
 
@@ -78,7 +79,7 @@ export const Earnings = ({ navigation }: Props) => {
           />
           <Button
             title="See payout history"
-            onPress={() => undefined}
+            onPress={() => navigation.navigate(MainScreens.PayoutActivity)}
             type={ButtonType.white}
           />
         </View>

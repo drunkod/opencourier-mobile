@@ -5,6 +5,7 @@ import { DrawerStack } from '../drawer/DrawerNavigation';
 import { ItemsCollected } from '@app/screens/ItemsCollected/ItemsCollected';
 import { MarkAsDelivered } from '@app/screens/MarkAsDelivered/MarkAsDelivered';
 import { PhotoAttachment } from '@app/screens/PhotoAttachment/PhotoAttachment';
+import { PayoutActivity } from '@app/screens/PayoutActivity/PayoutActivity';
 
 const MainStackNavigator = createNativeStackNavigator();
 
@@ -31,6 +32,11 @@ export const MainStack = () => {
       <MainStackNavigator.Screen
         name={MainScreens.PhotoAttachment}
         component={PhotoAttachment}
+        options={DEFAULT_OPTIONS}
+      />
+      <MainStackNavigator.Screen
+        name={MainScreens.PayoutActivity}
+        component={PayoutActivity}
         options={DEFAULT_OPTIONS}
       />
     </MainStackNavigator.Navigator>
