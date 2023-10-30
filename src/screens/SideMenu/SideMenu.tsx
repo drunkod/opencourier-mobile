@@ -17,6 +17,7 @@ import {
   getAutoAcceptOrdersStorage,
   setAutoAcceptOrdersStorage,
 } from '@app/utilities/storage';
+import { DrawerScreens } from '@app/navigation/drawer/types';
 
 type Props = RootScreenProp<RootScreen.Loading>;
 
@@ -69,6 +70,25 @@ export const SideMenu = ({ navigation }: Props) => {
     })();
   }, []);
 
+  const handlePress = (item: SideMenuItem) => {
+    switch (item) {
+      case SideMenuItem.Orders:
+        navigation.navigate(DrawerScreens.Home);
+        break;
+      case SideMenuItem.Earnings:
+        navigation.navigate(DrawerScreens.Earnings);
+        break;
+      case SideMenuItem.Payout:
+        break;
+      case SideMenuItem.Support:
+        break;
+      case SideMenuItem.Settings:
+        break;
+      case SideMenuItem.Logout:
+        break;
+    }
+  };
+
   return (
     <DrawerContentScrollView>
       <View style={styles.container}>
@@ -116,7 +136,7 @@ export const SideMenu = ({ navigation }: Props) => {
               key={item}
               style={styles.cell}
               item={item}
-              onPress={() => undefined}
+              onPress={handlePress}
             />
           );
         })}

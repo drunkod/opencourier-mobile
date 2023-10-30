@@ -2,10 +2,12 @@ import { NavigationProp, RouteProp } from '@react-navigation/native';
 
 export enum DrawerScreens {
   Home = 'Home',
+  Earnings = 'Earnings',
 }
 
 export type DrawerStackParamList = {
   Home: undefined;
+  Earnings: undefined;
 };
 
 export type DrawerNavigationProp = NavigationProp<DrawerStackParamList>;

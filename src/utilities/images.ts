@@ -54,8 +54,14 @@ import XCircle from '@app/assets/icons/XCircle.png';
 import CameraBlack from '@app/assets/icons/CameraBlack.png';
 import Flashlight from '@app/assets/icons/Flashlight.png';
 import X from '@app/assets/icons/X.png';
+import Bank from '@app/assets/icons/Bank.png';
+import CaretCircleRight from '@app/assets/icons/CaretCircleRight.png';
+import CaretCircleLeft from '@app/assets/icons/CaretCircleLeft.png';
 
 export const Images = {
+  CaretCircleRight: CaretCircleRight,
+  CaretCircleLeft: CaretCircleLeft,
+  Bank: Bank,
   X: X,
   CameraBlack: CameraBlack,
   Flashlight: Flashlight,

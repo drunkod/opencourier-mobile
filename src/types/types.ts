@@ -104,3 +104,9 @@ export enum CustomerNotes {
   HandleWithCare = 'Handle with care: Hot!',
   DontBlockDoor = `Don't block door access`,
 }
+
+export enum EarningsTabItem {
+  Today = 'Today',
+  Weekly = 'Weekly',
+  All = 'All',
+}
