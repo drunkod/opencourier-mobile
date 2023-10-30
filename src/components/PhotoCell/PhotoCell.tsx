@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   Image,
-  ImageSourcePropType,
   StyleProp,
   Text,
   TouchableOpacity,
@@ -13,7 +12,7 @@ import { Images } from '@app/utilities/images';
 
 type Props = {
   style?: StyleProp<ViewStyle>;
-  image: ImageSourcePropType;
+  image: string;
   onDelete: () => void;
   onRetake: () => void;
 };
@@ -21,7 +20,7 @@ type Props = {
 export const PhotoCell = ({ style, image, onDelete, onRetake }: Props) => {
   return (
     <View style={[styles.container, style]}>
-      <Image source={image} style={styles.image} />
+      <Image source={{ uri: image }} style={styles.image} />
       <View style={styles.containerRight}>
         <TouchableOpacity style={styles.containerHorizontal} onPress={onRetake}>
           <Image source={Images.ArrowCounterClockwise} style={styles.arrow} />

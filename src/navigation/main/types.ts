@@ -18,9 +18,7 @@ export type MainStackParamList = {
     items: OrderItem[];
   };
   PhotoAttachment: {
-    photo: ImageSourcePropType;
-    onAttach: (photo: ImageSourcePropType) => void;
-    onRetake: () => void;
+    onAttach: (photo: string) => void;
   };
 };
 

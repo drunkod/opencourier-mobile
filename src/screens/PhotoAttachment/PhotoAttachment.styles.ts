@@ -1,4 +1,5 @@
 import { Colors } from '@app/styles/colors';
+import { SCREEN_WIDTH } from '@app/utilities/constants';
 import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
@@ -41,6 +42,9 @@ export const styles = StyleSheet.create({
   },
   imageTaken: {
     borderRadius: 4,
+    flex: 1,
+    width: SCREEN_WIDTH * 0.88,
+    marginVertical: 10,
   },
   containerImage: {
     flex: 1,
@@ -62,5 +66,29 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 19,
     marginTop: 4,
+  },
+  camera: {
+    width: SCREEN_WIDTH * 0.88,
+    flex: 1,
+    alignSelf: 'center',
+    marginVertical: 10,
+  },
+  grantText: {
+    textAlign: 'center',
+    fontSize: 18,
+    fontWeight: '700',
+    color: Colors.white,
+    marginTop: 200,
+  },
+  textSettings: {
+    textAlign: 'center',
+    fontSize: 18,
+    fontWeight: '700',
+    color: Colors.white,
+  },
+  buttonSettings: {
+    width: 100,
+    marginTop: 20,
+    alignSelf: 'center',
   },
 });

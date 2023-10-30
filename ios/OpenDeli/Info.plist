@@ -35,6 +35,8 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSCameraUsageDescription</key>
+	<string>$(PRODUCT_NAME) needs acces to your Camera.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>Location</string>
 	<key>NSLocationWhenInUseUsageDescription</key>

@@ -21,7 +21,7 @@ import { PhotoCell } from '@app/components/PhotoCell/PhotoCell';
 
 type Props = MainScreenProp<MainScreens.MarkAsDelivered>;
 
-type DataTypes = ImageSourcePropType | string[];
+type DataTypes = string | string[];
 
 export const MarkAsDelivered = ({ navigation }: Props) => {
   const [dataSource, setDataSource] = useState<DataTypes[]>([
@@ -32,11 +32,6 @@ export const MarkAsDelivered = ({ navigation }: Props) => {
       CustomerNotes.PreventLeaks,
       ADD_NOTE_CELL,
     ],
-    Images.ChatBubble,
-    Images.BellSlash,
-    Images.Box,
-    Images.Checkbox,
-    Images.DoorOpen,
   ]);
   const [selectedNotes, setSelectedNotes] = useState<string[]>([]);
 
@@ -123,9 +118,7 @@ export const MarkAsDelivered = ({ navigation }: Props) => {
           onDelete={() => onDeletePhoto(item)}
           onRetake={() =>
             navigation.navigate(MainScreens.PhotoAttachment, {
-              photo: Images.User,
               onAttach: onAttachPhoto,
-              onRetake: () => undefined,
             })
           }
         />
@@ -133,7 +126,8 @@ export const MarkAsDelivered = ({ navigation }: Props) => {
     }
   };
 
-  const onAttachPhoto = (photo: ImageSourcePropType) => {
+  const onAttachPhoto = (photo: string) => {
+    //TODO: string url path
     setDataSource([...dataSource, photo]);
   };
 
@@ -160,9 +154,7 @@ export const MarkAsDelivered = ({ navigation }: Props) => {
           title="Take a photo"
           onPress={() =>
             navigation.navigate(MainScreens.PhotoAttachment, {
-              photo: Images.User,
               onAttach: onAttachPhoto,
-              onRetake: () => undefined,
             })
           }
         />

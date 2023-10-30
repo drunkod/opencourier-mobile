@@ -51,8 +51,12 @@ import Drop from '@app/assets/icons/Drop.png';
 import Camera from '@app/assets/icons/Camera.png';
 import ArrowCounterClockwise from '@app/assets/icons/ArrowCounterClockwise.png';
 import XCircle from '@app/assets/icons/XCircle.png';
+import CameraBlack from '@app/assets/icons/CameraBlack.png';
+import Flashlight from '@app/assets/icons/Flashlight.png';
 
 export const Images = {
+  CameraBlack: CameraBlack,
+  Flashlight: Flashlight,
   XCircle: XCircle,
   ArrowCounterClockwise: ArrowCounterClockwise,
   Camera: Camera,
