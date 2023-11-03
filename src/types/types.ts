@@ -110,3 +110,8 @@ export enum EarningsTabItem {
   Weekly = 'Weekly',
   All = 'All',
 }
+
+export enum PaymentTabItem {
+  Bank = 'Bank',
+  DirectDebit = 'Direct Debit',
+}

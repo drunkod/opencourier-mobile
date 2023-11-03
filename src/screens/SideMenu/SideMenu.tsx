@@ -79,6 +79,7 @@ export const SideMenu = ({ navigation }: Props) => {
         navigation.navigate(DrawerScreens.Earnings);
         break;
       case SideMenuItem.Payout:
+        navigation.navigate(DrawerScreens.PaymentMethods);
         break;
       case SideMenuItem.Support:
         break;

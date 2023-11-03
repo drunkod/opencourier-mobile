@@ -4,6 +4,7 @@ import { HomeScreen } from '@app/screens/Home/Home';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { SideMenu } from '@app/screens/SideMenu/SideMenu';
 import { Earnings } from '@app/screens/Earnings/Earnings';
+import { PaymentMethods } from '@app/screens/PaymentMethods/PaymentMethods';
 
 const DrawerNavigator = createDrawerNavigator();
 
@@ -22,6 +23,11 @@ export const DrawerStack = () => {
       <DrawerNavigator.Screen
         name={DrawerScreens.Earnings}
         component={Earnings}
+        options={DEFAULT_OPTIONS}
+      />
+      <DrawerNavigator.Screen
+        name={DrawerScreens.PaymentMethods}
+        component={PaymentMethods}
         options={DEFAULT_OPTIONS}
       />
     </DrawerNavigator.Navigator>
