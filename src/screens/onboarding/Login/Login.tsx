@@ -6,6 +6,7 @@ import {
   Text,
   Switch,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import {
   OnboardingScreen,
@@ -18,6 +19,9 @@ import { TextField } from '@app/components/TextField/TextField';
 import { styles } from './Login.styles';
 import { validateEmail } from '@app/utilities/text';
 import { RootScreen } from '@app/navigation/types';
+import { RootState } from '@app/redux/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { login } from '@app/redux/user/user';
 
 type Props = OnboardingScreenProp<OnboardingScreen.Login>;
 
@@ -27,13 +31,21 @@ export const LoginScreen = ({ navigation }: Props) => {
   const [password, setPassword] = useState<string>('');
   const [emailIsValid, setEmailIsValid] = useState<boolean>(false);
   const { top } = useSafeAreaInsets();
+  const { user, loginFinished, loginError } = useSelector(
+    (state: RootState) => state.user,
+  );
+  const dispatch = useDispatch();
+  const [isLoading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     setEmailIsValid(validateEmail(email));
   }, [email]);
 
   const handleContinue = () => {
-    navigation.navigate(RootScreen.Main);
+    setLoading(true);
+    dispatch(
+      login({ email: email, password: password, rememberLogin: rememberLogin }),
+    );
   };
 
   const handleSwitchChange = (value: boolean) => {
@@ -45,6 +57,19 @@ export const LoginScreen = ({ navigation }: Props) => {
   const onBackHandle = () => {
     navigation.goBack();
   };
+
+  useEffect(() => {
+    if (isLoading) {
+      setLoading(false);
+      if (loginFinished && user) {
+        setLoading(false);
+        navigation.navigate(RootScreen.Main);
+      } else if (loginError) {
+        Alert.alert('Login error', loginError);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loginFinished, loginError, isLoading]);
 
   return (
     <View style={styles.container}>
@@ -67,6 +92,7 @@ export const LoginScreen = ({ navigation }: Props) => {
             onChangeText={setPassword}
           />
           <Button
+            isLoading={isLoading}
             style={styles.buttonLogin}
             type={ButtonType.black}
             title="Continue"

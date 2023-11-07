@@ -4,6 +4,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { User } from '@app/types/types';
 import Geolocation from 'react-native-geolocation-service';
 import UserContext from '@app/context/userContext';
+import { Provider } from 'react-redux';
+import store from './src/redux/store';
 
 const App = () => {
   const [locationPermission, setLocationPermission] = useState<boolean>(false);
@@ -44,9 +46,11 @@ const App = () => {
 
   return (
     <UserContext.Provider value={{ user, setUser }}>
-      <NavigationContainer>
-        <Router />
-      </NavigationContainer>
+      <Provider store={store}>
+        <NavigationContainer>
+          <Router />
+        </NavigationContainer>
+      </Provider>
     </UserContext.Provider>
   );
 };

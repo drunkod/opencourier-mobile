@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, SafeAreaView, ScrollView, Text } from 'react-native';
+import { View, SafeAreaView, ScrollView, Text, Alert } from 'react-native';
 import {
   OnboardingScreen,
   OnboardingScreenProp,
@@ -10,6 +10,10 @@ import { Button, ButtonType } from '@app/components/Button/Button';
 import { TextField } from '@app/components/TextField/TextField';
 import { styles } from './Signup.styles';
 import { validateEmail } from '@app/utilities/text';
+import { RootState } from '@app/redux/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { signup } from '@app/redux/user/user';
+import { RootScreen } from '@app/navigation/types';
 
 type Props = OnboardingScreenProp<OnboardingScreen.Signup>;
 
@@ -18,16 +22,36 @@ export const SignupScreen = ({ navigation }: Props) => {
   const [password, setPassword] = useState<string>('');
   const [emailIsValid, setEmailIsValid] = useState<boolean>(false);
   const { top } = useSafeAreaInsets();
+  const { user, signupFinished, signupError } = useSelector(
+    (state: RootState) => state.user,
+  );
+  const dispatch = useDispatch();
+  const [isLoading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     setEmailIsValid(validateEmail(email));
   }, [email]);
 
-  const handleContinue = () => {};
+  const handleContinue = () => {
+    setLoading(true);
+    dispatch(signup({ email: email, password: password }));
+  };
 
   const onBackHandle = () => {
     navigation.goBack();
   };
+
+  useEffect(() => {
+    if (isLoading) {
+      setLoading(false);
+      if (signupFinished && user) {
+        navigation.navigate(RootScreen.Main);
+      } else if (signupError) {
+        Alert.alert('Signup error', signupError);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [signupFinished, signupError, isLoading]);
 
   return (
     <View style={styles.container}>
@@ -50,6 +74,7 @@ export const SignupScreen = ({ navigation }: Props) => {
             onChangeText={setPassword}
           />
           <Button
+            isLoading={isLoading}
             style={styles.buttonLogin}
             type={ButtonType.black}
             title="Continue"

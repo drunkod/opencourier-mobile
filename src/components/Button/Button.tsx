@@ -8,6 +8,7 @@ import {
   TextStyle,
   ImageSourcePropType,
   Image,
+  ActivityIndicator,
 } from 'react-native';
 import { styles } from './Button.styles';
 
@@ -28,6 +29,7 @@ type Props = {
   type?: ButtonType;
   onPress: () => void;
   icon?: ImageSourcePropType;
+  isLoading?: boolean;
 };
 
 export const Button = ({
@@ -38,6 +40,7 @@ export const Button = ({
   type = ButtonType.black,
   onPress,
   icon,
+  isLoading,
 }: Props) => {
   const backgroundColor = useMemo(() => {
     if (disabled) {
@@ -143,12 +146,15 @@ export const Button = ({
         },
         style,
       ]}>
-      {icon && (
+      {isLoading && <ActivityIndicator />}
+      {!isLoading && icon && (
         <Image source={icon} style={[styles.icon, { tintColor: iconTint }]} />
       )}
-      <Text style={[styles.textTitle, { color: textColor }, textStyle]}>
-        {title}
-      </Text>
+      {!isLoading && (
+        <Text style={[styles.textTitle, { color: textColor }, textStyle]}>
+          {title}
+        </Text>
+      )}
     </TouchableOpacity>
   );
 };

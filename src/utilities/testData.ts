@@ -249,3 +249,12 @@ export const TEST_EARNINGS_ORDERS: Order[] = [
     price: 10.0,
   },
 ];
+
+export const TEST_USER = {
+  address: 'Sunflower St #111 San Antonio, TX 78006',
+  firstname: 'James R',
+  lastname: '',
+  location: { lat: 51.497583051332, lon: -0.20000902923313477 },
+  profilePictureUrl:
+    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRVA_HrQLjkHiJ2Ag5RGuwbFeDKRLfldnDasw&usqp=CAU',
+};
