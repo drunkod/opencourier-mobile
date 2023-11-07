@@ -90,6 +90,20 @@ export const SideMenu = ({ navigation }: Props) => {
     }
   };
 
+  const onUserStatusSelect = (status: UserStatus) => {
+    if (status === userStatus) {
+      return;
+    }
+    if (userStatus === UserStatus.Offline && status === UserStatus.LastCall) {
+      return;
+    }
+    navigation.navigate(RootScreen.UserStatusModal, {
+      status: status,
+      onAccept: setUserStatus,
+      onCancel: () => undefined,
+    });
+  };
+
   return (
     <DrawerContentScrollView>
       <View style={styles.container}>
@@ -115,7 +129,7 @@ export const SideMenu = ({ navigation }: Props) => {
         <UserStatusSelector
           style={styles.cell}
           selected={userStatus}
-          onPress={setUserStatus}
+          onPress={onUserStatusSelect}
         />
         <View style={styles.separator} />
         {section1.map(item => {

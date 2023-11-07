@@ -23,6 +23,7 @@ export const Colors = {
   gray16: '#9A9A9A',
   gray17: '#CFCFCF',
   gray18: '#9F9F9F',
+  gray19: '#475467',
   blue1: 'rgba(80,150,240,1)',
   blue2: '#C4D7E8',
   blue3: '#3C72A6',
@@ -38,5 +39,9 @@ export const Colors = {
   onlineGradientArray: ['#65C466', '#84D085', '#B7E3B7', '#B7E3B700'],
   offlineGradientArray: ['#919296', '#B2B2B2', '#E3E3E3E5', '#E8E8E800'],
   yellow1: '#FAE48E',
+  yellow2: '#E4CF81',
   transparentModalBackground: 'rgba(0, 0, 0, 0.3)',
+  blackOpacity1: 'rgba(239, 239, 240, 0.5)',
+  blackOpacity2: 'rgba(239, 239, 240, 0.7)',
+  blackOpacity3: 'rgba(239, 239, 240, 0.9)',
 };

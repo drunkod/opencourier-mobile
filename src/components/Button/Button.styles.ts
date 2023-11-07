@@ -11,6 +11,7 @@ export const styles = StyleSheet.create({
   },
   textTitle: {
     fontSize: 16,
+    fontWeight: '600',
   },
   icon: {
     width: 32,

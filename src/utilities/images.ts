@@ -57,8 +57,14 @@ import X from '@app/assets/icons/X.png';
 import Bank from '@app/assets/icons/Bank.png';
 import CaretCircleRight from '@app/assets/icons/CaretCircleRight.png';
 import CaretCircleLeft from '@app/assets/icons/CaretCircleLeft.png';
+import OnlinePopup from '@app/assets/icons/OnlinePopup.png';
+import LastCallPopup from '@app/assets/icons/LastCallPopup.png';
+import OfflinePopup from '@app/assets/icons/OfflinePopup.png';
 
 export const Images = {
+  OnlinePopup: OnlinePopup,
+  OfflinePopup: OfflinePopup,
+  LastCallPopup: LastCallPopup,
   CaretCircleRight: CaretCircleRight,
   CaretCircleLeft: CaretCircleLeft,
   Bank: Bank,

@@ -49,8 +49,9 @@ export const Button = ({
       case ButtonType.green:
         return Colors.green1;
       case ButtonType.red:
+        return Colors.red1;
       case ButtonType.yellow:
-        return Colors.black1;
+        return Colors.yellow1;
       case ButtonType.white:
         return Colors.white;
       case ButtonType.gray:
@@ -63,15 +64,18 @@ export const Button = ({
       return Colors.gray9;
     }
     switch (type) {
-      case ButtonType.black:
-      case ButtonType.green:
-      case ButtonType.red:
-        return Colors.white;
-      case ButtonType.white:
       case ButtonType.yellow:
         return Colors.black1;
       case ButtonType.gray:
         return Colors.gray9;
+      case ButtonType.red:
+        return Colors.white;
+      case ButtonType.green:
+        return Colors.white;
+      case ButtonType.black:
+        return Colors.white;
+      case ButtonType.white:
+        return Colors.black1;
     }
   }, [type, disabled]);
 
@@ -80,11 +84,14 @@ export const Button = ({
       return Colors.gray9;
     }
     switch (type) {
-      case ButtonType.black:
-      case ButtonType.green:
       case ButtonType.red:
         return Colors.white;
+      case ButtonType.black:
+        return Colors.white;
+      case ButtonType.green:
+        return Colors.white;
       case ButtonType.white:
+        return Colors.black1;
       case ButtonType.yellow:
         return Colors.black1;
       case ButtonType.gray:
@@ -94,13 +101,15 @@ export const Button = ({
 
   const borderColor = useMemo(() => {
     switch (type) {
+      case ButtonType.yellow:
+        return Colors.yellow2;
+      case ButtonType.red:
+        return Colors.gray4;
       case ButtonType.gray:
       case ButtonType.black:
       case ButtonType.green:
-      case ButtonType.red:
       case ButtonType.white:
-      case ButtonType.yellow:
-        return Colors.black1;
+        return Colors.gray4;
     }
   }, [type]);
 
@@ -111,6 +120,7 @@ export const Button = ({
       case ButtonType.green:
         return 0;
       case ButtonType.red:
+        return 0;
       case ButtonType.white:
       case ButtonType.yellow:
         return 2;
@@ -126,12 +136,12 @@ export const Button = ({
       disabled={disabled}
       style={[
         styles.container,
-        style,
         {
           backgroundColor: backgroundColor,
           borderWidth: borderWidth,
           borderColor: borderColor,
         },
+        style,
       ]}>
       {icon && (
         <Image source={icon} style={[styles.icon, { tintColor: iconTint }]} />

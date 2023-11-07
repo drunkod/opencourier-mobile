@@ -7,6 +7,7 @@ import { MainStack } from './main/MainNavigation';
 import { OrganizationStack } from './organizationNavigation/OrganizationNavigation';
 import { SelectOrganizationModal } from '@app/screens/SelectOrganizationModal/SelectOrganizationModal';
 import { SearchOrganization } from '@app/screens/SearchOrganization/SearchOrganization';
+import { StatusPopupScreen } from '@app/screens/StatusPopup/StatusPopupScreen';
 
 const RootStack = createNativeStackNavigator<RootStackParamList>();
 
@@ -42,6 +43,11 @@ export const Router = ({ route }) => {
           headerShown: false,
           presentation: 'transparentModal',
         }}
+      />
+      <RootStack.Screen
+        name={RootScreen.UserStatusModal}
+        component={StatusPopupScreen}
+        options={{ headerShown: false, presentation: 'transparentModal' }}
       />
     </RootStack.Navigator>
   );
