@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { styles } from './InProgressCell.styles';
-import { Order, PickupInstruction } from '@app/types/types';
+import { CourierTip, Order, PickupInstruction } from '@app/types/types';
 import { Images } from '@app/utilities/images';
 import { Button, ButtonType } from '../Button/Button';
 import { PickupInstructionCell } from '../PickupInstructionsCell/PickupInstructionCell';
@@ -28,7 +28,7 @@ type Props = {
   onCopyCustomer: (order: Order) => void;
   onMapPress: (order: Order) => void;
   onAddNote: (order: Order) => void;
-  onPickupInstructionPress: (order: Order, note: PickupInstruction) => void;
+  onPickupInstructionPress: (order: Order, note: CourierTip) => void;
 };
 
 export const InProgressCell = ({
@@ -55,7 +55,7 @@ export const InProgressCell = ({
           source={Images.RestaurantGray}
           style={styles.iconGrayRestaurant}
         />
-        <Text style={styles.textName}>{order.restaurant.name}</Text>
+        <Text style={styles.textName}>{order.merchant_name ?? 'N/A'}</Text>
         <TouchableOpacity
           style={styles.buttonCarret}
           onPress={() => setTopExpanded(!topExpanded)}>
@@ -81,7 +81,13 @@ export const InProgressCell = ({
               topExpanded && { overflow: 'visible' },
             ]}>
             <View style={styles.containerAddressButton}>
-              <Text style={styles.textAddress}>{order.restaurant.address}</Text>
+              <Text style={styles.textAddress}>
+                {`${order.dropoff.location.addressLine1 ?? 'N/A'} ${
+                  order.dropoff.location.addressLine2 ?? 'N/A'
+                } ${order.dropoff.location.countryCode ?? 'N/A'} ${
+                  order.dropoff.location.locality ?? 'N/A'
+                } ${order.dropoff.location.postalCode ?? 'N/A'}`}
+              </Text>
               <TouchableOpacity onPress={() => onCopyRestaurant(order)}>
                 <View style={styles.containerChats}>
                   <Image source={Images.Chats} />
@@ -96,8 +102,8 @@ export const InProgressCell = ({
               </View>
             )} */}
             <View style={styles.containerInstructions}>
-              {order.pickupInstructions &&
-                order.pickupInstructions.map(item => {
+              {order.courier_tips_for_merchant &&
+                order.courier_tips_for_merchant.map(item => {
                   return (
                     <PickupInstructionCell
                       instruction={item}
@@ -152,7 +158,7 @@ export const InProgressCell = ({
 
       <View style={styles.containerHeader}>
         <Image source={Images.HouseGray} style={styles.iconGrayRestaurant} />
-        <Text style={styles.textName}>{order.deliveredTo.firstname}</Text>
+        <Text style={styles.textName}>{order.customer_name ?? 'N/A'}</Text>
         <TouchableOpacity
           style={styles.buttonCarret}
           onPress={() => setBottomExpanded(!bottomExpanded)}>
@@ -176,23 +182,29 @@ export const InProgressCell = ({
               bottomExpanded && { overflow: 'visible' },
             ]}>
             <View style={styles.containerAddressButton}>
-              <Text style={styles.textAddress}>{order.restaurant.address}</Text>
+              <Text style={styles.textAddress}>
+                {`${order.pickup.location.addressLine1 ?? 'N/A'} ${
+                  order.pickup.location.addressLine2 ?? 'N/A'
+                } ${order.pickup.location.countryCode ?? 'N/A'} ${
+                  order.pickup.location.locality ?? 'N/A'
+                } ${order.pickup.location.postalCode ?? 'N/A'}`}
+              </Text>
               <TouchableOpacity onPress={() => onCopyCustomer(order)}>
                 <View style={styles.containerChats}>
                   <Image source={Images.Chats} />
                 </View>
               </TouchableOpacity>
             </View>
-            {order.clientNotes && (
+            {order.customer_notes_for_courier && (
               <View style={styles.containerNotes}>
-                {order.clientNotes.map(note => {
+                {order.customer_notes_for_courier.map(note => {
                   return <NoteCell text={note} />;
                 })}
               </View>
             )}
-            {order.deliveryInstructions && (
+            {order.courier_notes_for_customer && (
               <View style={styles.containerInstructions}>
-                {order.deliveryInstructions.map(item => {
+                {order.courier_notes_for_customer.map(item => {
                   return <DeliveryInstructionsCell type={item} />;
                 })}
               </View>

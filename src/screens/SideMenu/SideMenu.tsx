@@ -18,6 +18,9 @@ import {
   setAutoAcceptOrdersStorage,
 } from '@app/utilities/storage';
 import { DrawerScreens } from '@app/navigation/drawer/types';
+import { RootState } from '@app/redux/store';
+import { useSelector, useDispatch } from 'react-redux';
+import { setUserStatus } from '@app/redux/user/user';
 
 type Props = RootScreenProp<RootScreen.Loading>;
 
@@ -32,12 +35,13 @@ const section2 = [
 ];
 
 export const SideMenu = ({ navigation }: Props) => {
-  const [userStatus, setUserStatus] = useState<UserStatus>(UserStatus.Online);
   const [realTimeLocation, setRealTimeLocation] = useState<boolean>(false);
   const [autoAcceptOrders, setAutoAcceptOrders] = useState<boolean>(false);
   const [selectedOrg, setSelectedOrg] = useState<Organization>(
     TEST_ORG_ARRAY[0],
   );
+  const { userStatus } = useSelector((state: RootState) => state.user);
+  const dispatch = useDispatch();
 
   const isSwitchOn = (item: SideMenuItem) => {
     switch (item) {
@@ -99,7 +103,7 @@ export const SideMenu = ({ navigation }: Props) => {
     }
     navigation.navigate(RootScreen.UserStatusModal, {
       status: status,
-      onAccept: setUserStatus,
+      onAccept: newStatus => dispatch(setUserStatus(newStatus)),
       onCancel: () => undefined,
     });
   };
@@ -110,7 +114,7 @@ export const SideMenu = ({ navigation }: Props) => {
         <View style={styles.containerProfile}>
           <ProfileBadge
             discreteStatusIndicator
-            userStatus={UserStatus.Online}
+            userStatus={userStatus}
             onPress={() => undefined}
           />
           <Text style={styles.textName}>HI Delena!</Text>

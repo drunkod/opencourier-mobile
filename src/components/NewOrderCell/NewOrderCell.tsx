@@ -13,6 +13,8 @@ import { ButtonOrder, ButtonOrderType } from '../ButtonOrder/ButtonOrder';
 import { Images } from '@app/utilities/images';
 import UserContext from '@app/context/userContext';
 import Map from '../Map/Map';
+import { RootState } from '@app/redux/store';
+import { useSelector } from 'react-redux';
 
 type Props = {
   style?: StyleProp<ViewStyle>;
@@ -22,6 +24,7 @@ type Props = {
   onDecline: (order: Order) => void;
   onCopyCustomer: (order: Order) => void;
   onCopyRestaurant: (order: Order) => void;
+  secondsRemaining?: number;
 };
 
 export const NewOrderCell = ({
@@ -32,8 +35,9 @@ export const NewOrderCell = ({
   autoAcceptOrders,
   onCopyCustomer,
   onCopyRestaurant,
+  secondsRemaining,
 }: Props) => {
-  const { user } = useContext(UserContext);
+  const { user } = useSelector((state: RootState) => state.user);
 
   return (
     <View style={[styles.container, style]}>
@@ -88,11 +92,13 @@ export const NewOrderCell = ({
       {autoAcceptOrders ? (
         <>
           <ButtonOrder
+            secondsRemaining={secondsRemaining}
             style={styles.buttonTop}
             type={ButtonOrderType.declineNow}
             onPress={() => onDecline(order)}
           />
           <ButtonOrder
+            secondsRemaining={secondsRemaining}
             type={ButtonOrderType.accept}
             onPress={() => onAccept(order)}
           />

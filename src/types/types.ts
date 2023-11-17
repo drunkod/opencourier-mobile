@@ -38,6 +38,7 @@ export type Organization = {
 export enum OrderStatus {
   Delivered = 'Delivered',
   Canceled = 'Canceled',
+  DroppingOff = 'dropping_off',
 }
 
 export type User = {
@@ -57,6 +58,25 @@ export type Restaurant = {
 export type Order = {
   date: string;
   id: string;
+  order_id: string;
+  courier_id: string;
+  customer_id: string;
+  customer_name: string;
+  merchant_id: string;
+  merchant_name: string;
+  merchant_phone_number: string;
+  created_at: string;
+  updated_at: string;
+  currency: 'USD';
+  customer_notes_for_courier: string[];
+  courier_notes_for_customer: string[];
+  courier_tips_for_merchant: CourierTip[];
+  pickup: { location: Location; coordinates: Coordinates };
+  dropoff: { location: Location; coordinates: Coordinates };
+  undeliverable_action: string;
+  undeliverable_reason: string;
+  return: { location: Location; coordinates: Coordinates };
+  income: Income;
   status: OrderStatus;
   deliveredTo: User;
   restaurant: Restaurant;
@@ -96,6 +116,12 @@ export enum MapLinkingOptions {
 
 export type OrderItem = {
   name: string;
+  quantity: number;
+  size: string;
+  dimensions: Dimensions;
+  price: number;
+  must_be_upright: boolean;
+  weight: number;
 };
 
 export enum CustomerNotes {
@@ -115,3 +141,52 @@ export enum PaymentTabItem {
   Bank = 'Bank',
   DirectDebit = 'Direct Debit',
 }
+
+export type Coordinates = {
+  latitude: number;
+  longitude: number;
+};
+
+export type CoordinatesRange = {
+  latitude_range: number[];
+  longitude_range: number[];
+};
+
+export type Location = {
+  addressLine1: string;
+  addressLine2: string;
+  locality: string;
+  postalCode: number;
+  countryCode: string;
+};
+
+export type CourierTip = {
+  courier_id: string;
+  tip_text: string;
+  upvotes: number;
+};
+
+export type Dimensions = {
+  length: number;
+  width: number;
+  height: number;
+  unit: string;
+};
+
+export type Income = {
+  currency: string;
+  total_charge: number;
+  fees: number;
+  total: number;
+  pay: number;
+  tips: number;
+};
+
+export type Pagination = {
+  total: number;
+  lastPage: number;
+  currentPage: number;
+  perPage: number;
+  prevPage: number;
+  nextPage: number;
+};

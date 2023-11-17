@@ -32,7 +32,7 @@ export const ProfileBadge = ({
       case UserStatus.Offline:
         return Colors.red1;
       case UserStatus.LastCall:
-        return Colors.gray1;
+        return Colors.yellow1;
     }
   }, [userStatus]);
 

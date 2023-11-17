@@ -33,6 +33,7 @@ type Props = {
   style?: StyleProp<ViewStyle>;
   textStyle?: StyleProp<TextStyle>;
   type?: ButtonOrderType;
+  secondsRemaining?: number;
   onPress: () => void;
 };
 
@@ -42,34 +43,22 @@ export const ButtonOrder = ({
   textStyle,
   type = ButtonOrderType.accept,
   onPress,
+  secondsRemaining = 0,
 }: Props) => {
   const widthAnimation = useRef(new Animated.Value(PROGRESS_BAR_WIDTH)).current;
   const numberOfParalelograms = Math.floor(SCREEN_WIDTH / PARALELOGRAM_WIDTH);
 
   const animateElement = () => {
     Animated.timing(widthAnimation, {
-      toValue: 0,
-      duration: AUTO_ACCEPT_DECLINE_TIMER,
+      toValue:
+        ((secondsRemaining * 1000) / AUTO_ACCEPT_DECLINE_TIMER) *
+        PROGRESS_BAR_WIDTH,
+      duration: 1000,
       useNativeDriver: false,
     }).start();
   };
 
   useEffect(() => {
-    widthAnimation.addListener(value => {
-      if (value.value === 0) {
-        switch (type) {
-          case ButtonOrderType.accept:
-            onPress();
-            break;
-          case ButtonOrderType.decline:
-            onPress();
-            break;
-          default:
-            break;
-        }
-        widthAnimation.stopAnimation();
-      }
-    });
     animateElement();
   });
 

@@ -26,6 +26,7 @@ type Props = {
   searchText: string;
   orderDeliveredNotification: boolean;
   onCloseOrderDeliveredNotification: () => void;
+  loadingNewOrders: boolean;
 };
 
 export const HomeHeader = ({
@@ -42,6 +43,7 @@ export const HomeHeader = ({
   searchText,
   orderDeliveredNotification = false,
   onCloseOrderDeliveredNotification,
+  loadingNewOrders,
 }: Props) => {
   const { top } = useSafeAreaInsets();
 
@@ -59,9 +61,7 @@ export const HomeHeader = ({
           colors={Colors.offlineGradientArray}
         />
       )}
-      {selectedTab === HomeTabItem.New && userStatus === UserStatus.Online && (
-        <WaitingForOrders style={styles.waiting} />
-      )}
+      {loadingNewOrders && <WaitingForOrders style={styles.waiting} />}
 
       {orderDeliveredNotification && (
         <OrderDelivered

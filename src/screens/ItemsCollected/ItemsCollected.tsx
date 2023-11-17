@@ -10,6 +10,9 @@ import { Colors } from '@app/styles/colors';
 import { OrderItem } from '@app/types/types';
 import { OrderItemCell } from '@app/components/OrderItemCell/OrderItemCell';
 import { Button, ButtonType } from '@app/components/Button/Button';
+import { RootState } from '@app/redux/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { confirmItems } from '@app/redux/order/order';
 
 type Props = MainScreenProp<MainScreens.ItemsCollected>;
 
@@ -23,6 +26,11 @@ export const ItemsCollected = ({ navigation, route }: Props) => {
   const { items } = route.params;
   const [dataSource, setDataSource] = useState<CollectedItem[]>([]);
   const [allCollected, setAllCollected] = useState<boolean>(false);
+  const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { confirmItemsError, confirmItemsFinished } = useSelector(
+    (state: RootState) => state.order,
+  );
 
   useEffect(() => {
     const data = items.map(item => {
@@ -43,7 +51,10 @@ export const ItemsCollected = ({ navigation, route }: Props) => {
   };
 
   const onAllItemsCollected = () => {
-    navigation.goBack();
+    // navigation.goBack();
+    // return;
+    setIsLoading(true);
+    dispatch(confirmItems());
   };
 
   const renderItem = ({ item }: { item: CollectedItem }) => {
@@ -60,6 +71,15 @@ export const ItemsCollected = ({ navigation, route }: Props) => {
     const notCollected = dataSource.filter(item => item.selected === false);
     setAllCollected(notCollected.length === 0);
   }, [dataSource]);
+
+  useEffect(() => {
+    if (confirmItemsFinished) {
+      setIsLoading(false);
+      if (!confirmItemsError) {
+        navigation.goBack();
+      }
+    }
+  }, [confirmItemsError, confirmItemsFinished, navigation]);
 
   return (
     <View style={styles.container}>
@@ -87,6 +107,7 @@ export const ItemsCollected = ({ navigation, route }: Props) => {
           onPress={() => undefined}
         />
         <Button
+          isLoading={isLoading}
           disabled={!allCollected}
           style={{ marginBottom: 16 }}
           textStyle={{ fontSize: 20, fontWeight: '700' }}

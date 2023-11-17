@@ -35,6 +35,7 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 18,
     color: Colors.black1,
+    flex: 1,
   },
   textStatus: {
     fontWeight: '500',
@@ -57,6 +58,7 @@ export const styles = StyleSheet.create({
     width: 32,
     height: 32,
     borderRadius: 16,
+    backgroundColor: Colors.gray6,
   },
   iconSmall: {
     width: 16,

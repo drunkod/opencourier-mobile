@@ -19,8 +19,8 @@ export const styles = StyleSheet.create({
   containerStatus: {
     position: 'absolute',
     bottom: 0,
-    left: 0,
-    right: 0,
+    left: -2,
+    right: -2,
     height: 14,
     borderRadius: 6,
     borderWidth: 1.5,

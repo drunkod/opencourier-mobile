@@ -132,6 +132,23 @@ export const Button = ({
     }
   }, [type]);
 
+  const loaderColor = useMemo(() => {
+    switch (type) {
+      case ButtonType.yellow:
+        return Colors.white;
+      case ButtonType.red:
+        return Colors.white;
+      case ButtonType.gray:
+        return Colors.white;
+      case ButtonType.black:
+        return Colors.white;
+      case ButtonType.green:
+        return Colors.white;
+      case ButtonType.white:
+        return Colors.black1;
+    }
+  }, [type]);
+
   return (
     <TouchableOpacity
       activeOpacity={0.9}
@@ -146,7 +163,7 @@ export const Button = ({
         },
         style,
       ]}>
-      {isLoading && <ActivityIndicator />}
+      {isLoading && <ActivityIndicator color={loaderColor} />}
       {!isLoading && icon && (
         <Image source={icon} style={[styles.icon, { tintColor: iconTint }]} />
       )}

@@ -6,7 +6,7 @@ import { Images } from '@app/utilities/images';
 
 type Props = {
   style?: StyleProp<ViewStyle>;
-  type: DeliveryType;
+  type: DeliveryType | string;
 };
 
 export const DeliveryInstructionsCell = ({ style, type }: Props) => {
@@ -22,12 +22,14 @@ export const DeliveryInstructionsCell = ({ style, type }: Props) => {
         return Images.Buildings;
       case DeliveryType.MeetOutside:
         return Images.Park;
+      default:
+        return undefined;
     }
   }, [type]);
 
   return (
     <View style={[styles.container, style]}>
-      <Image source={icon} style={styles.icon} />
+      {icon && <Image source={icon} style={styles.icon} />}
       <Text style={styles.text}>{type}</Text>
     </View>
   );

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -18,6 +18,9 @@ import { Images } from '@app/utilities/images';
 import { Button, ButtonType } from '@app/components/Button/Button';
 import { ADD_NOTE_CELL } from '@app/utilities/constants';
 import { PhotoCell } from '@app/components/PhotoCell/PhotoCell';
+import { RootState } from '@app/redux/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { markAsDelivered } from '@app/redux/order/order';
 
 type Props = MainScreenProp<MainScreens.MarkAsDelivered>;
 
@@ -34,6 +37,11 @@ export const MarkAsDelivered = ({ navigation }: Props) => {
     ],
   ]);
   const [selectedNotes, setSelectedNotes] = useState<string[]>([]);
+  const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { markAsDeliveredFinished, markAsDeliveredError } = useSelector(
+    (state: RootState) => state.order,
+  );
 
   const handleNotePress = (note: string) => {
     const found = selectedNotes.filter(obj => obj === note);
@@ -131,6 +139,22 @@ export const MarkAsDelivered = ({ navigation }: Props) => {
     setDataSource([...dataSource, photo]);
   };
 
+  const handleConfirm = () => {
+    navigation.goBack();
+    return;
+    setIsLoading(true);
+    dispatch(markAsDelivered({ order: {}, tags: [], photos: [] }));
+  };
+
+  useEffect(() => {
+    if (markAsDeliveredFinished) {
+      setIsLoading(false);
+      if (!markAsDeliveredError) {
+        navigation.goBack();
+      }
+    }
+  }, [markAsDeliveredError, markAsDeliveredFinished, navigation]);
+
   return (
     <View style={styles.container}>
       <SafeAreaView style={styles.safe}>
@@ -159,13 +183,14 @@ export const MarkAsDelivered = ({ navigation }: Props) => {
           }
         />
         <Button
+          loading={isLoading}
           style={styles.buttonConfirm}
           disabled={selectedNotes.length !== dataSource[0].length - 1}
           textStyle={styles.buttonTextStyle}
           icon={Images.Checkmark}
           type={ButtonType.green}
           title="Confirm mark as delivered"
-          onPress={() => navigation.goBack()}
+          onPress={handleConfirm}
         />
       </SafeAreaView>
     </View>

@@ -1,5 +1,6 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
+  ActivityIndicator,
   Alert,
   FlatList,
   Linking,
@@ -10,6 +11,7 @@ import {
 import { styles } from './Home.styles';
 import { HomeHeader } from '@app/components/HomeHeader/HomeHeader';
 import {
+  CourierTip,
   HomeEmptyState,
   HomeTabItem,
   MapLinkingOptions,
@@ -19,7 +21,6 @@ import {
 } from '@app/types/types';
 import { HomeEmptyStateComponent } from '@app/components/HomeEmptyState/HomeEmptyState';
 import { DrawerScreenProp, DrawerScreens } from '@app/navigation/drawer/types';
-import { TEST_NEW_ORDERS, TEST_ORDERS_HISTORY } from '@app/utilities/testData';
 import { HistoryCell } from '@app/components/HistoryCell/HistoryCell';
 import { NewOrderCell } from '@app/components/NewOrderCell/NewOrderCell';
 import { getAutoAcceptOrdersStorage } from '@app/utilities/storage';
@@ -31,6 +32,10 @@ import {
 } from '@app/utilities/constants';
 import { MainScreens } from '@app/navigation/main/types';
 import Clipboard from '@react-native-clipboard/clipboard';
+import { useDispatch, useSelector } from 'react-redux';
+import { acceptOrder, declineOrder } from '@app/redux/order/order';
+import { useHomeOrders } from '@app/hooks/useHomeOrders';
+import { RootState } from '@app/redux/store';
 
 const data: string[] =
   Platform.OS === 'android'
@@ -41,21 +46,30 @@ type Props = DrawerScreenProp<DrawerScreens.Home>;
 
 export const HomeScreen = ({ navigation }: Props) => {
   const [selectedTab, setSelectedTab] = useState<HomeTabItem>(HomeTabItem.New);
-  const [userStatus, setUserStatus] = useState<UserStatus>(UserStatus.Offline);
   const [isSearching, setIsSearching] = useState<boolean>(false);
   const [searchText, setSearchText] = useState<string>('');
-  const [dataSourceHistory, setDataSourceHistory] =
-    useState<Order[]>(TEST_ORDERS_HISTORY);
-  const [dataSourceNew, setDataSourceNew] = useState<Order[]>([]);
-  const [dataSourceInProgress, setDataSourceInProgress] = useState<Order[]>([]);
-
   const [dataSource, setDataSource] = useState<Order[]>([]);
   const [autoAcceptOrders, setAutoAcceptOrders] = useState<boolean>(false);
   const [showMapActionSheet, setShowMapActionSheet] = useState<
     Order | undefined
   >(undefined);
   const [refreshing, setRefreshing] = React.useState(false);
-  const [orderDeliveredNotif, setOrderDeliveredNotif] = useState<boolean>(true);
+  const [orderDeliveredNotif, setOrderDeliveredNotif] =
+    useState<boolean>(false);
+  const dispatch = useDispatch();
+  const {
+    dataSourceHistory,
+    dataSourceInProgress,
+    dataSourceNew,
+    newOrdersTimers,
+    getNewOrdersFinished,
+    getInProgressOrdersFinished,
+    getOrderHistoryFinished,
+    fetchHistory,
+    fetchInProgressOrders,
+    fetchNewOrders,
+  } = useHomeOrders();
+  const { userStatus } = useSelector((state: RootState) => state.user);
 
   const onProfilePress = () => {
     navigation.toggleDrawer();
@@ -85,30 +99,21 @@ export const HomeScreen = ({ navigation }: Props) => {
     }
   }, [selectedTab, dataSourceHistory, dataSourceNew, dataSourceInProgress]);
 
-  useEffect(() => {
-    switch (selectedTab) {
-      case HomeTabItem.New:
-        setDataSource(dataSourceNew);
-        break;
-      case HomeTabItem.InProgress:
-        setDataSource(dataSourceInProgress);
-        break;
-      case HomeTabItem.History:
-        setDataSource(dataSourceHistory);
-        break;
-    }
-  }, [selectedTab, dataSourceHistory, dataSourceNew, dataSourceInProgress]);
-
   const onAcceptNewOrder = (order: Order) => {
-    // SImulate accept order
-    setDataSourceNew([]);
-    setDataSourceInProgress(TEST_NEW_ORDERS);
+    dispatch(acceptOrder(order));
   };
 
   const onDeclineNewOrder = (order: Order) => {
-    // SImulate decline order
-    setDataSourceNew([]);
-    setDataSourceInProgress([]);
+    dispatch(declineOrder(order));
+  };
+
+  const getRemainingSecondsForNewOrder = (order: Order) => {
+    const arr = newOrdersTimers.filter(timer => timer.orderId === order.id);
+    if (arr.length > 0) {
+      return arr[0].secondsRemaining;
+    } else {
+      return 0;
+    }
   };
 
   const renderItem = ({ item }: { item: Order }) => {
@@ -116,6 +121,7 @@ export const HomeScreen = ({ navigation }: Props) => {
       case HomeTabItem.New:
         return (
           <NewOrderCell
+            secondsRemaining={getRemainingSecondsForNewOrder(item)}
             autoAcceptOrders={autoAcceptOrders}
             order={item}
             onAccept={onAcceptNewOrder}
@@ -129,19 +135,23 @@ export const HomeScreen = ({ navigation }: Props) => {
           />
         );
       case HomeTabItem.InProgress:
+        //TODO: TEMP FIX
+        if (item.dropoff.location === undefined) {
+          return <View />;
+        }
         return (
           <InProgressCell
             onCopyCustomer={order =>
-              Clipboard.setString(order.deliveredTo.address)
+              Clipboard.setString(order.dropoff.location.addressLine1)
             }
             onCopyRestaurant={order =>
-              Clipboard.setString(order.restaurant.address)
+              Clipboard.setString(order.pickup.location.addressLine1)
             }
-            onConfirmItems={() =>
+            onConfirmItems={() => {
               navigation.navigate(MainScreens.ItemsCollected, {
                 items: item.items,
-              })
-            }
+              });
+            }}
             onContactCustomer={() => Linking.openURL(`tel://${12341251511}`)}
             onContactRestaurant={() => Linking.openURL(`tel://${12341251511}`)}
             onMarkAsDelivered={() =>
@@ -154,29 +164,26 @@ export const HomeScreen = ({ navigation }: Props) => {
           />
         );
       case HomeTabItem.History:
-        setDataSource(dataSourceHistory);
         return <HistoryCell order={item} onPress={() => undefined} />;
     }
   };
 
-  const onPickupInstructionPress = (
-    order: Order,
-    instruction: PickupInstruction,
-  ) => {
+  const onPickupInstructionPress = (order: Order, instruction: CourierTip) => {
     var temp = dataSource.filter(obj => obj.id === order.id);
-    if (temp.length > 0 && temp[0].pickupInstructions) {
-      var newInstructions: PickupInstruction[] = temp[0].pickupInstructions.map(
+    if (temp.length > 0 && temp[0].courier_tips_for_merchant) {
+      var newInstructions: CourierTip[] = temp[0].courier_tips_for_merchant.map(
         ins => {
-          if (ins.type === instruction.type) {
+          if (ins.tip_text === instruction.tip_text) {
             return {
-              type: instruction.type,
-              count: instruction.count ? instruction.count + 1 : 2,
+              courier_id: instruction.courier_id,
+              tip_text: instruction.tip_text,
+              upvotes: instruction.upvotes ? instruction.upvotes + 1 : 2,
             };
           }
           return ins;
         },
       );
-      temp[0].pickupInstructions = [...newInstructions];
+      temp[0].courier_tips_for_merchant = [...newInstructions];
       setDataSource(temp);
     }
   };
@@ -235,10 +242,10 @@ export const HomeScreen = ({ navigation }: Props) => {
   const addNote = (order: Order, note: string | undefined) => {
     if (note) {
       var temp = dataSource.filter(obj => obj.id === order.id);
-      if (temp.length > 0 && temp[0].pickupInstructions) {
-        temp[0].pickupInstructions = [
-          ...temp[0].pickupInstructions,
-          { type: note },
+      if (temp.length > 0 && temp[0].courier_tips_for_merchant) {
+        temp[0].courier_tips_for_merchant = [
+          ...temp[0].courier_tips_for_merchant,
+          { courier_id: order.courier_id, tip_text: note, upvotes: 0 },
         ];
         setDataSource(temp);
       }
@@ -264,13 +271,33 @@ export const HomeScreen = ({ navigation }: Props) => {
     );
   };
 
-  const onRefresh = async () => {
-    // Simulate pull to refresh
-    setRefreshing(true);
-    setTimeout(() => {
-      setRefreshing(false);
-    }, 3000);
+  const onRefresh = () => {
+    switch (selectedTab) {
+      case HomeTabItem.New:
+        fetchNewOrders();
+        break;
+      case HomeTabItem.InProgress:
+        fetchInProgressOrders();
+        break;
+      case HomeTabItem.History:
+        fetchHistory();
+        break;
+    }
   };
+
+  useEffect(() => {
+    switch (selectedTab) {
+      case HomeTabItem.New:
+        setDataSource(dataSourceNew);
+        break;
+      case HomeTabItem.InProgress:
+        setDataSource(dataSourceInProgress);
+        break;
+      case HomeTabItem.History:
+        setDataSource(dataSourceHistory);
+        break;
+    }
+  }, [selectedTab, dataSourceHistory, dataSourceNew, dataSourceInProgress]);
 
   useEffect(() => {
     (async () => {
@@ -279,14 +306,17 @@ export const HomeScreen = ({ navigation }: Props) => {
     })();
   }, []);
 
-  useEffect(() => {
-    // Simulate new order after 5 second on home screen
-    setDataSourceNew([]);
-    setDataSourceInProgress([]);
-    setTimeout(() => {
-      setDataSourceNew(TEST_NEW_ORDERS);
-    }, 1000);
-  }, []);
+  const showLoader = useMemo(() => {
+    return (
+      !getNewOrdersFinished ||
+      !getInProgressOrdersFinished ||
+      !getOrderHistoryFinished
+    );
+  }, [
+    getNewOrdersFinished,
+    getInProgressOrdersFinished,
+    getOrderHistoryFinished,
+  ]);
 
   return (
     <View style={styles.container}>
@@ -305,7 +335,11 @@ export const HomeScreen = ({ navigation }: Props) => {
         searchShown={isSearching}
         searchText={searchText}
         onSearchTextChange={setSearchText}
+        loadingNewOrders={
+          selectedTab === HomeTabItem.New && !getNewOrdersFinished
+        }
       />
+
       {showEmptyState && <HomeEmptyStateComponent state={emptyState} />}
       {!showEmptyState && (
         <FlatList
@@ -313,10 +347,11 @@ export const HomeScreen = ({ navigation }: Props) => {
           data={dataSource}
           renderItem={renderItem}
           refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            <RefreshControl refreshing={showLoader} onRefresh={onRefresh} />
           }
         />
       )}
+
       {showMapActionSheet !== undefined && showActionSheeet(showMapActionSheet)}
     </View>
   );

@@ -22,8 +22,10 @@ const Map = ({ user, order }: Props) => {
       initialRegion={{
         latitude: user?.location?.lat ?? 51.506048309318764, // TODO: hardcoded London coordinates
         longitude: user?.location?.lon ?? -0.1584647405195857,
-        latitudeDelta: 0.0922,
-        longitudeDelta: 0.0421,
+        // latitudeDelta: 0.0922,
+        // longitudeDelta: 0.0421,
+        latitudeDelta: 12,
+        longitudeDelta: 12,
       }}>
       <Polyline
         strokeWidth={3}
@@ -35,27 +37,27 @@ const Map = ({ user, order }: Props) => {
             longitude: user?.location?.lon ?? -0.1584647405195857,
           },
           {
-            latitude: order.restaurant.location?.lat ?? 0,
-            longitude: order.restaurant.location?.lon ?? 0,
+            latitude: order.pickup.coordinates.latitude ?? 0,
+            longitude: order.pickup.coordinates.longitude ?? 0,
           },
           {
-            latitude: order.deliveredTo.location?.lat ?? 0,
-            longitude: order.deliveredTo.location?.lon ?? 0,
+            latitude: order.dropoff.coordinates.latitude ?? 0,
+            longitude: order.dropoff.coordinates.longitude ?? 0,
           },
         ]}
       />
       <Marker
         key={1}
         coordinate={{
-          latitude: order.deliveredTo.location?.lat ?? 0,
-          longitude: order.deliveredTo.location?.lon ?? 0,
+          latitude: order.dropoff.coordinates.latitude ?? 0,
+          longitude: order.dropoff.coordinates.longitude ?? 0,
         }}
         image={Images.Buildings}
       />
       <Marker
         coordinate={{
-          latitude: order.restaurant.location?.lat ?? 0,
-          longitude: order.restaurant.location?.lon ?? 0,
+          latitude: order.pickup.coordinates.latitude ?? 0,
+          longitude: order.pickup.coordinates.longitude ?? 0,
         }}
         image={Images.Storefront}
       />

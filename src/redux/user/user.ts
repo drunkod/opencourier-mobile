@@ -1,5 +1,5 @@
 import { LoginParams, SignupParams } from '@app/services/types';
-import { User } from '@app/types/types';
+import { User, UserStatus } from '@app/types/types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface UserState {
@@ -10,6 +10,7 @@ interface UserState {
   signupError?: string;
   getUserFinished: boolean;
   getUserError?: string;
+  userStatus: UserStatus;
 }
 
 const initialState: UserState = {
@@ -17,6 +18,7 @@ const initialState: UserState = {
   loginFinished: false,
   signupFinished: false,
   getUserFinished: false,
+  userStatus: UserStatus.Online,
 };
 
 export const userSlice = createSlice({
@@ -40,8 +42,8 @@ export const userSlice = createSlice({
       state.signupError = undefined;
     },
     signupFinished: (state, action: PayloadAction<User>) => {
-      state.signupFinished = true;
       state.user = action.payload;
+      state.signupFinished = true;
     },
     signupError: (state, action: PayloadAction<string>) => {
       state.signupFinished = true;
@@ -59,6 +61,9 @@ export const userSlice = createSlice({
       state.getUserFinished = true;
       state.getUserError = action.payload;
     },
+    setUserStatus: (state, action: PayloadAction<UserStatus>) => {
+      state.userStatus = action.payload;
+    },
   },
 });
 
@@ -72,5 +77,6 @@ export const {
   signup,
   signupError,
   signupFinished,
+  setUserStatus,
 } = userSlice.actions;
 export default userSlice.reducer;
