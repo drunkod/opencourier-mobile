@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   StyleProp,
   ViewStyle,
@@ -47,6 +47,30 @@ export const InProgressCell = ({
   const [topExpanded, setTopExpanded] = useState<boolean>(false);
   const [bottomExpanded, setBottomExpanded] = useState<boolean>(false);
   const { user } = useContext(UserContext);
+  const [distance, setDistance] = useState<number>(0); // meters
+  const [duration, setDuration] = useState<number>(0); // seconds
+
+  const getDistance = async () => {
+    const url = `http://router.project-osrm.org/route/v1/driving/${user?.location?.lon},${user?.location?.lat};${order.pickup.coordinates.longitude},${order.pickup.coordinates.latitude};${order.dropoff.coordinates.longitude},${order.dropoff.coordinates.latitude}`;
+    console.warn(url);
+    await fetch(url)
+      .then(response => response.json())
+      .then(json => {
+        if (json.routes[0].duration) {
+          setDuration(json.routes[0].duration);
+        }
+        if (json.routes[0].distance) {
+          setDistance(json.routes[0].distance);
+        }
+      })
+      .catch(error => {
+        console.warn(error);
+      });
+  };
+
+  useEffect(() => {
+    getDistance();
+  }, []);
 
   return (
     <View style={[styles.container, style]}>
@@ -145,11 +169,15 @@ export const InProgressCell = ({
             <View style={styles.containerAway}>
               <View style={styles.containerTextAway}>
                 <Image source={Images.Distance} />
-                <Text style={styles.textDistance}>3.5 mi away</Text>
+                <Text style={styles.textDistance}>{`${Math.ceil(
+                  Math.ceil(distance / 1000) / 1.6,
+                )} mi away`}</Text>
               </View>
               <View style={styles.containerTextAway}>
                 <Image source={Images.Clock} />
-                <Text style={styles.textDistance}>2 min away</Text>
+                <Text style={styles.textDistance}>{`${Math.ceil(
+                  Math.ceil(duration) / 60,
+                )} min away`}</Text>
               </View>
             </View>
           </View>

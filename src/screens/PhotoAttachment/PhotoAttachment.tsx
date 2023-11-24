@@ -17,7 +17,7 @@ import {
 } from '@app/components/BackNavButton/BackNavButton';
 import { Button, ButtonType } from '@app/components/Button/Button';
 import { Colors } from '@app/styles/colors';
-import { Camera, CameraType } from 'react-native-camera-kit';
+import { RNCamera, FaceDetector } from 'react-native-camera';
 import { check, PERMISSIONS, request } from 'react-native-permissions';
 
 enum ScreenState {
@@ -35,7 +35,7 @@ export const PhotoAttachment = ({ navigation, route }: Props) => {
   const [flashOn, setFlashOn] = useState<boolean>(false);
   const [photoPath, setPhotoPath] = useState<string | undefined>(undefined);
   const { onAttach } = route.params;
-  const camera = useRef<Camera>(null);
+  const camera = useRef<RNCamera>(null);
 
   const handleAttach = () => {
     if (photoPath) {
@@ -91,7 +91,8 @@ export const PhotoAttachment = ({ navigation, route }: Props) => {
   }, []);
 
   const takePhoto = async () => {
-    const { uri } = await camera.current?.capture();
+    const options = { base64: false };
+    const { uri } = await camera.current?.takePictureAsync(options);
     if (uri) {
       setPhotoPath(uri);
       setScreenState(ScreenState.photoTaken);
@@ -151,11 +152,11 @@ export const PhotoAttachment = ({ navigation, route }: Props) => {
 
         {screenState === ScreenState.takingPhoto && (
           <>
-            <Camera
-              style={styles.camera}
+            <RNCamera
               ref={camera}
-              flashMode={'auto'}
-              CameraType={CameraType.Back}
+              style={styles.camera}
+              type={RNCamera.Constants.Type.back}
+              flashMode={RNCamera.Constants.FlashMode.on}
             />
             <Text style={styles.textAttach}>
               Show the customer where you left the order.

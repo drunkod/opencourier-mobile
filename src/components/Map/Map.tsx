@@ -22,10 +22,10 @@ const Map = ({ user, order }: Props) => {
       initialRegion={{
         latitude: user?.location?.lat ?? 51.506048309318764, // TODO: hardcoded London coordinates
         longitude: user?.location?.lon ?? -0.1584647405195857,
-        // latitudeDelta: 0.0922,
-        // longitudeDelta: 0.0421,
-        latitudeDelta: 12,
-        longitudeDelta: 12,
+        latitudeDelta: 0.0922,
+        longitudeDelta: 0.0421,
+        // latitudeDelta: 0.7,
+        // longitudeDelta: 0.7,
       }}>
       <Polyline
         strokeWidth={3}

@@ -1,5 +1,5 @@
 import { Colors } from '@app/styles/colors';
-import { StyleSheet } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
   container: {
@@ -14,6 +14,7 @@ export const styles = StyleSheet.create({
   navHeader: {
     flexDirection: 'row',
     alignItems: 'center',
+    paddingTop: Platform.OS === 'android' ? 10 : 0,
   },
   title: {
     position: 'absolute',

@@ -1,6 +1,6 @@
 import { Colors } from '@app/styles/colors';
 import { SCREEN_WIDTH } from '@app/utilities/constants';
-import { StyleSheet } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
   container: {
@@ -10,6 +10,7 @@ export const styles = StyleSheet.create({
   },
   safe: {
     flex: 1,
+    paddingTop: Platform.OS === 'android' ? 10 : 0,
   },
   containerButtonOk: {
     width: 60,

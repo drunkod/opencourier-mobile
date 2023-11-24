@@ -69,6 +69,7 @@ export const styles = StyleSheet.create({
       height: 0,
     },
     shadowOpacity: 0.6,
+    elevation: 3,
   },
   containerMap: {
     flexDirection: 'row',

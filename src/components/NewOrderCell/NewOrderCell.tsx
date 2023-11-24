@@ -41,7 +41,7 @@ export const NewOrderCell = ({
 
   return (
     <View style={[styles.container, style]}>
-      <Text style={styles.textPrice}>{'$' + order.price}</Text>
+      <Text style={styles.textPrice}>{'$' + order.income?.total}</Text>
       <View style={styles.separator} />
       <View style={styles.content}>
         <View style={styles.containerLeft}>
@@ -52,8 +52,10 @@ export const NewOrderCell = ({
         <View style={styles.containerRight}>
           <View style={styles.containerAddressButton}>
             <View style={styles.containerText}>
-              <Text style={styles.textName}>{order.restaurant.name}</Text>
-              <Text style={styles.textAddress}>{order.restaurant.address}</Text>
+              <Text style={styles.textName}>{order.merchant_name}</Text>
+              <Text style={styles.textAddress}>
+                {order.pickup?.location?.addressLine1}
+              </Text>
             </View>
             <TouchableOpacity onPress={() => onCopyRestaurant(order)}>
               <View style={styles.containerChats}>
@@ -76,9 +78,9 @@ export const NewOrderCell = ({
           </View>
           <View style={styles.containerAddressButton}>
             <View style={styles.containerText}>
-              <Text style={styles.textName}>{order.deliveredTo.firstname}</Text>
+              <Text style={styles.textName}>{order.customer_name}</Text>
               <Text style={styles.textAddress}>
-                {order.deliveredTo.address}
+                {order.dropoff.location.addressLine1}
               </Text>
             </View>
             <TouchableOpacity onPress={() => onCopyCustomer(order)}>

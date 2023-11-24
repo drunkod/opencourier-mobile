@@ -42,13 +42,12 @@ export const SignupScreen = ({ navigation }: Props) => {
   };
 
   useEffect(() => {
-    if (isLoading) {
+    if (signupFinished && user) {
       setLoading(false);
-      if (signupFinished && user) {
-        navigation.navigate(RootScreen.Main);
-      } else if (signupError) {
-        Alert.alert('Signup error', signupError);
-      }
+      navigation.navigate(RootScreen.Main);
+    } else if (signupError) {
+      setLoading(false);
+      Alert.alert('Signup error', signupError);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [signupFinished, signupError, isLoading]);

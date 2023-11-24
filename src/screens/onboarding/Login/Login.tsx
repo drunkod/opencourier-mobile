@@ -59,17 +59,15 @@ export const LoginScreen = ({ navigation }: Props) => {
   };
 
   useEffect(() => {
-    if (isLoading) {
+    if (loginFinished && user) {
       setLoading(false);
-      if (loginFinished && user) {
-        setLoading(false);
-        navigation.navigate(RootScreen.Main);
-      } else if (loginError) {
-        Alert.alert('Login error', loginError);
-      }
+      navigation.navigate(RootScreen.Main);
+    } else if (loginError) {
+      setLoading(false);
+      Alert.alert('Login error', loginError);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loginFinished, loginError, isLoading]);
+  }, [loginFinished, loginError, isLoading, user]);
 
   return (
     <View style={styles.container}>

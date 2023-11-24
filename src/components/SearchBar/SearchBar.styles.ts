@@ -9,18 +9,21 @@ export const styles = StyleSheet.create({
     borderRadius: 6,
     justifyContent: 'center',
     paddingHorizontal: 14,
-    paddingVertical: 10,
   },
   content: {
     flexDirection: 'row',
     paddingVertical: 2,
+    alignItems: 'center',
   },
   search: {
     width: 20,
     height: 20,
     marginRight: 8,
+    marginVertical: 10,
   },
   textInput: {
     flex: 1,
+    height: 40,
+    fontSize: 14,
   },
 });

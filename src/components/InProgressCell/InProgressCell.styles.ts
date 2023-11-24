@@ -29,6 +29,7 @@ export const styles = StyleSheet.create({
       height: 0,
     },
     shadowOpacity: 0.6,
+    elevation: 3,
   },
   containerMap: {
     flexDirection: 'row',
@@ -90,6 +91,7 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     marginRight: 8,
     lineHeight: 18,
+    flex: 1,
   },
   textName: {
     fontWeight: '700',

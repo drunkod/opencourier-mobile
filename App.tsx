@@ -27,7 +27,7 @@ const App = () => {
           });
         },
         error => {
-          console.warn('Location error: ', error);
+          // console.warn('Location error: ', error);
         },
         { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 },
       );

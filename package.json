@@ -7,7 +7,8 @@
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest",
-    "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "postinstall": "patch-package"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.19.3",
@@ -18,10 +19,12 @@
     "@reduxjs/toolkit": "^1.9.7",
     "axios": "^1.6.0",
     "moment": "^2.29.4",
+    "patch-package": "^8.0.0",
+    "postinstall-postinstall": "^2.1.0",
     "react": "18.1.0",
     "react-native": "0.70.10",
     "react-native-action-sheet": "^2.2.0",
-    "react-native-camera-kit": "^13.0.0",
+    "react-native-camera": "^4.2.1",
     "react-native-dotenv": "^3.4.9",
     "react-native-geolocation-service": "^5.3.1",
     "react-native-gesture-handler": "^1.8.0",

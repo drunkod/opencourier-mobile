@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleProp, ViewStyle, View, Text } from 'react-native';
+import { StyleProp, ViewStyle, View, Text, Platform } from 'react-native';
 import { styles } from './HomeHeader.styles';
 import { HomeTabItem, UserStatus } from '@app/types/types';
 import { ProfileBadge } from '../ProfileBadge/ProfileBadge';
@@ -48,7 +48,12 @@ export const HomeHeader = ({
   const { top } = useSafeAreaInsets();
 
   return (
-    <View style={[styles.content, style, { paddingTop: top }]}>
+    <View
+      style={[
+        styles.content,
+        style,
+        { paddingTop: top + (Platform.OS === 'android' ? 10 : 0) },
+      ]}>
       {userStatus === UserStatus.Online && (
         <LinearGradient
           style={[styles.gradient, { height: top + 100 }]}
