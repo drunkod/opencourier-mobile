@@ -68,6 +68,8 @@ export const HomeScreen = ({ navigation }: Props) => {
     fetchHistory,
     fetchInProgressOrders,
     fetchNewOrders,
+    itemsConfirmedForOrder,
+    confirmedItems,
   } = useHomeOrders();
   const { userStatus } = useSelector((state: RootState) => state.user);
 
@@ -141,6 +143,7 @@ export const HomeScreen = ({ navigation }: Props) => {
         }
         return (
           <InProgressCell
+            itemsConfirmed={itemsConfirmedForOrder(item)}
             onCopyCustomer={order =>
               Clipboard.setString(order.dropoff.location.addressLine1)
             }
@@ -149,7 +152,7 @@ export const HomeScreen = ({ navigation }: Props) => {
             }
             onConfirmItems={() => {
               navigation.navigate(MainScreens.ItemsCollected, {
-                items: item.items,
+                order: item,
               });
             }}
             onContactCustomer={() => Linking.openURL(`tel://${12341251511}`)}

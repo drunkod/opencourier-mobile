@@ -68,7 +68,7 @@ const orderService = (client: UClient): OrderService => {
   const confirmItems = async (order: Order): Promise<Order> => {
     //TODO: API
     return new Promise(function (resolve) {
-      setTimeout(resolve, 500, TEST_NEW_ORDERS[0]);
+      setTimeout(resolve, 500, order);
     });
   };
 

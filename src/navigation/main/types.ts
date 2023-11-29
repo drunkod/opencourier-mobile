@@ -1,4 +1,4 @@
-import { OrderItem } from '@app/types/types';
+import { Order, OrderItem } from '@app/types/types';
 import { NavigationProp, RouteProp } from '@react-navigation/native';
 
 export enum MainScreens {
@@ -12,7 +12,7 @@ export enum MainScreens {
 export type MainStackParamList = {
   Drawer: undefined;
   ItemsCollected: {
-    items: OrderItem[];
+    order: Order;
   };
   MarkAsDelivered: {
     items: OrderItem[];

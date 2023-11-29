@@ -190,3 +190,8 @@ export type Pagination = {
   prevPage: number;
   nextPage: number;
 };
+
+export type ConfirmItemsCheck = {
+  orderId: string;
+  confirmedItems: boolean;
+};

@@ -20,6 +20,7 @@ import Map from '../Map/Map';
 type Props = {
   style?: StyleProp<ViewStyle>;
   order: Order;
+  itemsConfirmed: boolean;
   onContactRestaurant: (order: Order) => void;
   onContactCustomer: (order: Order) => void;
   onConfirmItems: (order: Order) => void;
@@ -34,6 +35,7 @@ type Props = {
 export const InProgressCell = ({
   style,
   order,
+  itemsConfirmed,
   onContactRestaurant,
   onContactCustomer,
   onConfirmItems,
@@ -44,7 +46,7 @@ export const InProgressCell = ({
   onAddNote,
   onPickupInstructionPress,
 }: Props) => {
-  const [topExpanded, setTopExpanded] = useState<boolean>(false);
+  const [topExpanded, setTopExpanded] = useState<boolean>(true);
   const [bottomExpanded, setBottomExpanded] = useState<boolean>(false);
   const { user } = useContext(UserContext);
   const [distance, setDistance] = useState<number>(0); // meters
@@ -52,7 +54,6 @@ export const InProgressCell = ({
 
   const getDistance = async () => {
     const url = `http://router.project-osrm.org/route/v1/driving/${user?.location?.lon},${user?.location?.lat};${order.pickup.coordinates.longitude},${order.pickup.coordinates.latitude};${order.dropoff.coordinates.longitude},${order.dropoff.coordinates.latitude}`;
-    console.warn(url);
     await fetch(url)
       .then(response => response.json())
       .then(json => {
@@ -64,13 +65,19 @@ export const InProgressCell = ({
         }
       })
       .catch(error => {
-        console.warn(error);
+        // console.warn(error);
       });
   };
 
   useEffect(() => {
     getDistance();
   }, []);
+
+  const handleConfirmItems = (order: Order) => {
+    if (!itemsConfirmed) {
+      onConfirmItems(order);
+    }
+  };
 
   return (
     <View style={[styles.container, style]}>
@@ -156,9 +163,9 @@ export const InProgressCell = ({
             <Button
               textStyle={{ fontSize: 20, fontWeight: '700' }}
               type={ButtonType.green}
-              icon={Images.Hamburger}
-              title="Confirm items"
-              onPress={() => onConfirmItems(order)}
+              icon={itemsConfirmed ? Images.Checkmark : Images.Hamburger}
+              title={itemsConfirmed ? 'Items confirmed' : 'Confirm items'}
+              onPress={() => handleConfirmItems(order)}
             />
           </View>
 

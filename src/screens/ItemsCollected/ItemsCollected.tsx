@@ -23,7 +23,7 @@ type CollectedItem = {
 
 export const ItemsCollected = ({ navigation, route }: Props) => {
   const { top } = useSafeAreaInsets();
-  const { items } = route.params;
+  const { order } = route.params;
   const [dataSource, setDataSource] = useState<CollectedItem[]>([]);
   const [allCollected, setAllCollected] = useState<boolean>(false);
   const dispatch = useDispatch();
@@ -33,11 +33,11 @@ export const ItemsCollected = ({ navigation, route }: Props) => {
   );
 
   useEffect(() => {
-    const data = items.map(item => {
+    const data = order.items.map(item => {
       return { selected: false, item: item };
     });
     setDataSource(data);
-  }, [items]);
+  }, [order]);
 
   const handleItemPress = (item: CollectedItem) => {
     var temp = [...dataSource];
@@ -51,10 +51,8 @@ export const ItemsCollected = ({ navigation, route }: Props) => {
   };
 
   const onAllItemsCollected = () => {
-    // navigation.goBack();
-    // return;
     setIsLoading(true);
-    dispatch(confirmItems());
+    dispatch(confirmItems(order));
   };
 
   const renderItem = ({ item }: { item: CollectedItem }) => {

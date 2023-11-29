@@ -90,10 +90,9 @@ function* declineOrderSaga(service: OrderService): Generator<any, void, any> {
 
 function* confirmItemsSaga(service: OrderService): Generator<any, void, any> {
   while (true) {
-    const { order } = yield take(confirmItems);
-
+    const { payload } = yield take(confirmItems);
     try {
-      const res = yield call(service.confirmItems, order);
+      const res = yield call(service.confirmItems, payload);
       yield put(confirmItemsFinished(res));
     } catch (error) {
       yield put(confirmItemsError(error as string));

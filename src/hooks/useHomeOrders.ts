@@ -1,4 +1,4 @@
-import { Order } from '@app/types/types';
+import { ConfirmItemsCheck, Order } from '@app/types/types';
 import { RootState } from '@app/redux/store';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -18,6 +18,7 @@ type NewOrderTimer = {
 };
 
 export const useHomeOrders = () => {
+  const [confirmedItems, setConfirmedItems] = useState<ConfirmItemsCheck[]>([]);
   const [autoAcceptOrders, setAutoAcceptOrders] = useState<boolean>(false);
   const [newOrdersTimers, setNewOrdersTimers] = useState<NewOrderTimer[]>([]);
   const [dataSourceHistory, setDataSourceHistory] = useState<Order[]>([]);
@@ -38,7 +39,19 @@ export const useHomeOrders = () => {
     acceptOrderError,
     declineOrderFinished,
     declineOrderError,
+    confirmItemsFinished,
+    confirmItemsError,
+    confirmedItemsForOrder,
   } = useSelector((state: RootState) => state.order);
+
+  const itemsConfirmedForOrder = (order: Order): boolean => {
+    const temp = confirmedItems.filter(obj => obj.orderId === order.order_id);
+    if (temp.length > 0) {
+      return temp[0].confirmedItems;
+    } else {
+      return false;
+    }
+  };
 
   useEffect(() => {
     const id = setInterval(() => {
@@ -156,6 +169,24 @@ export const useHomeOrders = () => {
   };
 
   useEffect(() => {
+    if (confirmItemsFinished) {
+      if (!confirmItemsError) {
+        if (confirmedItemsForOrder !== undefined) {
+          var rest = confirmedItems.filter(
+            obj => obj.orderId !== confirmedItemsForOrder.order_id,
+          );
+          rest.push({
+            orderId: confirmedItemsForOrder.order_id,
+            confirmedItems: true,
+          });
+          // console.warn('HERE!!!: ', confirmedItemsForOrder);
+          setConfirmedItems(rest);
+        }
+      }
+    }
+  }, [confirmItemsError, confirmItemsFinished, confirmedItemsForOrder]);
+
+  useEffect(() => {
     fetchNewOrders();
     fetchInProgressOrders();
     fetchHistory();
@@ -176,5 +207,7 @@ export const useHomeOrders = () => {
     fetchNewOrders,
     fetchInProgressOrders,
     fetchHistory,
+    itemsConfirmedForOrder,
+    confirmedItems,
   };
 };

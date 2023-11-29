@@ -25,14 +25,16 @@ export const HistoryCell = ({ style, order, onPress }: Props) => {
     <TouchableOpacity onPress={() => onPress(order)}>
       <View style={[styles.container, style]}>
         <View style={styles.containerSpaceBetween}>
-          <Text style={styles.textId}>{order.id}</Text>
+          <Text style={styles.textId}>{`${order.items.length} item${
+            order.items.length > 1 ? 's' : ''
+          }`}</Text>
           <View style={styles.containerStatus}>
             <View style={styles.statusIndicator} />
             <Text style={styles.textStatus}>{order.status}</Text>
           </View>
         </View>
-        <View style={styles.separator} />
-        <View style={styles.containerSpaceBetween}>
+        {/* <View style={styles.separator} /> */}
+        {/* <View style={styles.containerSpaceBetween}>
           <Text style={styles.textDeliveredTo}>Delivered to</Text>
           <View style={styles.containerUser}>
             <Text style={styles.textUserName}>
@@ -43,7 +45,7 @@ export const HistoryCell = ({ style, order, onPress }: Props) => {
               style={styles.imageUser}
             />
           </View>
-        </View>
+        </View> */}
         <View style={styles.separator} />
         <View style={styles.containerInfo}>
           <Image source={Images.Calendar} style={styles.iconSmall} />

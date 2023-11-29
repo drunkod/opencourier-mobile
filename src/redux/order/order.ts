@@ -26,6 +26,7 @@ interface UserState {
   markAsDeliveredError?: string;
   acceptedOrder?: Order;
   declinedOrder?: Order;
+  confirmedItemsForOrder?: Order;
 }
 
 const initialState: UserState = {
@@ -117,12 +118,14 @@ export const orderSlice = createSlice({
       state.declineOrderFinished = true;
       state.declineOrderError = action.payload;
     },
-    confirmItems: state => {
+    confirmItems: (state, _action: PayloadAction<Order>) => {
       state.confirmItemsFinished = false;
       state.confirmItemsError = undefined;
+      state.confirmedItemsForOrder = undefined;
     },
-    confirmItemsFinished: state => {
+    confirmItemsFinished: (state, action: PayloadAction<Order>) => {
       state.confirmItemsFinished = true;
+      state.confirmedItemsForOrder = action.payload;
     },
     confirmItemsError: (state, action: PayloadAction<string>) => {
       state.confirmItemsFinished = true;
