@@ -8,12 +8,14 @@ import { OrganizationStack } from './organizationNavigation/OrganizationNavigati
 import { SelectOrganizationModal } from '@app/screens/SelectOrganizationModal/SelectOrganizationModal';
 import { SearchOrganization } from '@app/screens/SearchOrganization/SearchOrganization';
 import { StatusPopupScreen } from '@app/screens/StatusPopup/StatusPopupScreen';
+import usePushNotifications from '@app/services/notifications';
 
 const RootStack = createNativeStackNavigator<RootStackParamList>();
 
 const DEFAULT_OPTIONS = { headerShown: false };
 
 export const Router = ({ route }) => {
+  usePushNotifications(true);
   return (
     <RootStack.Navigator>
       <RootStack.Screen

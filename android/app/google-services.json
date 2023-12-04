@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "797643760477",
+    "project_id": "opendeli",
+    "storage_bucket": "opendeli.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:797643760477:android:180b4926c4eb6732bffeb4",
+        "android_client_info": {
+          "package_name": "com.opendeli"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD-IhzEqJiASX62GdWhWxSbnacnk0EKsiA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

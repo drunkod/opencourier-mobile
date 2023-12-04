@@ -11,6 +11,9 @@ interface UserState {
   getUserFinished: boolean;
   getUserError?: string;
   userStatus: UserStatus;
+  fcmToken?: string;
+  getFcmTokenFinished: boolean;
+  getFcmTokenError?: string;
 }
 
 const initialState: UserState = {
@@ -19,12 +22,26 @@ const initialState: UserState = {
   signupFinished: false,
   getUserFinished: false,
   userStatus: UserStatus.Online,
+  fcmToken: undefined,
+  getFcmTokenFinished: false,
 };
 
 export const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
+    getFcmToken: (state, _action: PayloadAction<string>) => {
+      state.getFcmTokenFinished = false;
+      state.getFcmTokenError = undefined;
+    },
+    getFcmTokenFinished: (state, action: PayloadAction<string>) => {
+      state.getFcmTokenFinished = true;
+      state.fcmToken = action.payload;
+    },
+    getFcmTokenError: (state, action: PayloadAction<string>) => {
+      state.getFcmTokenFinished = true;
+      state.getFcmTokenError = action.payload;
+    },
     login: (state, _action: PayloadAction<LoginParams>) => {
       state.loginFinished = false;
       state.loginError = undefined;
@@ -32,6 +49,7 @@ export const userSlice = createSlice({
     loginFinished: (state, action: PayloadAction<User>) => {
       state.loginFinished = true;
       state.user = action.payload;
+      // console.warn('login finished');
     },
     loginError: (state, action: PayloadAction<string>) => {
       state.loginFinished = true;
@@ -78,5 +96,8 @@ export const {
   signupError,
   signupFinished,
   setUserStatus,
+  getFcmToken,
+  getFcmTokenError,
+  getFcmTokenFinished,
 } = userSlice.actions;
 export default userSlice.reducer;

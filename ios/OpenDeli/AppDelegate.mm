@@ -1,4 +1,5 @@
 #import "AppDelegate.h"
+#import <Firebase.h>
 
 #import <React/RCTBridge.h>
 #import <React/RCTBundleURLProvider.h>
@@ -52,6 +53,9 @@ static NSString *const kRNConcurrentRoot = @"concurrentRoot";
     rootView.backgroundColor = [UIColor whiteColor];
   }
 
+  [FIRApp configure];
+
+  
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
   UIViewController *rootViewController = [UIViewController new];
   rootViewController.view = rootView;

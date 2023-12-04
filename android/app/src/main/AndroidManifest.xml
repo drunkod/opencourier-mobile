@@ -1,5 +1,7 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  package="com.opendeli">
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.opendeli">
 
     <uses-feature
         android:name="android.hardware.camera"
@@ -32,5 +34,10 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBfl3iU6uGbW6rlO4nmO67-Gaw4v5veYow"/>
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="fcm_channel_opendeli"
+            tools:replace="android:value"
+            />
     </application>
 </manifest>
