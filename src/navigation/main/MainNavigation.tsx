@@ -6,6 +6,7 @@ import { ItemsCollected } from '@app/screens/ItemsCollected/ItemsCollected';
 import { MarkAsDelivered } from '@app/screens/MarkAsDelivered/MarkAsDelivered';
 import { PhotoAttachment } from '@app/screens/PhotoAttachment/PhotoAttachment';
 import { PayoutActivity } from '@app/screens/PayoutActivity/PayoutActivity';
+import { LicencesScreen } from '@app/screens/Licences/Licences';
 
 const MainStackNavigator = createNativeStackNavigator();
 
@@ -37,6 +38,11 @@ export const MainStack = () => {
       <MainStackNavigator.Screen
         name={MainScreens.PayoutActivity}
         component={PayoutActivity}
+        options={DEFAULT_OPTIONS}
+      />
+      <MainStackNavigator.Screen
+        name={MainScreens.Licences}
+        component={LicencesScreen}
         options={DEFAULT_OPTIONS}
       />
     </MainStackNavigator.Navigator>

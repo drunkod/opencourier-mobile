@@ -7,6 +7,7 @@ export enum MainScreens {
   MarkAsDelivered = 'MarkAsDelivered',
   PhotoAttachment = 'PhotoAttachment',
   PayoutActivity = 'PayoutActivity',
+  Licences = 'Licences',
 }
 
 export type MainStackParamList = {
@@ -21,6 +22,7 @@ export type MainStackParamList = {
     onAttach: (photo: string) => void;
   };
   PayoutActivity: undefined;
+  Licences: undefined;
 };
 
 export type MainNavigationProp = NavigationProp<MainStackParamList>;

@@ -88,6 +88,7 @@ export const SideMenu = ({ navigation }: Props) => {
       case SideMenuItem.Support:
         break;
       case SideMenuItem.Settings:
+        navigation.navigate(DrawerScreens.Settings);
         break;
       case SideMenuItem.Logout:
         break;
