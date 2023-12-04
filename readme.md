@@ -9,3 +9,7 @@ https://reactnative.dev/docs/environment-setup?guide=native&platform=android
 
 TBA
 
+# 3. Licences
+
+[https://github.com/Princeton-HCI/opendeli-courier-mobile/blob/main/licenses.json] Licences used by all dependencies
+
