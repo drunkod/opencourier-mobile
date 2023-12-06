@@ -5,10 +5,10 @@
         "licenseUrl": "https://github.com/invertase/notifee/raw/master/LICENSE",
         "parents": "opendeli"
     },
-    "@react-native-async-storage/async-storage@1.21.0": {
+    "@react-native-async-storage/async-storage@1.19.3": {
         "licenses": "MIT",
         "repository": "https://github.com/react-native-async-storage/async-storage",
-        "licenseUrl": "https://github.com/react-native-async-storage/async-storage/raw/master/LICENSE",
+        "licenseUrl": "https://github.com/react-native-async-storage/async-storage",
         "parents": "opendeli"
     },
     "@react-native-clipboard/clipboard@1.12.1": {
@@ -29,19 +29,19 @@
         "licenseUrl": "https://github.com/invertase/react-native-firebase/tree/main/packages/messaging/raw/master/LICENSE",
         "parents": "opendeli"
     },
-    "@react-navigation/drawer@6.6.6": {
+    "@react-navigation/drawer@6.6.4": {
         "licenses": "MIT",
         "repository": "https://github.com/react-navigation/react-navigation",
         "licenseUrl": "https://github.com/react-navigation/react-navigation/raw/master/LICENSE",
         "parents": "opendeli"
     },
-    "@react-navigation/native-stack@6.9.17": {
+    "@react-navigation/native-stack@6.9.14": {
         "licenses": "MIT",
         "repository": "https://github.com/react-navigation/react-navigation",
         "licenseUrl": "https://github.com/react-navigation/react-navigation/raw/master/LICENSE",
         "parents": "opendeli"
     },
-    "@react-navigation/native@6.1.9": {
+    "@react-navigation/native@6.1.8": {
         "licenses": "MIT",
         "repository": "https://github.com/react-navigation/react-navigation",
         "licenseUrl": "https://github.com/react-navigation/react-navigation/raw/master/LICENSE",
@@ -137,7 +137,7 @@
         "licenseUrl": "git+https://kolking@github.com/kolking/react-native-page-indicator/raw/master/LICENSE",
         "parents": "opendeli"
     },
-    "react-native-pager-view@6.2.3": {
+    "react-native-pager-view@6.2.2": {
         "licenses": "MIT",
         "repository": "https://github.com/callstack/react-native-pager-view",
         "licenseUrl": "https://github.com/callstack/react-native-pager-view/raw/master/LICENSE",
@@ -149,19 +149,19 @@
         "licenseUrl": "https://github.com/zoontek/react-native-permissions/raw/master/LICENSE",
         "parents": "opendeli"
     },
-    "react-native-reanimated@3.6.0": {
+    "react-native-reanimated@3.5.4": {
         "licenses": "MIT",
         "repository": "https://github.com/software-mansion/react-native-reanimated",
         "licenseUrl": "https://github.com/software-mansion/react-native-reanimated/raw/master/LICENSE",
         "parents": "opendeli"
     },
-    "react-native-safe-area-context@4.7.4": {
+    "react-native-safe-area-context@4.7.2": {
         "licenses": "MIT",
         "repository": "https://github.com/th3rdwave/react-native-safe-area-context",
         "licenseUrl": "https://github.com/th3rdwave/react-native-safe-area-context/raw/master/LICENSE",
         "parents": "opendeli"
     },
-    "react-native-screens@3.27.0": {
+    "react-native-screens@3.26.0": {
         "licenses": "MIT",
         "repository": "https://github.com/software-mansion/react-native-screens",
         "licenseUrl": "https://github.com/software-mansion/react-native-screens/raw/master/LICENSE",

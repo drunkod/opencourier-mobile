@@ -4,7 +4,6 @@ import { Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import messaging from '@react-native-firebase/messaging';
 import { useDispatch } from 'react-redux';
-// import { addDevice } from '@app/redux/notificationDeviceSlice';
 import { AppDispatch } from '@app/redux/store';
 import navigate from './pushNavigation';
 import { ANDROID_CHANNEL_ID } from '@app/utilities/constants';
@@ -17,7 +16,7 @@ const usePushNotifications = (
   const navigation = useNavigation<any>();
   const dispatch = useDispatch<AppDispatch>();
 
-  const [permissionsGiven, setPermissionsGiven] = useState<boolean>(true);
+  const [permissionsGiven, setPermissionsGiven] = useState<boolean>(false);
 
   useEffect(() => {
     requestUserPermission();
@@ -38,6 +37,7 @@ const usePushNotifications = (
   }, [permissionsGiven, isSignedIn]);
 
   const getFcmToken = async () => {
+    await messaging().registerDeviceForRemoteMessages();
     const token = await messaging().getToken();
     console.warn(token);
     // dispatch();
