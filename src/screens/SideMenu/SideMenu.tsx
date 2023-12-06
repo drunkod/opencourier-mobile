@@ -15,13 +15,16 @@ import { OrganizationScreens } from '@app/navigation/organizationNavigation/type
 import {
   getAutoAcceptOrders,
   getAutoAcceptOrdersStorage,
+  getSelectedOrganizationStorage,
   setAutoAcceptOrdersStorage,
+  setSelectedOrganizationStorage,
 } from '@app/utilities/storage';
 import { DrawerScreens } from '@app/navigation/drawer/types';
 import { RootState } from '@app/redux/store';
 import { useSelector, useDispatch } from 'react-redux';
 import { setUserStatus } from '@app/redux/user/user';
 import { useTranslation } from 'react-i18next';
+import { NativeModules } from 'react-native';
 
 type Props = RootScreenProp<RootScreen.Loading>;
 
@@ -66,11 +69,17 @@ export const SideMenu = ({ navigation }: Props) => {
   };
 
   const organizationSelected = (org: Organization) => {
-    setSelectedOrg(org);
+    // setSelectedOrg(org);
+    setSelectedOrganizationStorage(org);
+    NativeModules.DevSettings.reload();
   };
 
   useEffect(() => {
     (async () => {
+      const org = await getSelectedOrganizationStorage();
+      if (org !== undefined) {
+        setSelectedOrg(org);
+      }
       const accept = await getAutoAcceptOrdersStorage();
       setAutoAcceptOrders(accept);
     })();

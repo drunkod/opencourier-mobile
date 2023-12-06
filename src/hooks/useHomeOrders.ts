@@ -194,8 +194,7 @@ export const useHomeOrders = () => {
   useEffect(() => {
     fetchNewOrders();
     fetchInProgressOrders();
-    setDataSourceHistory([TEST_ORDERS_HISTORY]);
-    // fetchHistory();
+    fetchHistory();
     (async () => {
       const accept = await getAutoAcceptOrdersStorage();
       setAutoAcceptOrders(accept);

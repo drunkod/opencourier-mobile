@@ -1,4 +1,5 @@
-import { Client } from './Client';
+import { Client, UClient } from './Client';
+import { DemoClient } from './DemoClient';
 import orderService, { OrderService } from './orderService';
 import userService, { UserService } from './userService';
 
@@ -8,9 +9,10 @@ export type Services = {
 };
 
 const Services = (): Services => {
-  const client = Client();
+  const client = DemoClient();
   const uService = userService(client);
   const oService = orderService(client);
+
   return {
     userService: uService,
     orderService: oService,

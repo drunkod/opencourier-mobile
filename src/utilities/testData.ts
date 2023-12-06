@@ -11,26 +11,14 @@ export const TEST_IMAGE_URL =
 
 export const TEST_ORG_ARRAY: Organization[] = [
   {
-    name: 'BOS Pescatarian',
+    name: 'Open Deli',
     id: '1',
     imageUrl: TEST_IMAGE_URL,
     iconUrl: TEST_IMAGE_URL,
   },
   {
-    name: 'Sustainable NYC',
+    name: 'Demo',
     id: '2',
-    imageUrl: TEST_IMAGE_URL,
-    iconUrl: TEST_IMAGE_URL,
-  },
-  {
-    name: 'London Ladies',
-    id: '3',
-    imageUrl: TEST_IMAGE_URL,
-    iconUrl: TEST_IMAGE_URL,
-  },
-  {
-    name: `Mom n' Pop LA`,
-    id: '4',
     imageUrl: TEST_IMAGE_URL,
     iconUrl: TEST_IMAGE_URL,
   },
@@ -46,12 +34,15 @@ export const TEST_ORDERS_HISTORY: Order[] = [
       profilePictureUrl:
         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRVA_HrQLjkHiJ2Ag5RGuwbFeDKRLfldnDasw&usqp=CAU',
     },
+    merchant_name: 'Burger King',
     date: '29 JUL 2022 - 9:10 AM',
     status: OrderStatus.Delivered,
     restaurant: {
       name: 'Mi Familia Restaurant ',
       address: '17623 La Cantera Pkwy #103 San Antonio, TX 78249',
     },
+    created_at: '2023-04-05T14:48:00Z',
+    updated_at: '2023-04-05T15:48:00Z',
     price: 30.95,
     clientNotes: ['Client Note 1', 'Client Note 2'],
     pickupInstructions: [
@@ -73,6 +64,40 @@ export const TEST_ORDERS_HISTORY: Order[] = [
       { name: 'Item 3' },
       { name: 'Item 4' },
     ],
+    income: {
+      currency: 'USD',
+      total_charge: '30',
+      fees: '5',
+      total: '25',
+      pay: '20',
+      tips: '5',
+    },
+    pickup: {
+      location: {
+        addressLine1: '123 Main St',
+        addressLine2: 'Apt 4',
+        locality: 'Springfield',
+        postalCode: '62701',
+        countryCode: 'US',
+      },
+      coordinates: {
+        latitude: 39.7817,
+        longitude: -89.6501,
+      },
+    },
+    dropoff: {
+      location: {
+        addressLine1: '456 Elm St',
+        addressLine2: '',
+        locality: 'Springfield',
+        postalCode: '62704',
+        countryCode: 'US',
+      },
+      coordinates: {
+        latitude: 39.7817,
+        longitude: -89.6202,
+      },
+    },
   },
   {
     id: '#W1X2Z4',
@@ -83,12 +108,15 @@ export const TEST_ORDERS_HISTORY: Order[] = [
       profilePictureUrl:
         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRVA_HrQLjkHiJ2Ag5RGuwbFeDKRLfldnDasw&usqp=CAU',
     },
+    created_at: '2023-04-05T14:48:00Z',
+    updated_at: '2023-04-05T15:48:00Z',
     date: '21 OCT 2022 - 2:05 PM',
     status: OrderStatus.Canceled,
     restaurant: {
       name: 'Mi Familia Restaurant ',
       address: '17623 La Cantera Pkwy #103 San Antonio, TX 78249',
     },
+    merchant_name: 'Burger King',
     price: 13.85,
     clientNotes: ['Client Note 1', 'Client Note 2'],
     pickupInstructions: [
@@ -110,6 +138,40 @@ export const TEST_ORDERS_HISTORY: Order[] = [
       { name: 'Item 3' },
       { name: 'Item 4' },
     ],
+    income: {
+      currency: 'USD',
+      total_charge: '30',
+      fees: '5',
+      total: '25',
+      pay: '20',
+      tips: '5',
+    },
+    pickup: {
+      location: {
+        addressLine1: '123 Main St',
+        addressLine2: 'Apt 4',
+        locality: 'Springfield',
+        postalCode: '62701',
+        countryCode: 'US',
+      },
+      coordinates: {
+        latitude: 39.7817,
+        longitude: -89.6501,
+      },
+    },
+    dropoff: {
+      location: {
+        addressLine1: '456 Elm St',
+        addressLine2: '',
+        locality: 'Springfield',
+        postalCode: '62704',
+        countryCode: 'US',
+      },
+      coordinates: {
+        latitude: 39.7817,
+        longitude: -89.6202,
+      },
+    },
   },
   {
     id: '#H142TY',
@@ -120,6 +182,9 @@ export const TEST_ORDERS_HISTORY: Order[] = [
       profilePictureUrl:
         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRVA_HrQLjkHiJ2Ag5RGuwbFeDKRLfldnDasw&usqp=CAU',
     },
+    merchant_name: 'Burger King',
+    created_at: '2023-04-05T14:48:00Z',
+    updated_at: '2023-04-05T15:48:00Z',
     date: '7 JAN 2022 - 3:10 PM',
     status: OrderStatus.Delivered,
     restaurant: {
@@ -147,6 +212,40 @@ export const TEST_ORDERS_HISTORY: Order[] = [
       { name: 'Item 3' },
       { name: 'Item 4' },
     ],
+    income: {
+      currency: 'USD',
+      total_charge: '30',
+      fees: '5',
+      total: '25',
+      pay: '20',
+      tips: '5',
+    },
+    pickup: {
+      location: {
+        addressLine1: '123 Main St',
+        addressLine2: 'Apt 4',
+        locality: 'Springfield',
+        postalCode: '62701',
+        countryCode: 'US',
+      },
+      coordinates: {
+        latitude: 39.7817,
+        longitude: -89.6501,
+      },
+    },
+    dropoff: {
+      location: {
+        addressLine1: '456 Elm St',
+        addressLine2: '',
+        locality: 'Springfield',
+        postalCode: '62704',
+        countryCode: 'US',
+      },
+      coordinates: {
+        latitude: 39.7817,
+        longitude: -89.6202,
+      },
+    },
   },
 ];
 
