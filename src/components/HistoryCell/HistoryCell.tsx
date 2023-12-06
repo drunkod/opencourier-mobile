@@ -27,8 +27,8 @@ export const HistoryCell = ({ style, order, onPress }: Props) => {
     <TouchableOpacity onPress={() => onPress(order)}>
       <View style={[styles.container, style]}>
         <View style={styles.containerSpaceBetween}>
-          <Text style={styles.textId}>{`${order.items.length} item${
-            order.items.length > 1 ? 's' : ''
+          <Text style={styles.textId}>{`${order?.items?.length} item${
+            order?.items?.length > 1 ? 's' : ''
           }`}</Text>
           <View style={styles.containerStatus}>
             <View style={styles.statusIndicator} />
@@ -59,7 +59,9 @@ export const HistoryCell = ({ style, order, onPress }: Props) => {
         </View>
         <View style={styles.containerInfo}>
           <Image source={Images.Money} style={styles.iconSmall} />
-          <Text style={styles.textInfo}>{'$' + order.income.total_charge}</Text>
+          <Text style={styles.textInfo}>
+            {'$' + order?.income?.total_charge}
+          </Text>
         </View>
       </View>
     </TouchableOpacity>
