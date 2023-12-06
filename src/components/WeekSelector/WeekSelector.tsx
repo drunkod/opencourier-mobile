@@ -12,6 +12,7 @@ import { Images } from '@app/utilities/images';
 import { EarningsTabItem } from '@app/types/types';
 import moment, { Moment } from 'moment';
 import { endOfWeek, formatEarnings, startOfWeek } from '@app/utilities/dates';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
   style?: StyleProp<ViewStyle>;
@@ -26,6 +27,7 @@ export const WeekSelector = ({
   earned,
   onWeekRangeChange,
 }: Props) => {
+  const { t } = useTranslation();
   const [substractor, setSubstractor] = useState<number>(0);
 
   useEffect(() => {
@@ -35,13 +37,13 @@ export const WeekSelector = ({
   const date = useMemo(() => {
     switch (type) {
       case EarningsTabItem.Today:
-        return `Today ${moment().format(formatEarnings)}`;
+        return `${t('translations:today')} ${moment().format(formatEarnings)}`;
       case EarningsTabItem.Weekly:
         return `${startOfWeek(substractor).format(
           formatEarnings,
         )} - ${endOfWeek(substractor).format(formatEarnings)}`;
       case EarningsTabItem.All:
-        return 'All time';
+        return t('translations:all_time');
     }
   }, [type, substractor]);
 

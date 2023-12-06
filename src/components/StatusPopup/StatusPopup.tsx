@@ -5,6 +5,7 @@ import { UserStatus } from '@app/types/types';
 import { Button, ButtonType } from '../Button/Button';
 import { Images } from '@app/utilities/images';
 import { Colors } from '@app/styles/colors';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
   style?: StyleProp<ViewStyle>;
@@ -14,25 +15,26 @@ type Props = {
 };
 
 export const StatusPopup = ({ style, type, onAccept, onCancel }: Props) => {
+  const { t } = useTranslation();
   const title = useMemo(() => {
     switch (type) {
       case UserStatus.Online:
-        return 'Going Online?';
+        return t('translations:going_online');
       case UserStatus.Offline:
-        return 'Going Offline?';
+        return t('translations:going_offline');
       case UserStatus.LastCall:
-        return 'Setting to Last Call?';
+        return t('translations:going_last_call');
     }
   }, [type]);
 
   const subtitle = useMemo(() => {
     switch (type) {
       case UserStatus.Online:
-        return 'To continue, please turn on your location services. This helps us provide a better experience tailored to your location.';
+        return t('translations:please_turn_on_location');
       case UserStatus.Offline:
-        return 'Switching often disrupts orders. Stay online for smooth operations.';
+        return t('translations:switching_disrupts_orders');
       case UserStatus.LastCall:
-        return 'Ending soon? Ensure you complete pending orders.';
+        return t('translations:ending_soon');
     }
   }, [type]);
 
@@ -61,22 +63,22 @@ export const StatusPopup = ({ style, type, onAccept, onCancel }: Props) => {
   const primaryButtonTitle = useMemo(() => {
     switch (type) {
       case UserStatus.Online:
-        return 'Turn on & Go Online';
+        return t('translations:on_and_go_online');
       case UserStatus.Offline:
-        return 'Go offline';
+        return t('translations:go_offline');
       case UserStatus.LastCall:
-        return 'Confirm Last Call';
+        return t('translations:confirm_last_call');
     }
   }, [type]);
 
   const secondaryButtonTitle = useMemo(() => {
     switch (type) {
       case UserStatus.Online:
-        return 'Later & Stay Offline';
+        return t('translations:later_stay_offline');
       case UserStatus.Offline:
-        return 'Stay Online';
+        return t('translations:stay_online');
       case UserStatus.LastCall:
-        return 'Continue Orders';
+        return t('translations:continue_orders');
     }
   }, [type]);
 

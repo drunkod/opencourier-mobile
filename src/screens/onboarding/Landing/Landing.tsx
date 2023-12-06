@@ -16,6 +16,7 @@ import {
   OnboardingScreenProp,
 } from '@app/navigation/onboarding/types';
 import { styles } from './Landing.styles';
+import { useTranslation } from 'react-i18next';
 
 type Props = OnboardingScreenProp<OnboardingScreen.Landing>;
 
@@ -25,27 +26,28 @@ type Page = {
   description: string;
 };
 
-const data: Page[] = [
-  {
-    title: 'Support locals',
-    description: 'Support your local restaurants and communities.',
-    image: Images.OnboardingCar,
-  },
-  {
-    title: 'Earn\nmoney',
-    description: 'More than just a gig economy, join a community of couriers.',
-    image: Images.OnboardingMoped,
-  },
-  {
-    title: 'Reach\ngoals',
-    description: 'Get paid and accomplish successful milestones.',
-    image: Images.OnboardingFood,
-  },
-];
-
 export const LandingScreen = ({ navigation }: Props) => {
+  const { t } = useTranslation();
   const { top } = useSafeAreaInsets();
   const [page, setPage] = useState<number>(0);
+
+  const data: Page[] = [
+    {
+      title: t('translations:support_locals'),
+      description: t('translations:support_locals_details'),
+      image: Images.OnboardingCar,
+    },
+    {
+      title: t('translations:earn_money'),
+      description: t('translations:more_than_a_gig'),
+      image: Images.OnboardingMoped,
+    },
+    {
+      title: t('translations:reach_goals'),
+      description: t('translations:get_paid'),
+      image: Images.OnboardingFood,
+    },
+  ];
 
   const onScroll = (position: any) => {
     setPage(position.nativeEvent.position);
@@ -96,7 +98,7 @@ export const LandingScreen = ({ navigation }: Props) => {
         <Button
           style={styles.buttonContinue}
           type={ButtonType.black}
-          title="Continue"
+          title={t('translations:continue')}
           onPress={onContinue}
         />
       </SafeAreaView>

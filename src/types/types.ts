@@ -1,31 +1,76 @@
 export enum UserStatus {
-  Online = 'Online',
-  Offline = 'Offline',
-  LastCall = 'Last Call',
+  Online = 'online',
+  Offline = 'offline',
+  LastCall = 'last_call',
 }
 
 export enum HomeTabItem {
-  New = 'New',
-  InProgress = 'In Progress',
-  History = 'History',
+  New = 'new',
+  InProgress = 'in_progress',
+  History = 'history',
 }
 
 export enum HomeEmptyState {
   New = 'New',
   InProgress = 'In Progress',
   History = 'History',
-  WaitingNewOrders = 'WaitingNewOrders',
+  WaitingNewOrders = 'waitingNewOrders',
 }
 
 export enum SideMenuItem {
-  Location = 'Real-time location',
-  AutoOrders = 'Auto accept orders',
-  Orders = 'Orders',
-  Earnings = 'Earnings',
-  Payout = 'Payout method',
-  Support = 'Support',
-  Settings = 'Settings',
-  Logout = 'Log-out',
+  Location = 'real_time_location',
+  AutoOrders = 'auto_accept_orders',
+  Orders = 'orders',
+  Earnings = 'earnings',
+  Payout = 'payout_method',
+  Support = 'support',
+  Settings = 'settings',
+  Logout = 'log_out',
+}
+
+export enum OrderStatus {
+  Delivered = 'delivered',
+  Canceled = 'canceled',
+  DroppingOff = 'dropping_off',
+}
+
+export enum DeliveryType {
+  LeaveAtDoor = 'leave_at_door',
+  MeetOutside = 'meet_outside',
+  MeetInside = 'meet_inside',
+  MeetAtDoor = 'meet_at_door',
+  CallOnArrival = 'call_on_arrival',
+}
+
+export enum PickupType {
+  LineupThirdPartyPickup = 'line_up_pickup',
+  ParkThirdPartyLot = 'park_in_lot',
+  DontOpenBags = `dont_open_bags`,
+  CallOnArrival = 'call_on_arrival',
+}
+
+export enum MapLinkingOptions {
+  apple = 'apple_maps',
+  google = 'google_maps',
+  waze = 'waze',
+}
+
+export enum CustomerNotes {
+  PreventLeaks = 'prevent_leaks',
+  BellnotRung = 'bell_not_rung',
+  HandleWithCare = 'handle_with_care',
+  DontBlockDoor = `dont_block_door`,
+}
+
+export enum EarningsTabItem {
+  Today = 'today',
+  Weekly = 'weekly',
+  All = 'all',
+}
+
+export enum PaymentTabItem {
+  Bank = 'bank',
+  DirectDebit = 'direct_debit',
 }
 
 export type Organization = {
@@ -34,12 +79,6 @@ export type Organization = {
   imageUrl: string;
   iconUrl?: string;
 };
-
-export enum OrderStatus {
-  Delivered = 'Delivered',
-  Canceled = 'Canceled',
-  DroppingOff = 'dropping_off',
-}
 
 export type User = {
   firstname: string;
@@ -88,31 +127,10 @@ export type Order = {
   items: OrderItem[];
 };
 
-export enum DeliveryType {
-  LeaveAtDoor = 'Leave at door',
-  MeetOutside = 'Meet outside',
-  MeetInside = 'Meet inside',
-  MeetAtDoor = 'Meet at door',
-  CallOnArrival = 'Call on arrival',
-}
-
-export enum PickupType {
-  LineupThirdPartyPickup = 'Line up for third-party pickup',
-  ParkThirdPartyLot = 'Park in third-party lot',
-  DontOpenBags = `Don't open bags for checklist`,
-  CallOnArrival = 'Call on arrival',
-}
-
 export type PickupInstruction = {
   type: string;
   count?: number;
 };
-
-export enum MapLinkingOptions {
-  apple = 'Apple Maps',
-  google = 'Google Maps',
-  waze = 'Waze',
-}
 
 export type OrderItem = {
   name: string;
@@ -123,24 +141,6 @@ export type OrderItem = {
   must_be_upright: boolean;
   weight: number;
 };
-
-export enum CustomerNotes {
-  PreventLeaks = 'Prevent Leaks',
-  BellnotRung = 'Bell Not Rung',
-  HandleWithCare = 'Handle with care: Hot!',
-  DontBlockDoor = `Don't block door access`,
-}
-
-export enum EarningsTabItem {
-  Today = 'Today',
-  Weekly = 'Weekly',
-  All = 'All',
-}
-
-export enum PaymentTabItem {
-  Bank = 'Bank',
-  DirectDebit = 'Direct Debit',
-}
 
 export type Coordinates = {
   latitude: number;

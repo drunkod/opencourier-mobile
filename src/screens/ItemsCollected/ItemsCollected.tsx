@@ -13,6 +13,7 @@ import { Button, ButtonType } from '@app/components/Button/Button';
 import { RootState } from '@app/redux/store';
 import { useDispatch, useSelector } from 'react-redux';
 import { confirmItems } from '@app/redux/order/order';
+import { useTranslation } from 'react-i18next';
 
 type Props = MainScreenProp<MainScreens.ItemsCollected>;
 
@@ -22,6 +23,7 @@ type CollectedItem = {
 };
 
 export const ItemsCollected = ({ navigation, route }: Props) => {
+  const { t } = useTranslation();
   const { top } = useSafeAreaInsets();
   const { order } = route.params;
   const [dataSource, setDataSource] = useState<CollectedItem[]>([]);
@@ -87,10 +89,12 @@ export const ItemsCollected = ({ navigation, route }: Props) => {
       />
       <SafeAreaView style={styles.safe}>
         <View style={styles.navHeader}>
-          <Text style={styles.title}>Order Items</Text>
+          <Text style={styles.title}>{t('translations:order_items')}</Text>
           <BackNavButton onPress={() => navigation.goBack()} />
         </View>
-        <Text style={styles.subtitle}>Ensure all items are collected.</Text>
+        <Text style={styles.subtitle}>
+          {t('translations:ensure_all_collected')}
+        </Text>
         <View style={styles.separator} />
         <FlatList
           keyExtractor={(item, index) => index.toString()}
@@ -111,7 +115,7 @@ export const ItemsCollected = ({ navigation, route }: Props) => {
           textStyle={{ fontSize: 20, fontWeight: '700' }}
           type={ButtonType.green}
           icon={Images.Hamburger}
-          title="Confirm items"
+          title={t('translations:confirm_items')}
           onPress={onAllItemsCollected}
         />
       </SafeAreaView>

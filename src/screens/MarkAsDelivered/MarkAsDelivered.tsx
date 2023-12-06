@@ -21,12 +21,14 @@ import { PhotoCell } from '@app/components/PhotoCell/PhotoCell';
 import { RootState } from '@app/redux/store';
 import { useDispatch, useSelector } from 'react-redux';
 import { markAsDelivered } from '@app/redux/order/order';
+import { useTranslation } from 'react-i18next';
 
 type Props = MainScreenProp<MainScreens.MarkAsDelivered>;
 
 type DataTypes = string | string[];
 
 export const MarkAsDelivered = ({ navigation }: Props) => {
+  const { t } = useTranslation();
   const [dataSource, setDataSource] = useState<DataTypes[]>([
     [
       CustomerNotes.BellnotRung,
@@ -68,11 +70,11 @@ export const MarkAsDelivered = ({ navigation }: Props) => {
 
   const onAddNote = () => {
     Alert.prompt(
-      'Add Note',
+      t('translations:add_note'),
       '',
       [
         {
-          text: 'Cancel',
+          text: t('translations:cancel'),
           onPress: () => undefined,
           style: 'cancel',
         },
@@ -94,7 +96,7 @@ export const MarkAsDelivered = ({ navigation }: Props) => {
     if (index === 0) {
       return (
         <View>
-          <Text style={styles.textNote}>Quick Note</Text>
+          <Text style={styles.textNote}>{t('translations:quick_note')}</Text>
           <View style={styles.contentContainerStyle}>
             {item.map(note => {
               if (note === ADD_NOTE_CELL) {
@@ -103,7 +105,9 @@ export const MarkAsDelivered = ({ navigation }: Props) => {
                     style={styles.buttonAddNote}
                     onPress={onAddNote}>
                     <Image source={Images.PlusCircle} />
-                    <Text style={styles.textAddNote}>Type a note</Text>
+                    <Text style={styles.textAddNote}>
+                      {t('translations:type_a_note')}
+                    </Text>
                   </TouchableOpacity>
                 );
               }
@@ -159,7 +163,7 @@ export const MarkAsDelivered = ({ navigation }: Props) => {
     <View style={styles.container}>
       <SafeAreaView style={styles.safe}>
         <View style={styles.navHeader}>
-          <Text style={styles.title}>For the customer</Text>
+          <Text style={styles.title}>{t('translations:for_the_customer')}</Text>
           <BackNavButton onPress={() => navigation.goBack()} />
         </View>
 
@@ -175,7 +179,7 @@ export const MarkAsDelivered = ({ navigation }: Props) => {
           textStyle={styles.buttonTextStyle}
           icon={Images.Camera}
           type={ButtonType.black}
-          title="Take a photo"
+          title={t('translations:take_a_photo')}
           onPress={() =>
             navigation.navigate(MainScreens.PhotoAttachment, {
               onAttach: onAttachPhoto,
@@ -189,7 +193,7 @@ export const MarkAsDelivered = ({ navigation }: Props) => {
           textStyle={styles.buttonTextStyle}
           icon={Images.Checkmark}
           type={ButtonType.green}
-          title="Confirm mark as delivered"
+          title={t('translations:confirm_mark_as_delivered')}
           onPress={handleConfirm}
         />
       </SafeAreaView>

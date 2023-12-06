@@ -22,10 +22,12 @@ import { RootScreen } from '@app/navigation/types';
 import { RootState } from '@app/redux/store';
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from '@app/redux/user/user';
+import { useTranslation } from 'react-i18next';
 
 type Props = OnboardingScreenProp<OnboardingScreen.Login>;
 
 export const LoginScreen = ({ navigation }: Props) => {
+  const { t } = useTranslation();
   const [rememberLogin, setRememberLogin] = useState<boolean>(false);
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
@@ -75,17 +77,17 @@ export const LoginScreen = ({ navigation }: Props) => {
         <ScrollView
           style={styles.scroll}
           contentContainerStyle={styles.scrollContent}>
-          <Text style={styles.textTitle}>Log in</Text>
+          <Text style={styles.textTitle}>{t('translations:log_in')}</Text>
           <TextField
             emailValid={emailIsValid}
             emailCheck
-            placeholder="Email"
+            placeholder={t('translations:email')}
             value={email}
             onChangeText={setEmail}
           />
           <TextField
             secureTextEntry
-            placeholder="Password"
+            placeholder={t('translations:password')}
             value={password}
             onChangeText={setPassword}
           />
@@ -93,17 +95,21 @@ export const LoginScreen = ({ navigation }: Props) => {
             isLoading={isLoading}
             style={styles.buttonLogin}
             type={ButtonType.black}
-            title="Continue"
+            title={t('translations:continue')}
             onPress={handleContinue}
           />
           <View style={styles.containerSwitch}>
             <Switch value={rememberLogin} onValueChange={handleSwitchChange} />
-            <Text style={styles.textRemember}>Remember login for 2 weeks</Text>
+            <Text style={styles.textRemember}>
+              {t('translations:remember_login')}
+            </Text>
           </View>
           <TouchableOpacity
             style={styles.containerForgot}
             onPress={handleForgotPassword}>
-            <Text style={styles.textForgot}>Forgot password</Text>
+            <Text style={styles.textForgot}>
+              {t('translations:forgot_password')}
+            </Text>
           </TouchableOpacity>
         </ScrollView>
         <BackNavButton

@@ -3,6 +3,7 @@ import { Image, StyleProp, ViewStyle, View, Text, Switch } from 'react-native';
 import { Images } from '@app/utilities/images';
 import { styles } from './SideMenuItemSwitch.styles';
 import { SideMenuItem } from '@app/types/types';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
   style?: StyleProp<ViewStyle>;
@@ -17,6 +18,7 @@ export const SideMenuItemSwitch = ({
   onValueChange,
   item,
 }: Props) => {
+  const { t } = useTranslation();
   const icon = useMemo(() => {
     switch (item) {
       case SideMenuItem.Location:
@@ -29,7 +31,7 @@ export const SideMenuItemSwitch = ({
   return (
     <View style={[styles.container, style]}>
       <Image source={icon} style={styles.icon} />
-      <Text style={styles.text}>{item}</Text>
+      <Text style={styles.text}>{t(`translations:${item}`)}</Text>
       <Switch value={isOn} onValueChange={onValueChange} />
     </View>
   );

@@ -21,6 +21,7 @@ import { DrawerScreens } from '@app/navigation/drawer/types';
 import { RootState } from '@app/redux/store';
 import { useSelector, useDispatch } from 'react-redux';
 import { setUserStatus } from '@app/redux/user/user';
+import { useTranslation } from 'react-i18next';
 
 type Props = RootScreenProp<RootScreen.Loading>;
 
@@ -35,6 +36,7 @@ const section2 = [
 ];
 
 export const SideMenu = ({ navigation }: Props) => {
+  const { t } = useTranslation();
   const [realTimeLocation, setRealTimeLocation] = useState<boolean>(false);
   const [autoAcceptOrders, setAutoAcceptOrders] = useState<boolean>(false);
   const [selectedOrg, setSelectedOrg] = useState<Organization>(
@@ -118,7 +120,9 @@ export const SideMenu = ({ navigation }: Props) => {
             userStatus={userStatus}
             onPress={() => undefined}
           />
-          <Text style={styles.textName}>HI Delena!</Text>
+          <Text style={styles.textName}>
+            {t('translations:hi') + ' Delena!'}
+          </Text>
         </View>
         <OrganizationSelect
           style={styles.cell}

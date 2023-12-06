@@ -16,10 +16,12 @@ import { TextField } from '@app/components/TextField/TextField';
 import { PaymentTabs } from '@app/components/PaymentTabs/PaymentTabs';
 import { PaymentTabItem } from '@app/types/types';
 import { Button } from '@app/components/Button/Button';
+import { useTranslation } from 'react-i18next';
 
 type Props = RootScreenProp<RootScreen.Loading>;
 
 export const PaymentMethods = ({ navigation }: Props) => {
+  const { t } = useTranslation();
   const { top } = useSafeAreaInsets();
   const [routingNumber, setRoutingNumber] = useState<string>('');
   const [accountNumber, setAccountNumber] = useState<string>('');
@@ -40,7 +42,7 @@ export const PaymentMethods = ({ navigation }: Props) => {
       <SafeAreaView style={styles.safe}>
         <View style={styles.navHeader}>
           <BackNavButton onPress={() => navigation.toggleDrawer()} />
-          <Text style={styles.title}>Payment Methods</Text>
+          <Text style={styles.title}>{t('translations:payment_methods')}</Text>
         </View>
         <PaymentTabs
           style={styles.tabs}
@@ -55,14 +57,14 @@ export const PaymentMethods = ({ navigation }: Props) => {
               <>
                 <TextField
                   value={routingNumber}
-                  placeholder="Routing Number"
+                  placeholder={t('translations:routing_number')}
                   keyboardType="numeric"
                   maxLength={16}
                   onChangeText={setRoutingNumber}
                 />
                 <TextField
                   value={accountNumber}
-                  placeholder="Account Number"
+                  placeholder={t('translations:account_number')}
                   keyboardType="numeric"
                   maxLength={16}
                   onChangeText={setAccountNumber}
@@ -73,7 +75,7 @@ export const PaymentMethods = ({ navigation }: Props) => {
               <>
                 <TextField
                   value={cardNumber}
-                  placeholder="Card Number"
+                  placeholder={t('translations:card_number')}
                   keyboardType="numeric"
                   maxLength={16}
                   onChangeText={setCardNumber}
@@ -98,7 +100,7 @@ export const PaymentMethods = ({ navigation }: Props) => {
                 </View>
                 <TextField
                   value={zip}
-                  placeholder="ZIP CODE"
+                  placeholder={t('translations:zip_code')}
                   maxLength={5}
                   keyboardType="numeric"
                   onChangeText={setZip}
@@ -107,7 +109,7 @@ export const PaymentMethods = ({ navigation }: Props) => {
             )}
             <Button
               style={styles.buttonSave}
-              title="Save"
+              title={t('translations:save')}
               onPress={() => undefined}
             />
           </KeyboardAvoidingView>

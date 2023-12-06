@@ -7,10 +7,12 @@ import { Organization } from '@app/types/types';
 import { OrganizationCell } from '@app/components/OrganizationCell/OrganizationCell';
 import { TEST_ORG_ARRAY } from '@app/utilities/testData';
 import { RootScreen, RootScreenProp } from '@app/navigation/types';
+import { useTranslation } from 'react-i18next';
 
 type Props = RootScreenProp<RootScreen.SelectOrganizationModal>;
 
 export const SelectOrganizationModal = ({ navigation, route }: Props) => {
+  const { t } = useTranslation();
   const { bottom } = useSafeAreaInsets();
   const { preselected, onOrganizationSelect } = route.params;
   const [dataSource, setDataSource] = useState<Organization[]>([]);
@@ -58,7 +60,9 @@ export const SelectOrganizationModal = ({ navigation, route }: Props) => {
               })
             }>
             <Image source={Images.Plus} style={styles.plus} />
-            <Text style={styles.textAdd}>Add organization</Text>
+            <Text style={styles.textAdd}>
+              {t('translations:add_organization')}
+            </Text>
           </TouchableOpacity>
         </View>
       </View>

@@ -14,10 +14,12 @@ import { RootState } from '@app/redux/store';
 import { useDispatch, useSelector } from 'react-redux';
 import { signup } from '@app/redux/user/user';
 import { RootScreen } from '@app/navigation/types';
+import { useTranslation } from 'react-i18next';
 
 type Props = OnboardingScreenProp<OnboardingScreen.Signup>;
 
 export const SignupScreen = ({ navigation }: Props) => {
+  const { t } = useTranslation();
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [emailIsValid, setEmailIsValid] = useState<boolean>(false);
@@ -58,17 +60,17 @@ export const SignupScreen = ({ navigation }: Props) => {
         <ScrollView
           style={styles.scroll}
           contentContainerStyle={styles.scrollContent}>
-          <Text style={styles.textTitle}>Sign up</Text>
+          <Text style={styles.textTitle}>{t('translations:sign_up')}</Text>
           <TextField
             emailValid={emailIsValid}
             emailCheck
-            placeholder="Email"
+            placeholder={t('translations:password')}
             value={email}
             onChangeText={setEmail}
           />
           <TextField
             secureTextEntry
-            placeholder="Password"
+            placeholder={t('translations:email')}
             value={password}
             onChangeText={setPassword}
           />
@@ -76,7 +78,7 @@ export const SignupScreen = ({ navigation }: Props) => {
             isLoading={isLoading}
             style={styles.buttonLogin}
             type={ButtonType.black}
-            title="Continue"
+            title={t('translations:continue')}
             onPress={handleContinue}
           />
         </ScrollView>

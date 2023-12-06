@@ -4,6 +4,7 @@ import { styles } from './EarningsCell.styles';
 import { Moment } from 'moment';
 import { nameOfDay, shortDate } from '@app/utilities/dates';
 import { Colors } from '@app/styles/colors';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
   style?: StyleProp<ViewStyle>;
@@ -20,6 +21,7 @@ export const EarningsCell = ({
   index,
   restaurantName,
 }: Props) => {
+  const { t } = useTranslation();
   const background = useMemo(() => {
     if (index % 2 === 0) {
       return Colors.gray17;
@@ -30,7 +32,7 @@ export const EarningsCell = ({
 
   return (
     <View style={[styles.container, { backgroundColor: background }, style]}>
-      <Text style={styles.textDay}>{nameOfDay(date)}</Text>
+      <Text style={styles.textDay}>{t(`translations:${nameOfDay(date)}`)}</Text>
       <View style={styles.containerText}>
         {restaurantName && <Text style={styles.text}>{restaurantName}</Text>}
         {!restaurantName && <Text style={styles.text}>{shortDate(date)}</Text>}

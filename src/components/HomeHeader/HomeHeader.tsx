@@ -11,6 +11,7 @@ import { HomeTabs } from '../HomeTabs/HomeTabs';
 import { SearchBar } from '../SearchBar/SearchBar';
 import { WaitingForOrders } from '../WaitingForOrders/WaitingForOrders';
 import { OrderDelivered } from '../OrderDelivered/OrderDelivered';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
   style?: StyleProp<ViewStyle>;
@@ -45,6 +46,7 @@ export const HomeHeader = ({
   onCloseOrderDeliveredNotification,
   loadingNewOrders,
 }: Props) => {
+  const { t } = useTranslation();
   const { top } = useSafeAreaInsets();
 
   return (

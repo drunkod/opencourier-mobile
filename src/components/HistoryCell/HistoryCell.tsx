@@ -12,6 +12,7 @@ import { styles } from './HistoryCell.styles';
 import { Order } from '@app/types/types';
 import moment from 'moment';
 import { formatMockDate, formatServer } from '@app/utilities/dates';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
   style?: StyleProp<ViewStyle>;
@@ -20,6 +21,7 @@ type Props = {
 };
 
 export const HistoryCell = ({ style, order, onPress }: Props) => {
+  const { t } = useTranslation();
   const date = moment(order.created_at, formatServer);
   return (
     <TouchableOpacity onPress={() => onPress(order)}>

@@ -15,12 +15,13 @@ import {
   AUTO_ACCEPT_DECLINE_TIMER,
   SCREEN_WIDTH,
 } from '@app/utilities/constants';
+import { useTranslation } from 'react-i18next';
 
 export enum ButtonOrderType {
-  accept = 'Accept',
-  decline = 'Decline',
-  acceptNow = 'Accept Now',
-  declineNow = 'Decline Now',
+  accept = 'accept',
+  decline = 'decline',
+  acceptNow = 'accept_now',
+  declineNow = 'decline_now',
 }
 
 const PARALELOGRAM_WIDTH = 16;
@@ -45,6 +46,7 @@ export const ButtonOrder = ({
   onPress,
   secondsRemaining = 0,
 }: Props) => {
+  const { t } = useTranslation();
   const widthAnimation = useRef(new Animated.Value(PROGRESS_BAR_WIDTH)).current;
   const numberOfParalelograms = Math.floor(SCREEN_WIDTH / PARALELOGRAM_WIDTH);
 
@@ -98,7 +100,9 @@ export const ButtonOrder = ({
           backgroundColor: backgroundColor,
         },
       ]}>
-      <Text style={[styles.textTitle, textStyle]}>{type}</Text>
+      <Text style={[styles.textTitle, textStyle]}>
+        {t(`translations:${type}`)}
+      </Text>
       {(type === ButtonOrderType.accept ||
         type === ButtonOrderType.decline) && (
         <View style={[styles.containerLoader, { height: PARALELOGRAM_HEIGHT }]}>

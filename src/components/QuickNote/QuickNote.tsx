@@ -10,6 +10,7 @@ import { styles } from './QuickNote.styles';
 import { Colors } from '@app/styles/colors';
 import { CustomerNotes } from '@app/types/types';
 import { Images } from '@app/utilities/images';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
   style?: StyleProp<ViewStyle>;
@@ -19,6 +20,7 @@ type Props = {
 };
 
 export const QuickNote = ({ style, text, selected, onPress }: Props) => {
+  const { t } = useTranslation();
   const icon = useMemo(() => {
     switch (text) {
       case CustomerNotes.BellnotRung:
@@ -60,7 +62,7 @@ export const QuickNote = ({ style, text, selected, onPress }: Props) => {
           selected && { color: Colors.white },
           icon && { marginLeft: 8 },
         ]}>
-        {text}
+        {t(`translations:${text}`)}
       </Text>
     </TouchableOpacity>
   );

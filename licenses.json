@@ -59,6 +59,12 @@
         "licenseUrl": "https://github.com/axios/axios/raw/master/LICENSE",
         "parents": "opendeli"
     },
+    "i18next@23.7.7": {
+        "licenses": "MIT",
+        "repository": "https://github.com/i18next/i18next",
+        "licenseUrl": "https://github.com/i18next/i18next/raw/master/LICENSE",
+        "parents": "opendeli"
+    },
     "moment@2.29.4": {
         "licenses": "MIT",
         "repository": "https://github.com/moment/moment",
@@ -75,6 +81,12 @@
         "licenses": "MIT",
         "repository": "https://github.com/ds300/postinstall-postinstall",
         "licenseUrl": "https://github.com/ds300/postinstall-postinstall/raw/master/LICENSE",
+        "parents": "opendeli"
+    },
+    "react-i18next@13.5.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/i18next/react-i18next",
+        "licenseUrl": "https://github.com/i18next/react-i18next/raw/master/LICENSE",
         "parents": "opendeli"
     },
     "react-native-action-sheet@2.2.0": {

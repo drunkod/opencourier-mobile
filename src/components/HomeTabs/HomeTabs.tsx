@@ -9,6 +9,7 @@ import {
 import { styles } from './HomeTabs.styles';
 import { HomeTabItem } from '@app/types/types';
 import { Colors } from '@app/styles/colors';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
   style?: StyleProp<ViewStyle>;
@@ -25,6 +26,7 @@ export const HomeTabs = ({
   selectedTab,
   onTabSelected,
 }: Props) => {
+  const { t } = useTranslation();
   const tabs: HomeTabItem[] = [
     HomeTabItem.New,
     HomeTabItem.InProgress,
@@ -40,7 +42,7 @@ export const HomeTabs = ({
       <TouchableOpacity style={styles.tab} onPress={() => onTabSelected(tab)}>
         <View style={styles.containerTabText}>
           <Text style={[styles.textTab, { color: tabSelectedColor(tab) }]}>
-            {tab}
+            {t(`translations:${tab}`)}
           </Text>
           {tab === HomeTabItem.New && newCount > 0 && (
             <View

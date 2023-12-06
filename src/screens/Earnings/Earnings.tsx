@@ -18,12 +18,14 @@ import { TEST_EARNINGS_ORDERS } from '@app/utilities/testData';
 import { Button, ButtonType } from '@app/components/Button/Button';
 import { formatMockDate } from '@app/utilities/dates';
 import { MainScreens } from '@app/navigation/main/types';
+import { useTranslation } from 'react-i18next';
 
 type Props = DrawerScreenProp<DrawerScreens.Earnings>;
 
 type DataSourceType = Order | string;
 
 export const Earnings = ({ navigation }: Props) => {
+  const { t } = useTranslation();
   const [orderCount, setOrderCount] = useState<number>(0);
   const [totalEarnings, setTotalEarnings] = useState<number>(0);
   const [selectedTab, setSelectedTab] = useState<EarningsTabItem>(
@@ -38,22 +40,22 @@ export const Earnings = ({ navigation }: Props) => {
     const title = () => {
       switch (selectedTab) {
         case EarningsTabItem.Today:
-          return 'No Earnings Today';
+          return t('translations:no_earnings_today');
         case EarningsTabItem.Weekly:
-          return 'No Weekly Earnings';
+          return t('translations:no_weekly_earnings');
         case EarningsTabItem.All:
-          return 'No Earnings';
+          return t('translations:no_earnings');
       }
     };
 
     const subtitle = () => {
       switch (selectedTab) {
         case EarningsTabItem.Today:
-          return 'You haven’t done any orders today';
+          return t('translations:no_orders_made_today');
         case EarningsTabItem.Weekly:
-          return 'You didn’t make any orders this week';
+          return t('translations:no_orders_made_this_week');
         case EarningsTabItem.All:
-          return 'You didn’t make any orders yet';
+          return t('translations:no_orders_made_yet');
       }
     };
 
@@ -73,12 +75,12 @@ export const Earnings = ({ navigation }: Props) => {
           <View style={styles.footerSeparator} />
           <Button
             style={styles.buttonFooter}
-            title="Download weekly summary"
+            title={t('translations:download_weekly_summary')}
             onPress={() => undefined}
             type={ButtonType.white}
           />
           <Button
-            title="See payout history"
+            title={t('translations:see_payout_history')}
             onPress={() => navigation.navigate(MainScreens.PayoutActivity)}
             type={ButtonType.white}
           />
@@ -159,11 +161,17 @@ export const Earnings = ({ navigation }: Props) => {
   const headerTitle = useMemo(() => {
     switch (selectedTab) {
       case EarningsTabItem.Today:
-        return orderCount > 0 ? `${orderCount} orders` : 'No Orders Today';
+        return orderCount > 0
+          ? `${orderCount} ${t('translation:orders')}`
+          : t('translations:no_orders_today');
       case EarningsTabItem.Weekly:
-        return orderCount > 0 ? `${orderCount} orders` : 'No Orders This Week';
+        return orderCount > 0
+          ? `${orderCount} ${t('translation:orders')}`
+          : t('translations:no_orders_this_week');
       case EarningsTabItem.All:
-        return orderCount > 0 ? `${orderCount} orders` : 'No Orders';
+        return orderCount > 0
+          ? `${orderCount} ${t('translation:orders')}`
+          : t('translations:no_orders');
     }
   }, [selectedTab, orderCount]);
 
@@ -190,7 +198,7 @@ export const Earnings = ({ navigation }: Props) => {
       <SafeAreaView style={styles.safe}>
         <View style={styles.navHeader}>
           <BackNavButton onPress={() => navigation.toggleDrawer()} />
-          <Text style={styles.title}>Earnings</Text>
+          <Text style={styles.title}>{t('translations:earnings')}</Text>
         </View>
         <View style={styles.containerEarnings}>
           <View style={styles.earningsText}>

@@ -9,6 +9,7 @@ import {
 import { Images } from '@app/utilities/images';
 import { styles } from './SideMenuItemPlain.styles';
 import { SideMenuItem } from '@app/types/types';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
   style?: StyleProp<ViewStyle>;
@@ -23,6 +24,7 @@ export const SideMenuItemPlain = ({
   item,
   hideArrow,
 }: Props) => {
+  const { t } = useTranslation();
   const icon = useMemo(() => {
     switch (item) {
       case SideMenuItem.Orders:
@@ -45,7 +47,7 @@ export const SideMenuItemPlain = ({
       style={[styles.container, style]}
       onPress={() => onPress(item)}>
       <Image source={icon} style={styles.icon} />
-      <Text style={styles.text}>{item}</Text>
+      <Text style={styles.text}>{t(`translations:${item}`)}</Text>
       {!hideArrow && (
         <Image source={Images.ArrowRightBlack} style={styles.iconArrow} />
       )}

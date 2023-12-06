@@ -3,6 +3,7 @@ import { Image, StyleProp, ViewStyle, View, Text } from 'react-native';
 import { Images } from '@app/utilities/images';
 import { styles } from './HomeEmptyState.styles';
 import { HomeEmptyState } from '@app/types/types';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
   style?: StyleProp<ViewStyle>;
@@ -10,6 +11,7 @@ type Props = {
 };
 
 export const HomeEmptyStateComponent = ({ style, state }: Props) => {
+  const { t } = useTranslation();
   const imageSource = useMemo(() => {
     switch (state) {
       case HomeEmptyState.WaitingNewOrders:
@@ -24,11 +26,11 @@ export const HomeEmptyStateComponent = ({ style, state }: Props) => {
   const title = useMemo(() => {
     switch (state) {
       case HomeEmptyState.New:
-        return 'No new orders';
+        return t('translations:no_new_orders');
       case HomeEmptyState.History:
-        return 'No previous orders';
+        return t('translations:no_previous_orders');
       case HomeEmptyState.InProgress:
-        return 'No orders in progress';
+        return t('translations:no_orders_in_progress');
       case HomeEmptyState.WaitingNewOrders:
         return '';
     }
@@ -48,7 +50,7 @@ export const HomeEmptyStateComponent = ({ style, state }: Props) => {
         <>
           <Text style={styles.title}>{title}</Text>
           <Text style={styles.subtitle}>
-            {"We'll notifiy you when you recieve a new order"}
+            {t('translations:notify_when_order')}
           </Text>
         </>
       )}

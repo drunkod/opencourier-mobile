@@ -16,6 +16,7 @@ import { DeliveryInstructionsCell } from '../DeliveryInstructionsCell/DeliveryIn
 import { NoteCell } from '../NoteCell/NoteCell';
 import UserContext from '@app/context/userContext';
 import Map from '../Map/Map';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
   style?: StyleProp<ViewStyle>;
@@ -46,6 +47,7 @@ export const InProgressCell = ({
   onAddNote,
   onPickupInstructionPress,
 }: Props) => {
+  const { t } = useTranslation();
   const [topExpanded, setTopExpanded] = useState<boolean>(true);
   const [bottomExpanded, setBottomExpanded] = useState<boolean>(false);
   const { user } = useContext(UserContext);
@@ -148,7 +150,9 @@ export const InProgressCell = ({
                 style={styles.buttonAddNote}
                 onPress={() => onAddNote(order)}>
                 <Image source={Images.PlusCircle} />
-                <Text style={styles.textAddNote}>Type a note</Text>
+                <Text style={styles.textAddNote}>
+                  {t('translations:type_a_note')}
+                </Text>
               </TouchableOpacity>
             </View>
 
@@ -157,14 +161,18 @@ export const InProgressCell = ({
               style={styles.buttonTop}
               type={ButtonType.black}
               icon={Images.PhoneOutgoing}
-              title="Contact restaurant"
+              title={t('translations:contact_restaurant')}
               onPress={() => onContactRestaurant(order)}
             />
             <Button
               textStyle={{ fontSize: 20, fontWeight: '700' }}
               type={ButtonType.green}
               icon={itemsConfirmed ? Images.Checkmark : Images.Hamburger}
-              title={itemsConfirmed ? 'Items confirmed' : 'Confirm items'}
+              title={
+                itemsConfirmed
+                  ? t('translations:items_confirmed')
+                  : t('translations:confirm_items')
+              }
               onPress={() => handleConfirmItems(order)}
             />
           </View>
@@ -178,13 +186,13 @@ export const InProgressCell = ({
                 <Image source={Images.Distance} />
                 <Text style={styles.textDistance}>{`${Math.ceil(
                   Math.ceil(distance / 1000) / 1.6,
-                )} mi away`}</Text>
+                )} mi ${t('translations:away')}`}</Text>
               </View>
               <View style={styles.containerTextAway}>
                 <Image source={Images.Clock} />
                 <Text style={styles.textDistance}>{`${Math.ceil(
                   Math.ceil(duration) / 60,
-                )} min away`}</Text>
+                )} min ${t('translations:away')}`}</Text>
               </View>
             </View>
           </View>
@@ -250,14 +258,14 @@ export const InProgressCell = ({
               style={styles.buttonTop}
               type={ButtonType.black}
               icon={Images.PhoneOutgoing}
-              title="Contact customer"
+              title={t('translations:contact_customer')}
               onPress={() => onContactCustomer(order)}
             />
             <Button
               textStyle={{ fontSize: 20, fontWeight: '700' }}
               type={ButtonType.gray}
               icon={Images.CheckFat}
-              title="Mark as delivered"
+              title={t('translations:mark_as_delivered')}
               onPress={() => onMarkAsDelivered(order)}
             />
           </View>

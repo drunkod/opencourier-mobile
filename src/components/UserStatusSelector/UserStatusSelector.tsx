@@ -9,6 +9,7 @@ import {
 import { styles } from './UserStatusSelector.styles';
 import { UserStatus } from '@app/types/types';
 import { Colors } from '@app/styles/colors';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
   style?: StyleProp<ViewStyle>;
@@ -19,6 +20,7 @@ type Props = {
 const data = [UserStatus.Online, UserStatus.LastCall, UserStatus.Offline];
 
 export const UserStatusSelector = ({ style, onPress, selected }: Props) => {
+  const { t } = useTranslation();
   const StatusItem = ({ status }: { status: UserStatus }) => {
     const buttonStyle = useMemo(() => {
       switch (status) {
@@ -56,7 +58,9 @@ export const UserStatusSelector = ({ style, onPress, selected }: Props) => {
     return (
       <TouchableOpacity key={status} onPress={() => onPress(status)}>
         <View style={[buttonStyle, { backgroundColor: buttonColor }]}>
-          <Text style={[styles.text, { color: textColor }]}>{status}</Text>
+          <Text style={[styles.text, { color: textColor }]}>
+            {t(`translations:${status}`)}
+          </Text>
         </View>
       </TouchableOpacity>
     );

@@ -15,6 +15,7 @@ import UserContext from '@app/context/userContext';
 import Map from '../Map/Map';
 import { RootState } from '@app/redux/store';
 import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
   style?: StyleProp<ViewStyle>;
@@ -37,6 +38,7 @@ export const NewOrderCell = ({
   onCopyRestaurant,
   secondsRemaining,
 }: Props) => {
+  const { t } = useTranslation();
   const { user } = useSelector((state: RootState) => state.user);
 
   return (

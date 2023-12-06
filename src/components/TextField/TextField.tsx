@@ -12,6 +12,7 @@ import {
   TextInputProps,
 } from 'react-native';
 import { styles } from './TextField.styles';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
   error?: string;
@@ -24,6 +25,7 @@ type Props = {
 type TextFieldProps = TextInputProps & Props;
 
 export const TextField = forwardRef((props: TextFieldProps, ref) => {
+  const { t } = useTranslation();
   const {
     value,
     placeholder,
@@ -69,7 +71,9 @@ export const TextField = forwardRef((props: TextFieldProps, ref) => {
             activeOpacity={0.9}
             onPress={() => setInputTextHidden(!inputTextHidden)}>
             <Text style={styles.textShow}>
-              {inputTextHidden ? 'show' : 'hide'}
+              {inputTextHidden
+                ? t('translations:show')
+                : t('translations:hide')}
             </Text>
           </TouchableOpacity>
         )}

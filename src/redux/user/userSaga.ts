@@ -17,6 +17,7 @@ function* loginUserSaga(service: UserService): Generator<any, void, any> {
     const { payload } = yield take(login);
     try {
       const res = yield call(service.login, payload);
+      // console.warn('login res ', res);
       yield put(loginFinished(res));
     } catch (error) {
       yield put(loginError(error as string));

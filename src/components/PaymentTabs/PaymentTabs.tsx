@@ -9,6 +9,7 @@ import {
 import { styles } from './PaymentTabs.styles';
 import { PaymentTabItem } from '@app/types/types';
 import { Colors } from '@app/styles/colors';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
   style?: StyleProp<ViewStyle>;
@@ -17,6 +18,7 @@ type Props = {
 };
 
 export const PaymentTabs = ({ style, selectedTab, onTabSelected }: Props) => {
+  const { t } = useTranslation();
   const tabs: PaymentTabItem[] = [
     PaymentTabItem.Bank,
     PaymentTabItem.DirectDebit,
@@ -31,7 +33,7 @@ export const PaymentTabs = ({ style, selectedTab, onTabSelected }: Props) => {
       <TouchableOpacity style={styles.tab} onPress={() => onTabSelected(tab)}>
         <View style={styles.containerTabText}>
           <Text style={[styles.textTab, { color: tabSelectedColor(tab) }]}>
-            {tab}
+            {t(`translations:${tab}`)}
           </Text>
         </View>
         {selectedTab === tab && <View style={styles.indicator} />}

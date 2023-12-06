@@ -11,6 +11,11 @@ import {
 import { useEffect, useState } from 'react';
 import { AUTO_ACCEPT_DECLINE_TIMER } from '@app/utilities/constants';
 import { getAutoAcceptOrdersStorage } from '@app/utilities/storage';
+import {
+  TEST_API_NEW_ORDER,
+  TEST_NEW_ORDERS,
+  TEST_ORDERS_HISTORY,
+} from '@app/utilities/testData';
 
 type NewOrderTimer = {
   secondsRemaining: number;
@@ -189,7 +194,8 @@ export const useHomeOrders = () => {
   useEffect(() => {
     fetchNewOrders();
     fetchInProgressOrders();
-    fetchHistory();
+    setDataSourceHistory([TEST_ORDERS_HISTORY]);
+    // fetchHistory();
     (async () => {
       const accept = await getAutoAcceptOrdersStorage();
       setAutoAcceptOrders(accept);

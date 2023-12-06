@@ -12,6 +12,7 @@ import { styles } from './Licences.styles';
 import { BackNavButton } from '@app/components/BackNavButton/BackNavButton';
 import { MainScreenProp, MainScreens } from '@app/navigation/main/types';
 import { Images } from '@app/utilities/images';
+import { useTranslation } from 'react-i18next';
 
 type Props = MainScreenProp<MainScreens.Licences>;
 
@@ -29,6 +30,7 @@ interface IFinalLicense {
 }
 
 export const LicencesScreen = ({ navigation }: Props) => {
+  const { t } = useTranslation();
   const licenses: {
     [id: string]: ILicense;
   } = require('../../../licenses.json');
@@ -58,9 +60,11 @@ export const LicencesScreen = ({ navigation }: Props) => {
       <TouchableOpacity style={styles.cell} onPress={() => onCellPress(item)}>
         <View style={styles.cellContent}>
           <Text style={styles.textCellTitle}>{item.name}</Text>
-          <Text style={styles.textCellInfo}>{'Version: ' + item.version}</Text>
           <Text style={styles.textCellInfo}>
-            {'License: ' + item.licenseSpecs.licenses}
+            {`${t('translations:version')}: ` + item.version}
+          </Text>
+          <Text style={styles.textCellInfo}>
+            {`${t('translations:license')}: ` + item.licenseSpecs.licenses}
           </Text>
         </View>
         <Image source={Images.ArrowRightBlack} />
