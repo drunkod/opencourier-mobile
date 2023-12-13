@@ -24,7 +24,7 @@ import { RootState } from '@app/redux/store';
 import { useSelector, useDispatch } from 'react-redux';
 import { setUserStatus } from '@app/redux/user/user';
 import { useTranslation } from 'react-i18next';
-import { NativeModules } from 'react-native';
+import RNRestart from 'react-native-restart';
 
 type Props = RootScreenProp<RootScreen.Loading>;
 
@@ -71,7 +71,7 @@ export const SideMenu = ({ navigation }: Props) => {
   const organizationSelected = (org: Organization) => {
     // setSelectedOrg(org);
     setSelectedOrganizationStorage(org);
-    NativeModules.DevSettings.reload();
+    RNRestart.restart();
   };
 
   useEffect(() => {
