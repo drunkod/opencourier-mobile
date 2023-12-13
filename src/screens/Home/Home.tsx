@@ -34,6 +34,7 @@ import { acceptOrder, declineOrder } from '@app/redux/order/order';
 import { useHomeOrders } from '@app/hooks/useHomeOrders';
 import { RootState } from '@app/redux/store';
 import { useTranslation } from 'react-i18next';
+import { RootScreen } from '@app/navigation/types';
 
 type Props = DrawerScreenProp<DrawerScreens.Home>;
 
@@ -273,7 +274,7 @@ export const HomeScreen = ({ navigation }: Props) => {
     );
   };
 
-  const addNote = (order: Order, note: string | undefined) => {
+  const onNoteAdded = (note: string, order: Order) => {
     if (note) {
       var temp = dataSource.filter(obj => obj.id === order.id);
       if (temp.length > 0 && temp[0].courier_tips_for_merchant) {
@@ -287,22 +288,10 @@ export const HomeScreen = ({ navigation }: Props) => {
   };
 
   const onAddNote = (order: Order) => {
-    Alert.prompt(
-      'Add Note',
-      '',
-      [
-        {
-          text: 'Cancel',
-          onPress: () => undefined,
-          style: 'cancel',
-        },
-        {
-          text: 'OK',
-          onPress: note => addNote(order, note),
-        },
-      ],
-      'plain-text',
-    );
+    navigation.navigate(RootScreen.AddNoteModal, {
+      onNoteAdded: onNoteAdded,
+      order: order,
+    });
   };
 
   const onRefresh = () => {

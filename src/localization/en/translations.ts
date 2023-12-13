@@ -129,4 +129,7 @@ export default {
   ensure_all_collected: 'Ensure all items are collected.',
   pickup_address: 'Pickup address',
   dropoff_address: 'Dropoff address',
+  add_note_here: 'Add a note here...',
+  note: 'Note',
+  avoid_mentioning: 'Avoid mentioning different topics in one note.',
 };

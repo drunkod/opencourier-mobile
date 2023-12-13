@@ -60,8 +60,12 @@ import CaretCircleLeft from '@app/assets/icons/CaretCircleLeft.png';
 import OnlinePopup from '@app/assets/icons/OnlinePopup.png';
 import LastCallPopup from '@app/assets/icons/LastCallPopup.png';
 import OfflinePopup from '@app/assets/icons/OfflinePopup.png';
+import info from '@app/assets/icons/left_icon.png';
+import checkWhite from '@app/assets/icons/CheckCircleWhite.png';
 
 export const Images = {
+  CheckWhite: checkWhite,
+  Info: info,
   OnlinePopup: OnlinePopup,
   OfflinePopup: OfflinePopup,
   LastCallPopup: LastCallPopup,

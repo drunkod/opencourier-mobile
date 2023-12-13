@@ -1,6 +1,6 @@
 import { NavigationProp, RouteProp } from '@react-navigation/native';
 import { MainStackParamList } from './main/types';
-import { Organization, UserStatus } from '@app/types/types';
+import { Order, Organization, UserStatus } from '@app/types/types';
 
 export enum RootScreen {
   Loading = 'Loading',
@@ -9,6 +9,7 @@ export enum RootScreen {
   SelectOrganizationModal = 'SelectOrganizationModal',
   SearchOrganization = 'SearchOrganization',
   UserStatusModal = 'UserStatusModal',
+  AddNoteModal = 'AddNoteModal',
 }
 
 export type RootStackParamList = {
@@ -26,6 +27,10 @@ export type RootStackParamList = {
     status: UserStatus;
     onAccept: (status: UserStatus) => void;
     onCancel: () => void;
+  };
+  AddNoteModal: {
+    order: Order;
+    onNoteAdded: (note: string, order: Order) => void;
   };
 };
 
