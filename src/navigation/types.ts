@@ -10,6 +10,7 @@ export enum RootScreen {
   SearchOrganization = 'SearchOrganization',
   UserStatusModal = 'UserStatusModal',
   AddNoteModal = 'AddNoteModal',
+  DeleteNoteModal = 'DeleteNoteModal',
 }
 
 export type RootStackParamList = {
@@ -31,6 +32,11 @@ export type RootStackParamList = {
   AddNoteModal: {
     order: Order;
     onNoteAdded: (note: string, order: Order) => void;
+  };
+  DeleteNoteModal: {
+    order: Order;
+    note: string;
+    onDelete: (note: string, order: Order) => void;
   };
 };
 

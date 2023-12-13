@@ -132,4 +132,8 @@ export default {
   add_note_here: 'Add a note here...',
   note: 'Note',
   avoid_mentioning: 'Avoid mentioning different topics in one note.',
+  delete: 'Delete',
+  delete_prompt: 'Are you sure you want to delete this note?',
+  action_undone:
+    'This action cannot be undone. This note will be permanently removed.',
 };

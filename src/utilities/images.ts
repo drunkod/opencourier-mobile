@@ -62,8 +62,10 @@ import LastCallPopup from '@app/assets/icons/LastCallPopup.png';
 import OfflinePopup from '@app/assets/icons/OfflinePopup.png';
 import info from '@app/assets/icons/left_icon.png';
 import checkWhite from '@app/assets/icons/CheckCircleWhite.png';
+import trash from '@app/assets/icons/Trash.png';
 
 export const Images = {
+  Trash: trash,
   CheckWhite: checkWhite,
   Info: info,
   OnlinePopup: OnlinePopup,
