@@ -17,6 +17,7 @@ import { NoteCell } from '../NoteCell/NoteCell';
 import UserContext from '@app/context/userContext';
 import Map from '../Map/Map';
 import { useTranslation } from 'react-i18next';
+import { markAsDelivered } from '@app/redux/order/order';
 
 type Props = {
   style?: StyleProp<ViewStyle>;
@@ -28,9 +29,10 @@ type Props = {
   onMarkAsDelivered: (order: Order) => void;
   onCopyRestaurant: (order: Order) => void;
   onCopyCustomer: (order: Order) => void;
-  onMapPress: (order: Order) => void;
   onAddNote: (order: Order) => void;
   onPickupInstructionPress: (order: Order, note: CourierTip) => void;
+  onCustomerAddressPress: (order: Order) => void;
+  onRestaurantAddressPress: (order: Order) => void;
 };
 
 export const InProgressCell = ({
@@ -43,9 +45,10 @@ export const InProgressCell = ({
   onMarkAsDelivered,
   onCopyRestaurant,
   onCopyCustomer,
-  onMapPress,
   onAddNote,
   onPickupInstructionPress,
+  onCustomerAddressPress,
+  onRestaurantAddressPress,
 }: Props) => {
   const { t } = useTranslation();
   const [topExpanded, setTopExpanded] = useState<boolean>(true);
@@ -114,7 +117,9 @@ export const InProgressCell = ({
               topExpanded && { overflow: 'visible' },
             ]}>
             <View style={styles.containerAddressButton}>
-              <Text style={styles.textAddress}>
+              <Text
+                style={styles.textAddress}
+                onPress={() => onCustomerAddressPress(order)}>
                 {`${order.dropoff.location.addressLine1 ?? 'N/A'} ${
                   order.dropoff.location.addressLine2 ?? 'N/A'
                 } ${order.dropoff.location.countryCode ?? 'N/A'} ${
@@ -178,9 +183,7 @@ export const InProgressCell = ({
           </View>
 
           <View style={styles.containerMap}>
-            <TouchableOpacity onPress={() => onMapPress(order)}>
-              <Map order={order} user={user} />
-            </TouchableOpacity>
+            <Map order={order} user={user} />
             <View style={styles.containerAway}>
               <View style={styles.containerTextAway}>
                 <Image source={Images.Distance} />
@@ -225,7 +228,9 @@ export const InProgressCell = ({
               bottomExpanded && { overflow: 'visible' },
             ]}>
             <View style={styles.containerAddressButton}>
-              <Text style={styles.textAddress}>
+              <Text
+                style={styles.textAddress}
+                onPress={() => onRestaurantAddressPress(order)}>
                 {`${order.pickup.location.addressLine1 ?? 'N/A'} ${
                   order.pickup.location.addressLine2 ?? 'N/A'
                 } ${order.pickup.location.countryCode ?? 'N/A'} ${
@@ -262,8 +267,9 @@ export const InProgressCell = ({
               onPress={() => onContactCustomer(order)}
             />
             <Button
+              disabled={!markAsDelivered}
               textStyle={{ fontSize: 20, fontWeight: '700' }}
-              type={ButtonType.gray}
+              type={itemsConfirmed ? ButtonType.green : ButtonType.gray}
               icon={Images.CheckFat}
               title={t('translations:mark_as_delivered')}
               onPress={() => onMarkAsDelivered(order)}

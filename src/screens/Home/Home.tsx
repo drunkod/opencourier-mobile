@@ -14,6 +14,7 @@ import {
   CourierTip,
   HomeEmptyState,
   HomeTabItem,
+  MapDestination,
   MapLinkingOptions,
   Order,
   PickupInstruction,
@@ -26,32 +27,28 @@ import { NewOrderCell } from '@app/components/NewOrderCell/NewOrderCell';
 import { getAutoAcceptOrdersStorage } from '@app/utilities/storage';
 import { InProgressCell } from '@app/components/InProgressCell/InProgressCell';
 import ActionSheet from 'react-native-action-sheet';
-import {
-  MAP_ACTION_SHEET_OPTIONS_ANDROID,
-  MAP_ACTION_SHEET_OPTIONS_IOS,
-} from '@app/utilities/constants';
 import { MainScreens } from '@app/navigation/main/types';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { useDispatch, useSelector } from 'react-redux';
 import { acceptOrder, declineOrder } from '@app/redux/order/order';
 import { useHomeOrders } from '@app/hooks/useHomeOrders';
 import { RootState } from '@app/redux/store';
-
-const data: string[] =
-  Platform.OS === 'android'
-    ? MAP_ACTION_SHEET_OPTIONS_ANDROID
-    : MAP_ACTION_SHEET_OPTIONS_IOS;
+import { useTranslation } from 'react-i18next';
 
 type Props = DrawerScreenProp<DrawerScreens.Home>;
 
 export const HomeScreen = ({ navigation }: Props) => {
+  const { t } = useTranslation();
+  const [availableMapApps, setAvailableMapApps] = useState<string[]>([
+    t('translations:cancel'),
+  ]);
   const [selectedTab, setSelectedTab] = useState<HomeTabItem>(HomeTabItem.New);
   const [isSearching, setIsSearching] = useState<boolean>(false);
   const [searchText, setSearchText] = useState<string>('');
   const [dataSource, setDataSource] = useState<Order[]>([]);
   const [autoAcceptOrders, setAutoAcceptOrders] = useState<boolean>(false);
   const [showMapActionSheet, setShowMapActionSheet] = useState<
-    Order | undefined
+    { order: Order; destination: MapDestination } | undefined
   >(undefined);
   const [refreshing, setRefreshing] = React.useState(false);
   const [orderDeliveredNotif, setOrderDeliveredNotif] =
@@ -161,7 +158,18 @@ export const HomeScreen = ({ navigation }: Props) => {
               navigation.navigate(MainScreens.MarkAsDelivered)
             }
             order={item}
-            onMapPress={order => setShowMapActionSheet(order)}
+            onRestaurantAddressPress={order =>
+              setShowMapActionSheet({
+                order: order,
+                destination: MapDestination.restaurant,
+              })
+            }
+            onCustomerAddressPress={order =>
+              setShowMapActionSheet({
+                order: order,
+                destination: MapDestination.customer,
+              })
+            }
             onAddNote={onAddNote}
             onPickupInstructionPress={onPickupInstructionPress}
           />
@@ -192,49 +200,72 @@ export const HomeScreen = ({ navigation }: Props) => {
   };
 
   const onSelect = (buttonIndex: number) => {
+    const { order, destination } = showMapActionSheet;
+    if (
+      order !== undefined &&
+      order.pickup !== undefined &&
+      order.dropoff !== undefined &&
+      destination !== undefined
+    ) {
+      const labelCustomer =
+        order.customer_name ?? t('translations:dropoff_address');
+      const labelRestauran =
+        order.merchant_name ?? t('translations:pickup_address');
+      const label =
+        destination === MapDestination.customer
+          ? labelCustomer
+          : labelRestauran;
+
+      const latLngCustomer = `${order.dropoff.coordinates.latitude}, ${order.dropoff.coordinates.longitude}.`;
+      const latLngRestaurant = `${order.pickup.coordinates.latitude}, ${order.pickup.coordinates.longitude}.`;
+      const latLng = MapDestination.customer
+        ? latLngCustomer
+        : latLngRestaurant;
+
+      if (
+        availableMapApps[buttonIndex] ===
+        t(`translations:${MapLinkingOptions.apple}`)
+      ) {
+        const scheme = 'maps://0,0?q=';
+        const url = `${scheme}${label}@${latLng}`;
+        Linking.canOpenURL(url).then(supported => {
+          if (supported) {
+            Linking.openURL(url);
+          }
+        });
+      }
+      if (
+        availableMapApps[buttonIndex] ===
+        t(`translations:${MapLinkingOptions.google}`)
+      ) {
+        const scheme = 'geo:0,0?q=';
+        const url = `${scheme}${latLng}(${label})`;
+        Linking.canOpenURL(url).then(supported => {
+          if (supported) {
+            Linking.openURL(url);
+          }
+        });
+      }
+      if (
+        availableMapApps[buttonIndex] ===
+        t(`translations:${MapLinkingOptions.waze}`)
+      ) {
+        const url = `https://www.waze.com/ul?ll=${latLng}&navigate=yes&zoom=17`;
+        Linking.canOpenURL(url).then(supported => {
+          if (supported) {
+            Linking.openURL(url);
+          }
+        });
+      }
+    }
     setShowMapActionSheet(undefined);
-    if (data[buttonIndex] === MapLinkingOptions.apple) {
-      const scheme = 'maps://0,0?q=';
-      const latLng = '40.730610, -73.935242.';
-      const label = 'Test Label';
-      const url = `${scheme}${label}@${latLng}`;
-      Linking.canOpenURL(url).then(supported => {
-        if (supported) {
-          Linking.openURL(url);
-        } else {
-          console.warn('Not Installed');
-        }
-      });
-    }
-    if (data[buttonIndex] === MapLinkingOptions.google) {
-      const scheme = 'geo:0,0?q=';
-      const latLng = '40.730610, -73.935242.';
-      const label = 'Test Label';
-      const url = `${scheme}${latLng}(${label})`;
-      Linking.canOpenURL(url).then(supported => {
-        if (supported) {
-          Linking.openURL(url);
-        } else {
-          console.warn('Not Installed');
-        }
-      });
-    }
-    if (data[buttonIndex] === MapLinkingOptions.waze) {
-      const url =
-        'https://www.waze.com/ul?ll=40.75889500%2C-73.98513100&navigate=yes&zoom=17';
-      Linking.canOpenURL(url).then(supported => {
-        if (supported) {
-          Linking.openURL(url);
-        }
-      });
-    }
   };
 
   const showActionSheeet = (_order: Order) => {
     ActionSheet.showActionSheetWithOptions(
       {
-        options: data,
-        cancelButtonIndex: 3,
+        options: availableMapApps,
+        cancelButtonIndex: Math.max(0, availableMapApps.length - 1),
         tintColor: 'blue',
         cancelButtonTintColor: 'red',
       },
@@ -288,6 +319,24 @@ export const HomeScreen = ({ navigation }: Props) => {
     }
   };
 
+  const checkInstalledMapApps = async () => {
+    const waze: boolean = await Linking.canOpenURL('waze://');
+    const google: boolean = await Linking.canOpenURL('comgooglemaps://');
+    const apple: boolean = await Linking.canOpenURL('maps://');
+    const maps = [];
+    if (apple) {
+      maps.push(t(`translations:${MapLinkingOptions.apple}`));
+    }
+    if (google) {
+      maps.push(t(`translations:${MapLinkingOptions.google}`));
+    }
+    if (waze) {
+      maps.push(t(`translations:${MapLinkingOptions.waze}`));
+    }
+    maps.push(t('translations:cancel'));
+    setAvailableMapApps(maps);
+  };
+
   useEffect(() => {
     switch (selectedTab) {
       case HomeTabItem.New:
@@ -306,6 +355,7 @@ export const HomeScreen = ({ navigation }: Props) => {
     (async () => {
       const accept = await getAutoAcceptOrdersStorage();
       setAutoAcceptOrders(accept);
+      checkInstalledMapApps();
     })();
   }, []);
 

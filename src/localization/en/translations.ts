@@ -127,4 +127,6 @@ export default {
   cancel: 'Cancel',
   order_items: 'Order items',
   ensure_all_collected: 'Ensure all items are collected.',
+  pickup_address: 'Pickup address',
+  dropoff_address: 'Dropoff address',
 };

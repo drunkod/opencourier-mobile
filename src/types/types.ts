@@ -195,3 +195,8 @@ export type ConfirmItemsCheck = {
   orderId: string;
   confirmedItems: boolean;
 };
+
+export enum MapDestination {
+  customer,
+  restaurant,
+}
