@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
   container: {
-    height: 56,
+    height: 48,
     alignSelf: 'stretch',
     alignItems: 'center',
     justifyContent: 'center',
@@ -11,11 +11,12 @@ export const styles = StyleSheet.create({
   },
   textTitle: {
     fontSize: 16,
-    fontWeight: '600',
+    fontWeight: '800',
+    lineHeight: 24,
   },
   icon: {
-    width: 32,
-    height: 32,
+    width: 20,
+    height: 20,
     marginRight: 10,
   },
 });

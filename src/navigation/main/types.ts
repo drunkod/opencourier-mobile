@@ -8,6 +8,22 @@ export enum MainScreens {
   PhotoAttachment = 'PhotoAttachment',
   PayoutActivity = 'PayoutActivity',
   Licences = 'Licences',
+  LanguageScreen = 'LanguageScreen',
+  ThemeScreen = 'ThemeScreen',
+  OperatingArea = 'operatingArea',
+  Accessibility = 'Accessibility',
+  DefaultSound = 'DefaultSound',
+  MyLanguages = 'MyLanguages',
+  VolumeScreen = 'VolumeScreen',
+  EmergencyContact = 'EmergencyContact',
+  NavigationScreen = 'NavigationScreen',
+  VehicleTypeScreen = 'VehicleTypeScreen',
+  RestaurantTypeScreen = 'RestaurantTypeScreen',
+  CuisineTypeScreen = 'CuisineTypeScreen',
+  EarningsMethodScreen = 'EarningsMethodScreen',
+  WeightOrderScreen = 'WeightOrderScreen',
+  OrderPreferenceScreen = 'OrderPreferenceScreen',
+  ShiftAvailabilityScreen = 'ShiftAvailabilityScreen',
 }
 
 export type MainStackParamList = {
@@ -23,6 +39,13 @@ export type MainStackParamList = {
   };
   PayoutActivity: undefined;
   Licences: undefined;
+  VehicleTypeScreen: undefined;
+  RestaurantTypeScreen: undefined;
+  CuisineTypeScreen: undefined;
+  EarningsMethodScreen: undefined;
+  WeightOrderScreen: undefined;
+  OrderPreferenceScreen: undefined;
+  ShiftAvailabilityScreen: undefined;
 };
 
 export type MainNavigationProp = NavigationProp<MainStackParamList>;

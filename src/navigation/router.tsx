@@ -4,12 +4,13 @@ import { RootScreen, RootStackParamList } from '@app/navigation/types';
 import { LoadingScreen } from '@app/screens/Loading/Loading';
 import { OnboardingStack } from '@app/navigation/onboarding/OnboardingNavigation';
 import { MainStack } from './main/MainNavigation';
-import { OrganizationStack } from './organizationNavigation/OrganizationNavigation';
 import { SelectOrganizationModal } from '@app/screens/SelectOrganizationModal/SelectOrganizationModal';
 import { SearchOrganization } from '@app/screens/SearchOrganization/SearchOrganization';
 import { StatusPopupScreen } from '@app/screens/StatusPopup/StatusPopupScreen';
 import usePushNotifications from '@app/services/notifications';
 import { AddNote } from '@app/screens/AddNote/AddNote';
+import { DeleteNote } from '@app/screens/DeleteNote/DeleteNote';
+import { DatePickerScreen } from '@app/screens/DatePicker/DatePicker';
 
 const RootStack = createNativeStackNavigator<RootStackParamList>();
 
@@ -55,6 +56,16 @@ export const Router = ({ route }) => {
       <RootStack.Screen
         name={RootScreen.AddNoteModal}
         component={AddNote}
+        options={{ headerShown: false, presentation: 'transparentModal' }}
+      />
+      <RootStack.Screen
+        name={RootScreen.DeleteNoteModal}
+        component={DeleteNote}
+        options={{ headerShown: false, presentation: 'transparentModal' }}
+      />
+      <RootStack.Screen
+        name={RootScreen.DatePickerScreen}
+        component={DatePickerScreen}
         options={{ headerShown: false, presentation: 'transparentModal' }}
       />
     </RootStack.Navigator>

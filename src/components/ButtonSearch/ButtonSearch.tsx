@@ -22,14 +22,8 @@ export const ButtonSearch = ({ style, onPress, isSearching }: Props) => {
 
   return (
     <TouchableOpacity style={[styles.container, style]} onPress={onToggle}>
-      <View
-        style={[
-          isSearching && styles.containerOutToggled,
-          !isSearching && styles.containerOutUntoggled,
-        ]}>
-        <View style={styles.containerIn}>
-          <Image source={Images.Search} />
-        </View>
+      <View style={styles.containerOutUntoggled}>
+        <Image source={Images.Search} />
       </View>
     </TouchableOpacity>
   );

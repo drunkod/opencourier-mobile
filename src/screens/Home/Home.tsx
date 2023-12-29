@@ -116,6 +116,57 @@ export const HomeScreen = ({ navigation }: Props) => {
     }
   };
 
+  const onNoteEdited = (note: string, oldNote: CourierTip, order: Order) => {
+    if (note && note !== oldNote.tip_text) {
+      var temp = dataSource.filter(obj => obj.order_id === order.order_id);
+      if (temp.length > 0 && temp[0].courier_tips_for_merchant) {
+        const newNotes = temp[0].courier_tips_for_merchant.map(obj => {
+          if (
+            obj.courier_id === oldNote.courier_id &&
+            obj.tip_text === oldNote.tip_text
+          ) {
+            return {
+              courier_id: obj.courier_id,
+              tip_text: note,
+              upvotes: obj.upvotes,
+            };
+          }
+          return obj;
+        });
+
+        temp[0].courier_tips_for_merchant = [...newNotes];
+        setDataSource(temp);
+      }
+    }
+  };
+
+  const onNoteDeleted = (note: CourierTip, order: Order) => {
+    var temp = dataSource.filter(obj => obj.order_id === order.order_id);
+    if (temp.length > 0 && temp[0].courier_tips_for_merchant) {
+      temp[0].courier_tips_for_merchant =
+        temp[0].courier_tips_for_merchant.filter(
+          obj => obj.tip_text !== note.tip_text,
+        );
+      setDataSource(temp);
+    }
+  };
+
+  const onEditNote = (order: Order, note: CourierTip) => {
+    navigation.navigate(RootScreen.AddNoteModal, {
+      order: order,
+      noteToEdit: note,
+      onNoteEdited: onNoteEdited,
+    });
+  };
+
+  const onDeleteNote = (order: Order, note: CourierTip) => {
+    navigation.navigate(RootScreen.DeleteNoteModal, {
+      onDelete: onNoteDeleted,
+      order: order,
+      note: note,
+    });
+  };
+
   const renderItem = ({ item }: { item: Order }) => {
     switch (selectedTab) {
       case HomeTabItem.New:
@@ -142,10 +193,10 @@ export const HomeScreen = ({ navigation }: Props) => {
         return (
           <InProgressCell
             itemsConfirmed={itemsConfirmedForOrder(item)}
-            onCopyCustomer={order =>
+            onMessageCustomer={order =>
               Clipboard.setString(order.dropoff.location.addressLine1)
             }
-            onCopyRestaurant={order =>
+            onMessageRestaurant={order =>
               Clipboard.setString(order.pickup.location.addressLine1)
             }
             onConfirmItems={() => {
@@ -153,8 +204,8 @@ export const HomeScreen = ({ navigation }: Props) => {
                 order: item,
               });
             }}
-            onContactCustomer={() => Linking.openURL(`tel://${12341251511}`)}
-            onContactRestaurant={() => Linking.openURL(`tel://${12341251511}`)}
+            onCallCustomer={() => Linking.openURL(`tel://${12341251511}`)}
+            onCallRestaurant={() => Linking.openURL(`tel://${12341251511}`)}
             onMarkAsDelivered={() =>
               navigation.navigate(MainScreens.MarkAsDelivered)
             }
@@ -173,6 +224,8 @@ export const HomeScreen = ({ navigation }: Props) => {
             }
             onAddNote={onAddNote}
             onPickupInstructionPress={onPickupInstructionPress}
+            onNoteDelete={onDeleteNote}
+            onNoteEdit={onEditNote}
           />
         );
       case HomeTabItem.History:
@@ -276,7 +329,7 @@ export const HomeScreen = ({ navigation }: Props) => {
 
   const onNoteAdded = (note: string, order: Order) => {
     if (note) {
-      var temp = dataSource.filter(obj => obj.id === order.id);
+      var temp = dataSource.filter(obj => obj.order_id === order.order_id);
       if (temp.length > 0 && temp[0].courier_tips_for_merchant) {
         temp[0].courier_tips_for_merchant = [
           ...temp[0].courier_tips_for_merchant,

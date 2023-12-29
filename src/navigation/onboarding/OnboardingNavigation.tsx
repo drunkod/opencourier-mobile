@@ -6,6 +6,9 @@ import { WelcomeScreen } from '@app/screens/onboarding/Welcome/Welcome';
 import { LoginScreen } from '@app/screens/onboarding/Login/Login';
 import { SignupScreen } from '@app/screens/onboarding/Signup/Signup';
 import { ForgotPasswordScreen } from '@app/screens/onboarding/ForgotPassword/ForgotPassword';
+import { InstanceDetails } from '@app/screens/onboarding/InstanceDetails/InstanceDetails';
+import { JoinInstance } from '@app/screens/onboarding/JoinInstance/JoinInstance';
+import { LoginInstance } from '@app/screens/onboarding/LoginInstance/LoginInstance';
 
 const OnboardingStackNavigator =
   createNativeStackNavigator<OnboardingStackParamList>();
@@ -38,6 +41,21 @@ export const OnboardingStack = () => {
       <OnboardingStackNavigator.Screen
         name={OnboardingScreen.ForgotPassword}
         component={ForgotPasswordScreen}
+        options={DEFAULT_OPTIONS}
+      />
+      <OnboardingStackNavigator.Screen
+        name={OnboardingScreen.InstanceDetails}
+        component={InstanceDetails}
+        options={DEFAULT_OPTIONS}
+      />
+      <OnboardingStackNavigator.Screen
+        name={OnboardingScreen.JoinInstance}
+        component={JoinInstance}
+        options={DEFAULT_OPTIONS}
+      />
+      <OnboardingStackNavigator.Screen
+        name={OnboardingScreen.LoginInstance}
+        component={LoginInstance}
         options={DEFAULT_OPTIONS}
       />
     </OnboardingStackNavigator.Navigator>

@@ -27,12 +27,12 @@ export const DeleteNote = ({ navigation, route }: Props) => {
     <View style={styles.container}>
       <KeyboardAvoidingView style={styles.content}>
         <View style={styles.header}>
-          <Text style={styles.title}>{t('translations:delete_prompt')}</Text>
           <TouchableOpacity
             style={styles.backButton}
             onPress={() => navigation.goBack()}>
             <Image source={Images.ArrowLeft} />
           </TouchableOpacity>
+          <Text style={styles.title}>{t('translations:delete_prompt')}</Text>
         </View>
         <View style={styles.separator} />
         <View style={styles.containerInfo}>

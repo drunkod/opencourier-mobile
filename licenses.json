@@ -53,6 +53,12 @@
         "licenseUrl": "https://github.com/reduxjs/redux-toolkit/raw/master/LICENSE",
         "parents": "opendeli"
     },
+    "add@2.0.6": {
+        "licenses": "MIT",
+        "repository": "https://github.com/ben-ng/add",
+        "licenseUrl": "https://github.com/ben-ng/add",
+        "parents": "opendeli"
+    },
     "axios@1.6.2": {
         "licenses": "MIT",
         "repository": "https://github.com/axios/axios",
@@ -99,6 +105,18 @@
         "licenses": "MIT AND Apache-2.0 AND BSD-3-Clause",
         "repository": "https://github.com/react-native-community/react-native-camera",
         "licenseUrl": "https://github.com/react-native-community/react-native-camera/raw/master/LICENSE",
+        "parents": "opendeli"
+    },
+    "react-native-dashed-line@1.1.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/RBrNx/react-native-dashed-line",
+        "licenseUrl": "https://github.com/RBrNx/react-native-dashed-line/raw/master/LICENSE",
+        "parents": "opendeli"
+    },
+    "react-native-date-picker@4.3.5": {
+        "licenses": "MIT",
+        "repository": "https://github.com/henninghall/react-native-date-picker",
+        "licenseUrl": "https://github.com/henninghall/react-native-date-picker/raw/master/LICENSE",
         "parents": "opendeli"
     },
     "react-native-dotenv@3.4.9": {

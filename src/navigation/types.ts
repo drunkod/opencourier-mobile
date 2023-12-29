@@ -1,6 +1,6 @@
 import { NavigationProp, RouteProp } from '@react-navigation/native';
 import { MainStackParamList } from './main/types';
-import { Order, Organization, UserStatus } from '@app/types/types';
+import { CourierTip, Order, Organization, UserStatus } from '@app/types/types';
 
 export enum RootScreen {
   Loading = 'Loading',
@@ -11,6 +11,7 @@ export enum RootScreen {
   UserStatusModal = 'UserStatusModal',
   AddNoteModal = 'AddNoteModal',
   DeleteNoteModal = 'DeleteNoteModal',
+  DatePickerScreen = 'DatePickerScreen',
 }
 
 export type RootStackParamList = {
@@ -31,12 +32,37 @@ export type RootStackParamList = {
   };
   AddNoteModal: {
     order: Order;
-    onNoteAdded: (note: string, order: Order) => void;
+    noteToEdit?: string;
+    onNoteAdded?: (note: string, order: Order) => void;
+    onNoteEdited?: (note: string, oldNote: string, order: Order) => void;
   };
   DeleteNoteModal: {
     order: Order;
     note: string;
-    onDelete: (note: string, order: Order) => void;
+    onDelete: (note: CourierTip, order: Order) => void;
+  };
+  DatePickerScreen: {
+    startOrEndShift: 'start' | 'end';
+    day:
+      | 'Monday'
+      | 'Tuesday'
+      | 'Wednesday'
+      | 'Thursday'
+      | 'Friday'
+      | 'Saturday'
+      | 'Sunday';
+    onSelect: (
+      date: Date,
+      shift: 'start' | 'end',
+      day:
+        | 'Monday'
+        | 'Tuesday'
+        | 'Wednesday'
+        | 'Thursday'
+        | 'Friday'
+        | 'Saturday'
+        | 'Sunday',
+    ) => void;
   };
 };
 

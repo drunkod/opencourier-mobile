@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleProp, ViewStyle, View, Text, Platform } from 'react-native';
 import { styles } from './HomeHeader.styles';
-import { HomeTabItem, UserStatus } from '@app/types/types';
+import { HomeTabItem, ToastMessage, UserStatus } from '@app/types/types';
 import { ProfileBadge } from '../ProfileBadge/ProfileBadge';
 import { ButtonSearch } from '../ButtonSearch/ButtonSearch';
 import { Colors } from '@app/styles/colors';
@@ -12,6 +12,7 @@ import { SearchBar } from '../SearchBar/SearchBar';
 import { WaitingForOrders } from '../WaitingForOrders/WaitingForOrders';
 import { OrderDelivered } from '../OrderDelivered/OrderDelivered';
 import { useTranslation } from 'react-i18next';
+import { Toast } from '../Toast/Toast';
 
 type Props = {
   style?: StyleProp<ViewStyle>;
@@ -58,36 +59,42 @@ export const HomeHeader = ({
       ]}>
       {userStatus === UserStatus.Online && (
         <LinearGradient
-          style={[styles.gradient, { height: top + 100 }]}
+          style={[styles.gradient, { height: top + 50 }]}
           colors={Colors.onlineGradientArray}
         />
       )}
       {userStatus !== UserStatus.Online && (
         <LinearGradient
-          style={[styles.gradient, { height: top + 100 }]}
+          style={[styles.gradient, { height: top + 50 }]}
           colors={Colors.offlineGradientArray}
         />
       )}
-      {loadingNewOrders && <WaitingForOrders style={styles.waiting} />}
+      {/* {loadingNewOrders && <WaitingForOrders style={styles.waiting} />}
 
       {orderDeliveredNotification && (
         <OrderDelivered
           onClose={onCloseOrderDeliveredNotification}
           style={styles.orderDelivered}
         />
-      )}
+      )} */}
+
+      {/* <Toast toast={ToastMessage.addressCopied} /> */}
+      {/* <Toast toast={ToastMessage.enableLocationServices} />
+      <Toast toast={ToastMessage.enableNotifications} />
+      <Toast toast={ToastMessage.itemsBagged} />
+      <Toast toast={ToastMessage.pickupBeforeContinuing} /> */}
 
       <View style={styles.containerButtons}>
         <ProfileBadge userStatus={userStatus} onPress={onProfile} />
-        <Text style={styles.textTitle}>Open Deli</Text>
+        <HomeTabs
+          newCount={newCount}
+          inProgressCount={inProgressCount}
+          onTabSelected={onTabSelected}
+          selectedTab={selectedTab}
+        />
         <ButtonSearch onPress={onSearch} isSearching={searchShown} />
       </View>
-      <HomeTabs
-        newCount={newCount}
-        inProgressCount={inProgressCount}
-        onTabSelected={onTabSelected}
-        selectedTab={selectedTab}
-      />
+
       {searchShown && (
         <SearchBar
           style={styles.searchBar}

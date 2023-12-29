@@ -11,6 +11,7 @@ export const styles = StyleSheet.create({
     paddingVertical: 12,
     marginHorizontal: 16,
     marginVertical: 8,
+    backgroundColor: Colors.white,
   },
   containerSpaceBetween: {
     flexDirection: 'row',

@@ -15,7 +15,7 @@ export const HomeEmptyStateComponent = ({ style, state }: Props) => {
   const imageSource = useMemo(() => {
     switch (state) {
       case HomeEmptyState.WaitingNewOrders:
-        return Images.Box;
+      // return Images.Box;
       case HomeEmptyState.History:
       case HomeEmptyState.InProgress:
       case HomeEmptyState.New:
@@ -32,28 +32,15 @@ export const HomeEmptyStateComponent = ({ style, state }: Props) => {
       case HomeEmptyState.InProgress:
         return t('translations:no_orders_in_progress');
       case HomeEmptyState.WaitingNewOrders:
-        return '';
+        return t('translations:no_new_orders');
     }
   }, [state]);
 
   return (
     <View style={[styles.container, style]}>
-      <Image
-        source={imageSource}
-        style={
-          state === HomeEmptyState.WaitingNewOrders
-            ? styles.imageBIg
-            : styles.imageSmall
-        }
-      />
-      {state !== HomeEmptyState.WaitingNewOrders && (
-        <>
-          <Text style={styles.title}>{title}</Text>
-          <Text style={styles.subtitle}>
-            {t('translations:notify_when_order')}
-          </Text>
-        </>
-      )}
+      <Image source={imageSource} style={styles.imageSmall} />
+      <Text style={styles.title}>{title}</Text>
+      <Text style={styles.subtitle}>{t('translations:notify_when_order')}</Text>
     </View>
   );
 };

@@ -4,6 +4,7 @@ import {
   Organization,
   DeliveryType,
   PickupType,
+  Instance,
 } from '@app/types/types';
 
 export const TEST_IMAGE_URL =
@@ -480,3 +481,35 @@ export const TEST_API_NEW_ORDER = {
     tips: '5',
   },
 };
+
+export const TEST_INSTANCES: Instance[] = [
+  {
+    name: 'Instance 1',
+    link: 'www.instance1.com',
+    imageUrl: TEST_IMAGE_URL,
+    userCount: 11,
+    rules: 'Rule\nRule\nRule\nRule\nRule\nRule\n',
+    description:
+      'Description\nDescription\nDescription\nDescription\nDescription\nDescription\nDescription\nDescription\nDescription\nDescription\nDescription\nDescription\nDescription\nDescription\nDescription\nDescription\nDescription\nDescription\n',
+  },
+  {
+    name: 'Instance 2',
+    link: 'www.instance2.com',
+    imageUrl: TEST_IMAGE_URL,
+    userCount: 25,
+    rules:
+      'Rule\nRule\nRule\nRule\nRule\nRule\nRule\nRule\nRule\nRule\nRule\nRule\nRule\nRule\nRule\nRule\nRule\nRule\nRule\n',
+    description:
+      'Description\nDescription\nDescription\nDescription\nDescription\n',
+  },
+  {
+    name: 'Instance 3',
+    link: 'www.instance3.com',
+    imageUrl: TEST_IMAGE_URL,
+    userCount: 193,
+    rules:
+      'Rule\nRule\nRule\nRule\nRule\nRule\nRule\nRule\nRule\nRule\nRule\nRule\nRule\nRule\nRule\nRule\nRule\nRule\nRule\nRule\nRule\nRule\nRule\nRule\nRule\nRule\n',
+    description:
+      'Description\nDescription\nDescription\nDescription\nDescription\nDescription\nDescription\nDescription\nDescription\nDescription\nDescription\nDescription\nDescription\nDescription\nDescription\n',
+  },
+];

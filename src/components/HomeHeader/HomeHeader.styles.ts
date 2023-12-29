@@ -65,6 +65,7 @@ export const styles = StyleSheet.create({
   },
   searchBar: {
     marginTop: 16,
+    marginHorizontal: 16,
   },
   waiting: {
     marginBottom: 16,

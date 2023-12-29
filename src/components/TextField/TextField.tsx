@@ -1,4 +1,4 @@
-import React, { forwardRef, useState } from 'react';
+import React, { forwardRef, useEffect, useMemo, useState } from 'react';
 import { Colors } from '@app/styles/colors';
 import { Images } from '@app/utilities/images';
 import {
@@ -12,20 +12,16 @@ import {
   TextInputProps,
 } from 'react-native';
 import { styles } from './TextField.styles';
-import { useTranslation } from 'react-i18next';
 
 type Props = {
   error?: string;
   style?: StyleProp<ViewStyle>;
   maxLength?: number;
-  emailCheck?: boolean;
-  emailValid?: boolean;
 };
 
 type TextFieldProps = TextInputProps & Props;
 
 export const TextField = forwardRef((props: TextFieldProps, ref) => {
-  const { t } = useTranslation();
   const {
     value,
     placeholder,
@@ -33,19 +29,43 @@ export const TextField = forwardRef((props: TextFieldProps, ref) => {
     style,
     secureTextEntry = false,
     maxLength,
-    emailCheck = false,
-    emailValid = false,
+    onChangeText,
+    onBlur,
   } = props;
   const [isFocused, setIsFocused] = useState<boolean>(false);
   const [inputTextHidden, setInputTextHidden] =
     useState<boolean>(secureTextEntry);
+
+  const borderColor = useMemo(() => {
+    if (isFocused) {
+      return Colors.yellow1;
+    } else {
+      if (error !== undefined) {
+        return Colors.red4;
+      } else {
+        if (value && value.length > 0) {
+          return Colors.green5;
+        } else {
+          return Colors.gray22;
+        }
+      }
+    }
+  }, [isFocused, error, value]);
+
+  const backgroundColor = useMemo(() => {
+    if (error !== undefined && !isFocused) {
+      return Colors.red5;
+    } else {
+      return Colors.white;
+    }
+  }, [error, isFocused]);
 
   return (
     <View style={[styles.container, style]}>
       <View
         style={[
           styles.inputContainer,
-          { borderColor: error === undefined ? Colors.gray1 : Colors.red2 },
+          { borderColor: borderColor, backgroundColor: backgroundColor },
         ]}>
         <View style={styles.containerTextField}>
           {(isFocused || (value && value.length > 0)) && (
@@ -60,25 +80,27 @@ export const TextField = forwardRef((props: TextFieldProps, ref) => {
             placeholder={isFocused ? '' : placeholder}
             maxLength={maxLength}
             onFocus={() => setIsFocused(true)}
-            onBlur={() => setIsFocused(false)}
+            onBlur={obj => {
+              setIsFocused(false);
+              onBlur && onBlur(obj);
+            }}
+            onChangeText={onChangeText}
           />
         </View>
-        {emailCheck && emailValid && (
-          <Image source={Images.Checkmark} style={styles.checkmark} />
-        )}
         {secureTextEntry && (
           <TouchableOpacity
             activeOpacity={0.9}
             onPress={() => setInputTextHidden(!inputTextHidden)}>
-            <Text style={styles.textShow}>
-              {inputTextHidden
-                ? t('translations:show')
-                : t('translations:hide')}
-            </Text>
+            <Image source={!inputTextHidden ? Images.Eye : Images.EyeClosed} />
           </TouchableOpacity>
         )}
       </View>
-      {error && <Text style={styles.labelError}>{error}</Text>}
+      {error && !isFocused && (
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <Image source={Images.RedInfo} />
+          <Text style={styles.labelError}>{error}</Text>
+        </View>
+      )}
     </View>
   );
 });

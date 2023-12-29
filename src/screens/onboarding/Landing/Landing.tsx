@@ -72,6 +72,7 @@ export const LandingScreen = ({ navigation }: Props) => {
 
   return (
     <View style={styles.container}>
+      <Image source={Images.NoiseBG} style={styles.background} />
       <SafeAreaView style={styles.safeArea}>
         <Image
           source={Images.OpenDeli}

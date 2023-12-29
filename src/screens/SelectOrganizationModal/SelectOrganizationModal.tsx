@@ -20,6 +20,7 @@ export const SelectOrganizationModal = ({ navigation, route }: Props) => {
     preselected,
   );
 
+  console.warn(selected)
   const handleOrganizationSelect = (org: Organization) => {
     setSelected(org);
     onOrganizationSelect && onOrganizationSelect(org);
@@ -33,7 +34,7 @@ export const SelectOrganizationModal = ({ navigation, route }: Props) => {
       <OrganizationCell
         organization={item}
         onPress={handleOrganizationSelect}
-        selected={selected === item}
+        selected={selected?.name === item.name}
       />
     );
   };

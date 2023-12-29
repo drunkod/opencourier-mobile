@@ -6,9 +6,10 @@ export const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: Colors.black1,
     marginHorizontal: 16,
-    borderRadius: 6,
+    borderRadius: 12,
     justifyContent: 'center',
     paddingHorizontal: 14,
+    backgroundColor: Colors.white,
   },
   content: {
     flexDirection: 'row',

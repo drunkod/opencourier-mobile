@@ -63,8 +63,48 @@ import OfflinePopup from '@app/assets/icons/OfflinePopup.png';
 import info from '@app/assets/icons/left_icon.png';
 import checkWhite from '@app/assets/icons/CheckCircleWhite.png';
 import trash from '@app/assets/icons/Trash.png';
+import phoneSmall from '@app/assets/icons/PhoneOutgoingSmall.png';
+import edit from '@app/assets/icons/PencilSimpleLine.png';
+import plusBlack from '@app/assets/icons/Plus.png';
+import arrowsForward from '@app/assets/icons/CaretCircleDoubleRight.png';
+import sparkle from '@app/assets/icons/Sparkle.png';
+import SignIn from '@app/assets/icons/SignIn.png';
+import Eye from '@app/assets/icons/Eye.png';
+import EyeClosed from '@app/assets/icons/EyeClosed.png';
+import redInfo from '@app/assets/icons/i.png';
+import searchSmall from '@app/assets/icons/searchSmall.png';
+import reset from '@app/assets/icons/reset.png';
+import PaperPlaneTilt from '@app/assets/icons/PaperPlaneTilt.png';
+import radioSelected from '@app/assets/icons/radio.png';
+import radioUnselected from '@app/assets/icons/radio2.png';
+import Power from '@app/assets/icons/Power.png';
+import FlagCheckered from '@app/assets/icons/FlagCheckered.png';
+import SteeringWheel from '@app/assets/icons/SteeringWheel.png';
+import avatar from '@app/assets/icons/avatar.png';
+import FloppyDiskBack from '@app/assets/icons/FloppyDiskBack.png';
+import NoiseBG from '@app/assets/icons/noise_bg.png';
 
 export const Images = {
+  NoiseBG: NoiseBG,
+  FloppyDiskBack: FloppyDiskBack,
+  RadioUnselected: radioUnselected,
+  Avatar: avatar,
+  SteeringWheel: SteeringWheel,
+  FlagCheckered: FlagCheckered,
+  Power: Power,
+  RadioSelected: radioSelected,
+  PaperPlaneTilt: PaperPlaneTilt,
+  Reset: reset,
+  SearchSmall: searchSmall,
+  RedInfo: redInfo,
+  Eye: Eye,
+  EyeClosed: EyeClosed,
+  SignIn: SignIn,
+  Sparkle: sparkle,
+  ArrowsForward: arrowsForward,
+  PlusBlack: plusBlack,
+  Edit: edit,
+  PhoneSmall: phoneSmall,
   Trash: trash,
   CheckWhite: checkWhite,
   Info: info,

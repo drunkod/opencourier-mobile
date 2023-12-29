@@ -4,7 +4,6 @@ import { styles } from './StatusPopup.styles';
 import { UserStatus } from '@app/types/types';
 import { Button, ButtonType } from '../Button/Button';
 import { Images } from '@app/utilities/images';
-import { Colors } from '@app/styles/colors';
 import { useTranslation } from 'react-i18next';
 
 type Props = {
@@ -30,7 +29,7 @@ export const StatusPopup = ({ style, type, onAccept, onCancel }: Props) => {
   const subtitle = useMemo(() => {
     switch (type) {
       case UserStatus.Online:
-        return t('translations:please_turn_on_location');
+        return t('translations:start_recieving_orders');
       case UserStatus.Offline:
         return t('translations:switching_disrupts_orders');
       case UserStatus.LastCall:
@@ -49,21 +48,10 @@ export const StatusPopup = ({ style, type, onAccept, onCancel }: Props) => {
     }
   }, [type]);
 
-  const secondaryButtonType = useMemo(() => {
-    switch (type) {
-      case UserStatus.Online:
-        return ButtonType.red;
-      case UserStatus.Offline:
-        return ButtonType.green;
-      case UserStatus.LastCall:
-        return ButtonType.white;
-    }
-  }, [type]);
-
   const primaryButtonTitle = useMemo(() => {
     switch (type) {
       case UserStatus.Online:
-        return t('translations:on_and_go_online');
+        return t('translations:go_online');
       case UserStatus.Offline:
         return t('translations:go_offline');
       case UserStatus.LastCall:
@@ -71,53 +59,42 @@ export const StatusPopup = ({ style, type, onAccept, onCancel }: Props) => {
     }
   }, [type]);
 
-  const secondaryButtonTitle = useMemo(() => {
-    switch (type) {
-      case UserStatus.Online:
-        return t('translations:later_stay_offline');
-      case UserStatus.Offline:
-        return t('translations:stay_online');
-      case UserStatus.LastCall:
-        return t('translations:continue_orders');
-    }
-  }, [type]);
-
   const image = useMemo(() => {
     switch (type) {
       case UserStatus.Online:
-        return Images.OnlinePopup;
+        return Images.SteeringWheel;
       case UserStatus.Offline:
-        return Images.OfflinePopup;
+        return Images.Power;
       case UserStatus.LastCall:
-        return Images.LastCallPopup;
+        return Images.FlagCheckered;
     }
   }, [type]);
 
   return (
-    <View style={[styles.container, style]}>
-      <View style={styles.imageContainer}>
-        <View style={styles.ring3}>
-          <View style={styles.ring2}>
-            <View style={styles.ring1}>
-              <Image source={image} style={styles.image} />
-            </View>
+    <View style={styles.content}>
+      <View style={[styles.container, style]}>
+        <View style={styles.containerHorizontal}>
+          <Image source={image} style={styles.image} />
+          <View>
+            <Text style={styles.title}>{title}</Text>
+            <Text style={styles.subtitle}>{subtitle}</Text>
+            <Button
+              style={{ marginBottom: 12, height: 40 }}
+              type={primaryButtonType}
+              title={primaryButtonTitle}
+              onPress={() => onAccept(type)}
+              textStyle={{ fontSize: 14 }}
+            />
+            <Button
+              style={{ height: 40 }}
+              type={ButtonType.grayBGBlackText}
+              title={t('translations:cancel')}
+              onPress={onCancel}
+              textStyle={{ fontSize: 14 }}
+            />
           </View>
         </View>
       </View>
-      <Text style={styles.title}>{title}</Text>
-      <Text style={styles.subtitle}>{subtitle}</Text>
-      <Button
-        style={{ marginBottom: 12 }}
-        type={primaryButtonType}
-        title={primaryButtonTitle}
-        onPress={() => onAccept(type)}
-      />
-      <Button
-        style={{ borderColor: Colors.gray4, borderWidth: 2 }}
-        type={secondaryButtonType}
-        title={secondaryButtonTitle}
-        onPress={onCancel}
-      />
     </View>
   );
 };

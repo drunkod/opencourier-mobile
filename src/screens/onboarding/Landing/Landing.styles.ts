@@ -5,7 +5,6 @@ import { Colors } from 'react-native/Libraries/NewAppScreen';
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.white,
   },
   safeArea: {
     flex: 1,
@@ -42,5 +41,13 @@ export const styles = StyleSheet.create({
   pageContent: {
     flex: 1,
     justifyContent: 'flex-end',
+  },
+  background: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
+    backgroundColor: Colors.white,
   },
 });

@@ -1,3 +1,5 @@
+import moment, { Moment } from 'moment';
+
 export enum UserStatus {
   Online = 'online',
   Offline = 'offline',
@@ -8,6 +10,11 @@ export enum HomeTabItem {
   New = 'new',
   InProgress = 'in_progress',
   History = 'history',
+}
+
+export enum InstanceTabItem {
+  Description = 'description',
+  Rules = 'rules',
 }
 
 export enum HomeEmptyState {
@@ -200,3 +207,119 @@ export enum MapDestination {
   customer,
   restaurant,
 }
+
+export type Instance = {
+  name: string;
+  imageUrl: string;
+  link: string;
+  userCount: number;
+  description: string;
+  rules: string;
+};
+
+export enum SettingsOptions {
+  accountInformation = 'account_information',
+  accessibility = 'accessibility',
+  emergencyContact = 'emergency_contact',
+  earningMethod = 'earning_method',
+  language = 'language',
+  navigation = 'navigation',
+  operatingArea = 'specify_operating',
+  theme = 'theme',
+  verification = 'verification',
+  notifications = 'notifications',
+  cashOnDelivery = 'cash_on_delivery',
+  deliveryBag = 'delivery_bag',
+  includeOrdersWithDrinks = 'include_orders_drinks',
+  licenses = 'licenses',
+  vehicleType = 'vehicle_type',
+  cuisineTypes = 'cuisine_types',
+  restaurantTypes = 'restaurant_types',
+  orderTypes = 'order_types',
+  weightOrder = 'weight_order',
+  rushedOrders = 'rushed_orders',
+  shiftAvailability = 'shift_availability',
+}
+
+export type Language = {
+  id: string;
+  name: string;
+  abreviation: string;
+};
+
+export type Theme = {
+  id: string;
+  name: string;
+};
+
+export enum AccessibilitySettingsOptions {
+  volume = 'default_volume',
+  sound = 'default_sound',
+  myLanguages = 'my_languages',
+  differentSounds = 'enable_different_sounds',
+  screenFlash = 'screen_flash',
+  vibration = 'enable_vibration',
+  readingNotes = 'reading_notes',
+  seatbeltReminder = 'seatbelt_reminder',
+  deaf = 'im_deaf',
+}
+
+export type Ringtone = {
+  id: string;
+  name: string;
+};
+
+export type Volume = {
+  id: string;
+  name: string;
+};
+
+export enum ToastMessage {
+  enableNotifications = 'enable_notifications',
+  itemsBagged = 'items_bagged',
+  enableLocationServices = 'enable_location_services',
+  pickupBeforeContinuing = 'pickup_before_continue',
+  waitingForNewOrders = 'waiting_for_orders',
+  addressCopied = 'address_copied',
+}
+
+export type Vehicle = {
+  id: string;
+  name: string;
+};
+
+export type RestauranType = {
+  id: string;
+  name: string;
+};
+
+export type CuisineType = {
+  id: string;
+  name: string;
+};
+
+export type EarningMethod = {
+  id: string;
+  name: string;
+};
+
+export type OrderPreference = {
+  id: string;
+  name: string;
+};
+
+export type WeightOrder = {
+  id: string;
+  name: string;
+  info: string;
+};
+
+export type ShiftRange = {
+  start: string;
+  end: string;
+};
+
+export type ShiftAvailability = {
+  day: string;
+  shifts: ShiftRange[];
+};

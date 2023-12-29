@@ -14,13 +14,15 @@ export const styles = StyleSheet.create({
     padding: 8,
   },
   header: {
-    justifyContent: 'center',
     marginBottom: 8,
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   title: {
     fontSize: 15,
     fontWeight: '600',
     color: Colors.black1,
+    flex: 1,
   },
   separator: {
     height: 1,

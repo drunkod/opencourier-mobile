@@ -14,6 +14,9 @@ export const OrganizationEmptyState = ({ style }: Props) => {
     <View style={[styles.container, style]}>
       <Image source={Images.Car} style={styles.imageSmall} />
       <Text style={styles.title}>{t('translations:deli_is_made')}</Text>
+      <Text style={styles.subtitle}>
+        {t('translations:quickly_find_restaurant')}
+      </Text>
     </View>
   );
 };

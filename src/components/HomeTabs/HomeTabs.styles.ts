@@ -2,42 +2,45 @@ import { Colors } from '@app/styles/colors';
 import { SCREEN_WIDTH } from '@app/utilities/constants';
 import { StyleSheet } from 'react-native';
 
-const TOTAL_HORIZONTAL_SPACING = 32;
+const TOTAL_HORIZONTAL_SPACING = 144;
 
 export const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: 16,
+    // paddingHorizontal: 16,
     flexDirection: 'row',
   },
   tabs: {
     width: SCREEN_WIDTH - TOTAL_HORIZONTAL_SPACING,
     flexDirection: 'row',
-  },
-  tab: {
-    width: (SCREEN_WIDTH - TOTAL_HORIZONTAL_SPACING) / 3,
-  },
-  indicator: {
-    width: (SCREEN_WIDTH - TOTAL_HORIZONTAL_SPACING) / 3,
-    height: 4,
-    backgroundColor: Colors.black1,
-    marginTop: 12,
-    marginBottom: 2,
+    padding: 4,
+    backgroundColor: Colors.gray8,
+    justifyContent: 'space-between',
+    height: 40,
+    alignItems: 'center',
+    borderRadius: 12,
   },
   textTab: {
     fontWeight: '700',
-    fontSize: 18,
+    fontSize: 12,
+    lineHeight: 16,
     alignSelf: 'center',
   },
   containerTabText: {
     flexDirection: 'row',
     alignSelf: 'center',
+    borderRadius: 8,
+    paddingVertical: 4,
+    paddingHorizontal: 8,
+    height: 32,
+    alignItems: 'center',
   },
   containerCount: {
-    width: 22,
-    height: 22,
-    borderRadius: 11,
+    height: 16,
+    borderRadius: 4,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: Colors.red1,
+    paddingHorizontal: 4,
     marginLeft: 4,
   },
   textCount: {

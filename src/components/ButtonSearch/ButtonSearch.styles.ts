@@ -3,35 +3,17 @@ import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
   container: {
-    width: 32,
-    height: 32,
+    width: 40,
+    height: 40,
   },
   containerOutUntoggled: {
-    width: 32,
-    height: 32,
-    backgroundColor: Colors.gray1,
-    borderRadius: 16,
-    justifyContent: 'center',
-    alignItems: 'center',
-    shadowColor: Colors.black1,
-    shadowRadius: 4,
-    shadowOpacity: 0.3,
-    shadowOffset: { width: 0, height: 0 },
-  },
-  containerOutToggled: {
-    width: 32,
-    height: 32,
-    backgroundColor: Colors.black1,
-    borderRadius: 16,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  containerIn: {
-    width: 28,
-    height: 28,
+    width: 40,
+    height: 40,
     backgroundColor: Colors.white,
+    borderRadius: 12,
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 14,
+    borderWidth: 1,
+    borderColor: Colors.gray9,
   },
 });

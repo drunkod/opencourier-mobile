@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -17,7 +17,7 @@ type Props = RootScreenProp<RootScreen.AddNoteModal>;
 
 export const AddNote = ({ navigation, route }: Props) => {
   const { t } = useTranslation();
-  const { onNoteAdded, order } = route.params;
+  const { onNoteAdded, order, onNoteEdited, noteToEdit } = route.params;
   const [note, setNote] = useState<string>('');
 
   const onChangeText = (newNote: string) => {
@@ -25,10 +25,19 @@ export const AddNote = ({ navigation, route }: Props) => {
   };
 
   const onSave = () => {
-    console.warn('here: ', note, order.order_id, onNoteAdded !== undefined);
-    onNoteAdded && onNoteAdded(note, order);
+    if (noteToEdit !== undefined) {
+      onNoteEdited && onNoteEdited(note, noteToEdit, order);
+    } else {
+      onNoteAdded && onNoteAdded(note, order);
+    }
     navigation.goBack();
   };
+
+  useEffect(() => {
+    if (noteToEdit !== undefined) {
+      setNote(noteToEdit.tip_text);
+    }
+  }, []);
 
   return (
     <View style={styles.container}>

@@ -19,6 +19,7 @@ export enum ButtonType {
   white,
   yellow,
   gray,
+  grayBGBlackText,
 }
 
 type Props = {
@@ -59,6 +60,8 @@ export const Button = ({
         return Colors.white;
       case ButtonType.gray:
         return Colors.gray8;
+      case ButtonType.grayBGBlackText:
+        return Colors.gray8;
     }
   }, [type, disabled]);
 
@@ -78,6 +81,8 @@ export const Button = ({
       case ButtonType.black:
         return Colors.white;
       case ButtonType.white:
+        return Colors.black1;
+      case ButtonType.grayBGBlackText:
         return Colors.black1;
     }
   }, [type, disabled]);
@@ -99,6 +104,8 @@ export const Button = ({
         return Colors.black1;
       case ButtonType.gray:
         return Colors.gray9;
+      case ButtonType.grayBGBlackText:
+        return Colors.black1;
     }
   }, [type, disabled]);
 
@@ -113,6 +120,8 @@ export const Button = ({
       case ButtonType.green:
       case ButtonType.white:
         return Colors.gray4;
+      case ButtonType.grayBGBlackText:
+        return Colors.gray8;
     }
   }, [type]);
 
@@ -125,9 +134,12 @@ export const Button = ({
       case ButtonType.red:
         return 0;
       case ButtonType.white:
+        return 2;
       case ButtonType.yellow:
         return 2;
       case ButtonType.gray:
+        return 0;
+      case ButtonType.grayBGBlackText:
         return 0;
     }
   }, [type]);
@@ -145,6 +157,8 @@ export const Button = ({
       case ButtonType.green:
         return Colors.white;
       case ButtonType.white:
+        return Colors.black1;
+      case ButtonType.grayBGBlackText:
         return Colors.black1;
     }
   }, [type]);

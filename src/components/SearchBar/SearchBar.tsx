@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useMemo, useState } from 'react';
 import { Image, StyleProp, ViewStyle, View, TextInput } from 'react-native';
 import { Images } from '@app/utilities/images';
 import { styles } from './SearchBar.styles';
+import { Colors } from '@app/styles/colors';
 
 type Props = {
   style?: StyleProp<ViewStyle>;
@@ -16,14 +17,27 @@ export const SearchBar = ({
   text,
   placeholder,
 }: Props) => {
+  const [isActive, setIsActive] = useState<boolean>(false);
+
+  const borderColor = useMemo(() => {
+    if (isActive) {
+      return Colors.yellow5;
+    } else {
+      return Colors.gray21;
+    }
+  }, [isActive]);
+
   return (
-    <View style={[styles.container, style]}>
+    <View style={[styles.container, style, { borderColor: borderColor }]}>
       <View style={styles.content}>
         <Image source={Images.Search} style={styles.search} />
         <TextInput
+          placeholderTextColor={Colors.gray21}
           placeholder={placeholder ? placeholder : 'Search'}
           style={styles.textInput}
           value={text}
+          onFocus={() => setIsActive(true)}
+          onBlur={() => setIsActive(false)}
           onChangeText={onTextChange}
         />
       </View>

@@ -7,29 +7,28 @@ export const styles = StyleSheet.create({
     borderColor: Colors.gray1,
     marginHorizontal: 16,
     borderRadius: 12,
-    padding: 12,
     marginVertical: 8,
+    overflow: 'hidden',
+    backgroundColor: Colors.white,
   },
   separator: {
     height: 2,
     backgroundColor: Colors.gray1,
     marginVertical: 12,
   },
-  containerChats: {
+  buttonAddress: {
     width: 32,
     height: 32,
-    backgroundColor: Colors.white,
-    borderRadius: 16,
+    backgroundColor: Colors.gray7,
+    borderRadius: 8,
     justifyContent: 'center',
     alignItems: 'center',
-    shadowColor: Colors.black1,
-    shadowRadius: 5,
-    shadowOffset: {
-      width: 0,
-      height: 0,
-    },
-    shadowOpacity: 0.6,
-    elevation: 3,
+    marginLeft: 8,
+  },
+  iconAddressButton: {
+    width: 14,
+    hegiht: 14,
+    tintColor: Colors.black1,
   },
   containerMap: {
     flexDirection: 'row',
@@ -80,6 +79,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     flex: 1,
     marginBottom: 8,
+    overflow: 'hidden',
   },
   verticalLine: {
     width: 3,
@@ -107,6 +107,7 @@ export const styles = StyleSheet.create({
   },
   containerInstructions: {
     marginTop: 4,
+    overflow: 'hidden',
   },
   containerNotes: {
     marginTop: 8,
@@ -144,5 +145,51 @@ export const styles = StyleSheet.create({
     fontWeight: '500',
     color: Colors.gray9,
     marginLeft: 4,
+  },
+  noteHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    overflow: 'hidden',
+  },
+  notesDash: {
+    height: 1,
+    backgroundColor: Colors.gray9,
+    flex: 1,
+    marginLeft: 8,
+  },
+  textNotesHeader: {
+    fontSize: 16,
+    fontWeight: '400',
+    color: Colors.black4,
+  },
+  addNote: {
+    borderRadius: 8,
+    width: 32,
+    height: 32,
+    backgroundColor: Colors.gray1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: 8,
+  },
+  blueSeparator: {
+    height: 3,
+    backgroundColor: Colors.blue4,
+    flex: 1,
+    marginBottom: 16,
+  },
+  nextStep: {
+    backgroundColor: Colors.blue5,
+    paddingBottom: 12,
+  },
+  flexRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 12,
+    marginHorizontal: 12,
+  },
+  textNextStep: {
+    fontWeight: '700',
+    color: Colors.black1,
+    marginLeft: 8,
   },
 });

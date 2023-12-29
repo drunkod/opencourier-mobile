@@ -1,3 +1,4 @@
+import { Instance } from '@app/types/types';
 import { NavigationProp, RouteProp } from '@react-navigation/native';
 
 export enum OnboardingScreen {
@@ -6,6 +7,9 @@ export enum OnboardingScreen {
   Login = 'Login',
   Signup = 'Signup',
   ForgotPassword = 'ForgotPassword',
+  InstanceDetails = 'InstanceDetails',
+  JoinInstance = 'JoinInstance',
+  LoginInstance = 'LoginInstance',
 }
 
 export type OnboardingStackParamList = {
@@ -14,6 +18,15 @@ export type OnboardingStackParamList = {
   Login: undefined;
   Signup: undefined;
   ForgotPassword: undefined;
+  InstanceDetails: {
+    instance: Instance;
+  };
+  JoinInstance: {
+    instance: Instance;
+  };
+  LoginInstance: {
+    instance: Instance;
+  };
 };
 
 export type OnboardingNavigationProp = NavigationProp<OnboardingStackParamList>;

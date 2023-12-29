@@ -42,7 +42,7 @@ export const ProfileBadge = ({
       onPress={onPress}
       disabled={discreteStatusIndicator}>
       <View style={styles.containerImage}>
-        <Image source={Images.User} />
+        <Image source={Images.Avatar} />
       </View>
       {discreteStatusIndicator && (
         <View
