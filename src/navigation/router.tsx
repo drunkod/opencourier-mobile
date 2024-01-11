@@ -17,7 +17,7 @@ const RootStack = createNativeStackNavigator<RootStackParamList>();
 const DEFAULT_OPTIONS = { headerShown: false };
 
 export const Router = ({ route }) => {
-  usePushNotifications(true);
+  // usePushNotifications(true);
   return (
     <RootStack.Navigator>
       <RootStack.Screen

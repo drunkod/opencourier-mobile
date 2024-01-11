@@ -214,5 +214,11 @@
         "repository": "https://github.com/redux-saga/redux-saga/tree/main/packages/core",
         "licenseUrl": "https://github.com/redux-saga/redux-saga/tree/main/packages/core/raw/master/LICENSE",
         "parents": "opendeli"
+    },
+    "yarn@1.22.21": {
+        "licenses": "BSD-2-Clause",
+        "repository": "https://github.com/yarnpkg/yarn",
+        "licenseUrl": "https://github.com/yarnpkg/yarn/raw/master/LICENSE",
+        "parents": "opendeli"
     }
 }

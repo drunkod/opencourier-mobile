@@ -83,8 +83,22 @@ import SteeringWheel from '@app/assets/icons/SteeringWheel.png';
 import avatar from '@app/assets/icons/avatar.png';
 import FloppyDiskBack from '@app/assets/icons/FloppyDiskBack.png';
 import NoiseBG from '@app/assets/icons/noise_bg.png';
+import welcomePin from '@app/assets/icons/illustration-pin-order.png';
+import welcomeCam from '@app/assets/icons/illustration-cam-order.png';
+import welcomeBell from '@app/assets/icons/illustration-bell-order.png';
+import arrowRightThin from '@app/assets/icons/right_icon.png';
+import calendarThin from '@app/assets/icons/Calendar.png';
+import handCoins from '@app/assets/icons/HandCoins.png';
+import handHeart from '@app/assets/icons/HandHeart.png';
 
 export const Images = {
+  HandHeart: handHeart,
+  HandCoins: handCoins,
+  CalendarThin: calendarThin,
+  ArrowRightThin: arrowRightThin,
+  WelcomePin: welcomePin,
+  WelcomeCam: welcomeCam,
+  WelcomeBell: welcomeBell,
   NoiseBG: NoiseBG,
   FloppyDiskBack: FloppyDiskBack,
   RadioUnselected: radioUnselected,

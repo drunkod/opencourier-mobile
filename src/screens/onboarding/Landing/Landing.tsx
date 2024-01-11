@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
   View,
   Image,
@@ -17,6 +17,9 @@ import {
 } from '@app/navigation/onboarding/types';
 import { styles } from './Landing.styles';
 import { useTranslation } from 'react-i18next';
+import { useCameraPermission } from '@app/hooks/useCameraPermission';
+import { useLocationPermission } from '@app/hooks/useLocationPermission';
+import usePushNotifications from '@app/services/notifications';
 
 type Props = OnboardingScreenProp<OnboardingScreen.Landing>;
 
@@ -28,8 +31,14 @@ type Page = {
 
 export const LandingScreen = ({ navigation }: Props) => {
   const { t } = useTranslation();
-  const { top } = useSafeAreaInsets();
-  const [page, setPage] = useState<number>(0);
+  const { top, bottom } = useSafeAreaInsets();
+  const [page, setPage] = useState<number>(-1);
+  const ref = useRef<PagerView>(null);
+  const { requestCameraPermission, cameraPermission } = useCameraPermission();
+  const { requestLocationPermission, locationPermission } =
+    useLocationPermission();
+  const { requestUserPermission, permissionsGiven } =
+    usePushNotifications(false);
 
   const data: Page[] = [
     {
@@ -47,6 +56,21 @@ export const LandingScreen = ({ navigation }: Props) => {
       description: t('translations:get_paid'),
       image: Images.OnboardingFood,
     },
+    {
+      title: t('translations:enable_location'),
+      description: t('translations:enable_location_text'),
+      image: Images.WelcomePin,
+    },
+    {
+      title: t('translations:enable_camera'),
+      description: t('translations:enable_camera_text'),
+      image: Images.WelcomeCam,
+    },
+    {
+      title: t('translations:enable_notifications'),
+      description: t('translations:enable_notifications_text'),
+      image: Images.WelcomeBell,
+    },
   ];
 
   const onScroll = (position: any) => {
@@ -54,7 +78,27 @@ export const LandingScreen = ({ navigation }: Props) => {
   };
 
   const onContinue = () => {
-    navigation.navigate(OnboardingScreen.Welcome);
+    if (page === -1) {
+      setPage(0);
+      ref.current?.setPage(0);
+    } else if (page < data.length - 1) {
+      setPage(page + 1);
+      ref.current?.setPage(page + 1);
+    } else {
+      navigation.navigate(OnboardingScreen.Welcome);
+    }
+  };
+
+  const onAskForPermission = () => {
+    if (page === 3) {
+      requestLocationPermission();
+    }
+    if (page === 4) {
+      requestCameraPermission();
+    }
+    if (page === 5) {
+      requestUserPermission();
+    }
   };
 
   const PageItem = useCallback(
@@ -70,6 +114,10 @@ export const LandingScreen = ({ navigation }: Props) => {
     [],
   );
 
+  useEffect(() => {
+    onContinue();
+  }, [cameraPermission, locationPermission, permissionsGiven]);
+
   return (
     <View style={styles.container}>
       <Image source={Images.NoiseBG} style={styles.background} />
@@ -79,7 +127,9 @@ export const LandingScreen = ({ navigation }: Props) => {
           style={[styles.imageOpenDeli, { top: top + 10 }]}
         />
         <PagerView
+          ref={ref}
           style={styles.pagerView}
+          scrollEnabled={false}
           initialPage={page}
           onPageSelected={onScroll}>
           {data.map(item => (
@@ -90,18 +140,34 @@ export const LandingScreen = ({ navigation }: Props) => {
             />
           ))}
         </PagerView>
-        <PageIndicator
-          variant="beads"
-          count={3}
-          current={page}
-          style={styles.pageIndicator}
-        />
-        <Button
-          style={styles.buttonContinue}
-          type={ButtonType.black}
-          title={t('translations:continue')}
-          onPress={onContinue}
-        />
+        <View style={[styles.containerBottom, { paddingBottom: bottom + 10 }]}>
+          <PageIndicator
+            variant="beads"
+            count={data.length}
+            current={page}
+            style={styles.pageIndicator}
+          />
+          {page > 2 && (
+            <Button
+              style={[styles.buttonContinue, { marginBottom: 22 }]}
+              iconPosition="right"
+              type={ButtonType.green}
+              icon={Images.CheckWhite}
+              title={t('translations:allow')}
+              onPress={onAskForPermission}
+            />
+          )}
+          <Button
+            style={styles.buttonContinue}
+            iconPosition="right"
+            type={ButtonType.grayBGBlackText}
+            icon={Images.ArrowRightThin}
+            title={
+              page < 3 ? t('translations:continue') : t('translations:skip')
+            }
+            onPress={onContinue}
+          />
+        </View>
       </SafeAreaView>
     </View>
   );

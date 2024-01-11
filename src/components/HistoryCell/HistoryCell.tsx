@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Image,
   StyleProp,
@@ -11,8 +11,9 @@ import { Images } from '@app/utilities/images';
 import { styles } from './HistoryCell.styles';
 import { Order } from '@app/types/types';
 import moment from 'moment';
-import { formatMockDate, formatServer } from '@app/utilities/dates';
+import { formatServer, formatSpaced } from '@app/utilities/dates';
 import { useTranslation } from 'react-i18next';
+import { Button, ButtonType } from '../Button/Button';
 
 type Props = {
   style?: StyleProp<ViewStyle>;
@@ -23,45 +24,64 @@ type Props = {
 export const HistoryCell = ({ style, order, onPress }: Props) => {
   const { t } = useTranslation();
   const date = moment(order.created_at, formatServer);
+  const [colapsed, setColapsed] = useState<boolean>(false);
+
   return (
     <TouchableOpacity onPress={() => onPress(order)}>
       <View style={[styles.container, style]}>
-        <View style={styles.containerSpaceBetween}>
-          <Text style={styles.textId}>{`${order?.items?.length} item${
-            order?.items?.length > 1 ? 's' : ''
-          }`}</Text>
-          <View style={styles.containerStatus}>
-            <View style={styles.statusIndicator} />
-            <Text style={styles.textStatus}>{order.status}</Text>
+        <TouchableOpacity
+          style={styles.containerSpaceBetween}
+          onPress={() => setColapsed(!colapsed)}>
+          <View style={styles.containerTImes}>
+            <View style={styles.containerTime}>
+              <Text style={styles.textTime}>{'3:10 PM'}</Text>
+            </View>
+            <Text style={{}}>{'-'}</Text>
+            <View style={styles.containerTime}>
+              <Text style={styles.textTime}>{'3:31 PM'}</Text>
+            </View>
           </View>
-        </View>
-        {/* <View style={styles.separator} /> */}
-        {/* <View style={styles.containerSpaceBetween}>
-          <Text style={styles.textDeliveredTo}>Delivered to</Text>
-          <View style={styles.containerUser}>
-            <Text style={styles.textUserName}>
-              {order.customer_name ?? 'N/A'}
-            </Text>
+          <View style={styles.containerCarret}>
+            <View style={styles.containerStatus}>
+              <Text style={styles.textStatus}>{'$31.44'}</Text>
+            </View>
             <Image
-              // source={{ uri: order.deliveredTo.profilePictureUrl }}
-              style={styles.imageUser}
+              source={Images.CaretDown}
+              style={[
+                styles.imageCarret,
+                !colapsed && { transform: [{ rotate: '180deg' }] },
+              ]}
             />
           </View>
-        </View> */}
-        <View style={styles.separator} />
-        <View style={styles.containerInfo}>
-          <Image source={Images.Calendar} style={styles.iconSmall} />
-          <Text style={styles.textInfo}>{date.format(formatMockDate)}</Text>
-        </View>
-        <View style={[styles.containerInfo, { marginVertical: 10 }]}>
-          <Image source={Images.Storefront} style={styles.iconSmall} />
-          <Text style={styles.textInfo}>{order.merchant_name ?? 'N/A'}</Text>
-        </View>
-        <View style={styles.containerInfo}>
-          <Image source={Images.Money} style={styles.iconSmall} />
-          <Text style={styles.textInfo}>
-            {'$' + order?.income?.total_charge}
-          </Text>
+        </TouchableOpacity>
+
+        <View style={colapsed && { height: 0, overflow: 'hidden' }}>
+          <View style={styles.separator} />
+          <View style={styles.containerInfo}>
+            <Image source={Images.CalendarThin} style={styles.iconSmall} />
+            <Text style={styles.textInfo}>{date.format(formatSpaced)}</Text>
+          </View>
+          <View style={[styles.containerInfo]}>
+            <Image source={Images.Storefront} style={styles.iconSmall} />
+            <Text style={styles.textInfo}>{order.merchant_name ?? 'N/A'}</Text>
+          </View>
+          <View style={[styles.containerInfo]}>
+            <Image source={Images.HandCoins} style={styles.iconSmall} />
+            <Text style={styles.textInfo}>
+              {'$' + order?.income?.total_charge}
+            </Text>
+          </View>
+          <View style={styles.containerInfo}>
+            <Image source={Images.HandHeart} style={styles.iconSmall} />
+            <Text style={styles.textInfo}>{'$' + '1.00'}</Text>
+          </View>
+          <Button
+            type={ButtonType.grayBGRedText}
+            style={{ height: 42 }}
+            title={t('translations:report_order')}
+            onPress={() => undefined}
+            textStyle={{ fontSize: 12, fontWeight: '700' }}
+          />
         </View>
       </View>
     </TouchableOpacity>

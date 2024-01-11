@@ -482,34 +482,39 @@ export const TEST_API_NEW_ORDER = {
   },
 };
 
+export const TEST_INSTANCE_DESC = `Welcome Couriers to [Organization Name]!\n\nYour Role:\n• Deliver diverse cuisines from various restaurants.\n• Ensure timely, safe food handling.\n• Maintain clear communication with restaurants and customers.\n• Follow each restaurant's specific delivery guidelines.\nWhy [Organization Name]?\n• Variety: Experience different culinary styles.\n• Efficiency: Streamlined pickup and delivery processes.\n• Support: Strong back-end assistance.\n• Flexibility: Work with multiple restaurants.\n• Eco-Friendly: We promote sustainable delivery practices.\nStay Updated:\n• Use our app for multi-restaurant orders, navigation, and support.\n• Regular updates and training for optimal performance.\n\nJoin us in connecting culinary delights with the community!`;
+export const TEST_RULES = `1. Timely Pick-Ups: Arrive on schedule and verify orders for accuracy.
+2. Order Handling: Carefully transport food, ensuring proper temperature and secure packaging.
+3. Customer Interaction: Be professional and keep customers updated.
+4. App Usage: Efficiently use the app for navigation and status updates.
+5. Safety: Follow traffic laws and health guidelines.
+6. Feedback: Report issues and encourage customer ratings.
+7. Privacy: Maintain customer confidentiality.
+8. Sustainability: Opt for eco-friendly transport options.`;
+
 export const TEST_INSTANCES: Instance[] = [
   {
     name: 'Instance 1',
     link: 'www.instance1.com',
     imageUrl: TEST_IMAGE_URL,
     userCount: 11,
-    rules: 'Rule\nRule\nRule\nRule\nRule\nRule\n',
-    description:
-      'Description\nDescription\nDescription\nDescription\nDescription\nDescription\nDescription\nDescription\nDescription\nDescription\nDescription\nDescription\nDescription\nDescription\nDescription\nDescription\nDescription\nDescription\n',
+    rules: TEST_RULES,
+    description: TEST_INSTANCE_DESC,
   },
   {
     name: 'Instance 2',
     link: 'www.instance2.com',
     imageUrl: TEST_IMAGE_URL,
     userCount: 25,
-    rules:
-      'Rule\nRule\nRule\nRule\nRule\nRule\nRule\nRule\nRule\nRule\nRule\nRule\nRule\nRule\nRule\nRule\nRule\nRule\nRule\n',
-    description:
-      'Description\nDescription\nDescription\nDescription\nDescription\n',
+    rules: TEST_RULES,
+    description: TEST_INSTANCE_DESC,
   },
   {
     name: 'Instance 3',
     link: 'www.instance3.com',
     imageUrl: TEST_IMAGE_URL,
     userCount: 193,
-    rules:
-      'Rule\nRule\nRule\nRule\nRule\nRule\nRule\nRule\nRule\nRule\nRule\nRule\nRule\nRule\nRule\nRule\nRule\nRule\nRule\nRule\nRule\nRule\nRule\nRule\nRule\nRule\n',
-    description:
-      'Description\nDescription\nDescription\nDescription\nDescription\nDescription\nDescription\nDescription\nDescription\nDescription\nDescription\nDescription\nDescription\nDescription\nDescription\n',
+    rules: TEST_RULES,
+    description: TEST_INSTANCE_DESC,
   },
 ];

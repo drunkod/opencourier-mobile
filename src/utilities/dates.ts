@@ -5,6 +5,7 @@ export const formatDayName = 'dddd';
 export const formatMockDate = 'DD MMM YYYY - h:MM A';
 export const formatServer = 'YYYY-MM-DDThh:mm:ss[Z]';
 export const formatShift = 'hh:mm A';
+export const formatSpaced = 'D MMM YYYY';
 
 export const startOfThisWeek = (): Moment => {
   return moment().subtract(0, 'weeks').startOf('week');

@@ -23,13 +23,7 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>3</string>
-	<key>LSApplicationQueriesSchemes</key>
-	<array>
-		<string>waze</string>
-		<string>comgooglemaps</string>
-		<string>maps</string>
-	</array>
+	<string>1</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -51,6 +45,12 @@
 	<array>
 		<string>armv7</string>
 	</array>
+  <key>LSApplicationQueriesSchemes</key>
+  <array>
+    <string>waze</string>
+    <string>comgooglemaps</string>
+    <string>maps</string>
+  </array>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>

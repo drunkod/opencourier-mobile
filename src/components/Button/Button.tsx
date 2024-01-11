@@ -20,6 +20,7 @@ export enum ButtonType {
   yellow,
   gray,
   grayBGBlackText,
+  grayBGRedText,
 }
 
 type Props = {
@@ -31,6 +32,7 @@ type Props = {
   onPress: () => void;
   icon?: ImageSourcePropType;
   isLoading?: boolean;
+  iconPosition?: 'left' | 'right';
 };
 
 export const Button = ({
@@ -42,6 +44,7 @@ export const Button = ({
   onPress,
   icon,
   isLoading,
+  iconPosition = 'left',
 }: Props) => {
   const backgroundColor = useMemo(() => {
     if (disabled) {
@@ -62,6 +65,8 @@ export const Button = ({
         return Colors.gray8;
       case ButtonType.grayBGBlackText:
         return Colors.gray8;
+      case ButtonType.grayBGRedText:
+        return Colors.gray20;
     }
   }, [type, disabled]);
 
@@ -84,6 +89,8 @@ export const Button = ({
         return Colors.black1;
       case ButtonType.grayBGBlackText:
         return Colors.black1;
+      case ButtonType.grayBGRedText:
+        return Colors.red1;
     }
   }, [type, disabled]);
 
@@ -106,6 +113,8 @@ export const Button = ({
         return Colors.gray9;
       case ButtonType.grayBGBlackText:
         return Colors.black1;
+      case ButtonType.grayBGRedText:
+        return Colors.red6;
     }
   }, [type, disabled]);
 
@@ -122,6 +131,8 @@ export const Button = ({
         return Colors.gray4;
       case ButtonType.grayBGBlackText:
         return Colors.gray8;
+      case ButtonType.grayBGRedText:
+        return Colors.red6;
     }
   }, [type]);
 
@@ -141,6 +152,8 @@ export const Button = ({
         return 0;
       case ButtonType.grayBGBlackText:
         return 0;
+      case ButtonType.grayBGRedText:
+        return 2;
     }
   }, [type]);
 
@@ -160,6 +173,8 @@ export const Button = ({
         return Colors.black1;
       case ButtonType.grayBGBlackText:
         return Colors.black1;
+      case ButtonType.grayBGBlackText:
+        return Colors.red6;
     }
   }, [type]);
 
@@ -178,13 +193,22 @@ export const Button = ({
         style,
       ]}>
       {isLoading && <ActivityIndicator color={loaderColor} />}
-      {!isLoading && icon && (
-        <Image source={icon} style={[styles.icon, { tintColor: iconTint }]} />
+      {!isLoading && icon && iconPosition === 'left' && (
+        <Image
+          source={icon}
+          style={[styles.icon, { tintColor: iconTint, marginRight: 10 }]}
+        />
       )}
       {!isLoading && (
         <Text style={[styles.textTitle, { color: textColor }, textStyle]}>
           {title}
         </Text>
+      )}
+      {!isLoading && icon && iconPosition === 'right' && (
+        <Image
+          source={icon}
+          style={[styles.icon, { tintColor: iconTint, marginLeft: 10 }]}
+        />
       )}
     </TouchableOpacity>
   );

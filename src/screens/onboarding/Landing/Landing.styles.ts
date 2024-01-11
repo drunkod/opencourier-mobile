@@ -11,6 +11,7 @@ export const styles = StyleSheet.create({
   },
   pagerView: {
     flex: 1,
+    alignItems: 'center',
   },
   imageOpenDeli: {
     position: 'absolute',
@@ -21,26 +22,32 @@ export const styles = StyleSheet.create({
   },
   buttonContinue: {
     marginHorizontal: 32,
-    marginBottom: 10,
+    height: 48,
   },
   ilustration: {
     width: 320,
     height: 320,
-    marginLeft: SCREEN_WIDTH - 320,
     marginTop: 20,
+    position: 'absolute',
+    bottom: 0,
+    right: 0,
   },
   textTitle: {
-    fontSize: 56,
+    fontSize: 52,
     marginHorizontal: 32,
     fontWeight: '700',
+    marginBottom: 22,
+    lineHeight: 52,
   },
   textSubtitle: {
     fontSize: 18,
-    marginHorizontal: 32,
+    marginLeft: 32,
+    marginBottom: 260,
+    marginRight: 120,
   },
   pageContent: {
     flex: 1,
-    justifyContent: 'flex-end',
+    justifyContent: 'center',
   },
   background: {
     position: 'absolute',
@@ -49,5 +56,11 @@ export const styles = StyleSheet.create({
     bottom: 0,
     right: 0,
     backgroundColor: Colors.white,
+  },
+  containerBottom: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
   },
 });

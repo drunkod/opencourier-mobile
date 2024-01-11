@@ -318,4 +318,18 @@ export default {
   include_code: 'Include country code',
   shift_availability: 'Shift Availability',
   shift_availability_more: 'Shift Availability info',
+  enable_location: 'Enable location',
+  enable_location_text:
+    'By allowing location you are able to explore nearby organizations.',
+  enable_camera: 'Enable camera',
+  enable_camera_text:
+    'Please provide us access to your camera, which is required to complete orders.',
+  enable_notifications_text:
+    'Please provide us access to your notifications, so you don’t miss any order requests.',
+  skip: 'Skip',
+  allow: 'Allow',
+  report_incident: 'Report an Incident',
+  report_incident_text:
+    'To address any misconduct from restaurants or customers, please identify the incident by its date and time. For privacy, our system keeps customer details confidential.',
+  report_order: 'Report this order',
 };

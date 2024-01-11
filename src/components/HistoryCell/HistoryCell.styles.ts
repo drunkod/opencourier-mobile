@@ -30,6 +30,7 @@ export const styles = StyleSheet.create({
   containerInfo: {
     flexDirection: 'row',
     alignItems: 'center',
+    marginBottom: 10,
   },
   textId: {
     fontWeight: '700',
@@ -67,8 +68,9 @@ export const styles = StyleSheet.create({
     marginRight: 10,
   },
   textInfo: {
-    fontSize: 16,
-    lineHeight: 20,
+    fontSize: 10,
+    lineHeight: 16,
+    fontWeight: '600',
     color: Colors.black1,
   },
   containerStatus: {
@@ -88,4 +90,23 @@ export const styles = StyleSheet.create({
     backgroundColor: Colors.gray2,
     marginRight: 7,
   },
+  containerTImes: {
+    flexDirection: 'row',
+  },
+  containerTime: {
+    backgroundColor: Colors.blue5,
+    paddingHorizontal: 10,
+    borderRadius: 20,
+  },
+  textTime: {
+    fontSize: 12,
+    fontWeight: '500',
+    color: Colors.blue6,
+  },
+  imageCarret: {
+    width: 24,
+    height: 24,
+    marginLeft: 8,
+  },
+  containerCarret: { flexDirection: 'row', alignItems: 'center' },
 });

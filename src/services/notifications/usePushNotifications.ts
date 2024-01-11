@@ -19,7 +19,9 @@ const usePushNotifications = (
   const [permissionsGiven, setPermissionsGiven] = useState<boolean>(false);
 
   useEffect(() => {
-    requestUserPermission();
+    if (autoRequestPermssions) {
+      requestUserPermission();
+    }
   }, [autoRequestPermssions]);
 
   useEffect(() => {
@@ -97,6 +99,7 @@ const usePushNotifications = (
 
   return {
     requestUserPermission,
+    permissionsGiven,
   };
 };
 

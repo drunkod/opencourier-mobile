@@ -35,10 +35,13 @@ import { useHomeOrders } from '@app/hooks/useHomeOrders';
 import { RootState } from '@app/redux/store';
 import { useTranslation } from 'react-i18next';
 import { RootScreen } from '@app/navigation/types';
+import { ReportAnIncident } from '@app/components/ReportAnIncident/ReportAnIncident';
 
 type Props = DrawerScreenProp<DrawerScreens.Home>;
 
 export const HomeScreen = ({ navigation }: Props) => {
+  const [reportIncidentDismissed, setReportIncidentDismissed] =
+    useState<boolean>(false);
   const { t } = useTranslation();
   const [availableMapApps, setAvailableMapApps] = useState<string[]>([
     t('translations:cancel'),
@@ -434,7 +437,10 @@ export const HomeScreen = ({ navigation }: Props) => {
           selectedTab === HomeTabItem.New && !getNewOrdersFinished
         }
       />
-
+      {selectedTab === HomeTabItem.History && !reportIncidentDismissed && (
+        <ReportAnIncident onDismiss={() => setReportIncidentDismissed(true)} />
+      )}
+      
       {showEmptyState && <HomeEmptyStateComponent state={emptyState} />}
       {!showEmptyState && (
         <FlatList

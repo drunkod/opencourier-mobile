@@ -1,29 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import { Router } from '@app/navigation/router';
 import { NavigationContainer } from '@react-navigation/native';
-import { User } from '@app/types/types';
+import { Coordinates, User } from '@app/types/types';
 import Geolocation from 'react-native-geolocation-service';
 import UserContext from '@app/context/userContext';
 import { Provider } from 'react-redux';
 import store from './src/redux/store';
+import { useLocationPermission } from '@app/hooks/useLocationPermission';
 
 const App = () => {
-  const [locationPermission, setLocationPermission] = useState<boolean>(false);
+  const { locationPermission } = useLocationPermission();
   const [user, setUser] = useState<User>();
+  const [location, setLocation] = useState<Coordinates>();
 
   useEffect(() => {
     if (locationPermission) {
       Geolocation.getCurrentPosition(
         position => {
-          setUser({
-            address: '',
-            firstname: '',
-            lastname: '',
-            profilePictureUrl: '',
-            location: {
-              lat: position.coords.latitude,
-              lon: position.coords.longitude,
-            },
+          setLocation({
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
           });
         },
         error => {
@@ -34,18 +30,8 @@ const App = () => {
     }
   }, [locationPermission]);
 
-  useEffect(() => {
-    const getPermissions = async () => {
-      const permission = await Geolocation.requestAuthorization('whenInUse');
-      if (permission === 'granted') {
-        setLocationPermission(true);
-      }
-    };
-    getPermissions();
-  }, []);
-
   return (
-    <UserContext.Provider value={{ user, setUser }}>
+    <UserContext.Provider value={{ user, setUser, location, setLocation }}>
       <Provider store={store}>
         <NavigationContainer>
           <Router />
