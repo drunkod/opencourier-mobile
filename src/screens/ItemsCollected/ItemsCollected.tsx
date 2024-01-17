@@ -1,85 +1,26 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { View, SafeAreaView, Text, FlatList } from 'react-native';
-import { Images } from '@app/utilities/images';
 import { styles } from './ItemsCollected.styles';
 import { MainScreenProp, MainScreens } from '@app/navigation/main/types';
 import { BackNavButton } from '@app/components/BackNavButton/BackNavButton';
 import LinearGradient from 'react-native-linear-gradient';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Colors } from '@app/styles/colors';
-import { OrderItem } from '@app/types/types';
+import { OrderItem, ToastMessage } from '@app/types/types';
 import { OrderItemCell } from '@app/components/OrderItemCell/OrderItemCell';
-import { Button, ButtonType } from '@app/components/Button/Button';
-import { RootState } from '@app/redux/store';
-import { useDispatch, useSelector } from 'react-redux';
-import { confirmItems } from '@app/redux/order/order';
 import { useTranslation } from 'react-i18next';
+import { Toast } from '@app/components/Toast/Toast';
 
 type Props = MainScreenProp<MainScreens.ItemsCollected>;
-
-type CollectedItem = {
-  item: OrderItem;
-  selected: boolean;
-};
 
 export const ItemsCollected = ({ navigation, route }: Props) => {
   const { t } = useTranslation();
   const { top } = useSafeAreaInsets();
-  const { order } = route.params;
-  const [dataSource, setDataSource] = useState<CollectedItem[]>([]);
-  const [allCollected, setAllCollected] = useState<boolean>(false);
-  const dispatch = useDispatch();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const { confirmItemsError, confirmItemsFinished } = useSelector(
-    (state: RootState) => state.order,
-  );
+  const { customerName, items } = route.params;
 
-  useEffect(() => {
-    const data = order.items.map(item => {
-      return { selected: false, item: item };
-    });
-    setDataSource(data);
-  }, [order]);
-
-  const handleItemPress = (item: CollectedItem) => {
-    var temp = [...dataSource];
-    temp = temp.map(obj => {
-      if (item.item.name === obj.item.name) {
-        return { selected: !obj.selected, item: obj.item };
-      }
-      return obj;
-    });
-    setDataSource(temp);
+  const renderItem = ({ item }: { item: OrderItem }) => {
+    return <OrderItemCell item={item} onPress={() => undefined} />;
   };
-
-  const onAllItemsCollected = () => {
-    setIsLoading(true);
-    dispatch(confirmItems(order));
-  };
-
-  const renderItem = ({ item }: { item: CollectedItem }) => {
-    return (
-      <OrderItemCell
-        selected={item.selected}
-        item={item.item}
-        onPress={() => handleItemPress(item)}
-      />
-    );
-  };
-
-  useEffect(() => {
-    const notCollected = dataSource.filter(item => item.selected === false);
-    setAllCollected(notCollected.length === 0);
-  }, [dataSource]);
-
-  useEffect(() => {
-    if (confirmItemsFinished) {
-      setIsLoading(false);
-      if (!confirmItemsError) {
-        navigation.goBack();
-      }
-    }
-  }, [confirmItemsError, confirmItemsFinished, navigation]);
 
   return (
     <View style={styles.container}>
@@ -88,8 +29,12 @@ export const ItemsCollected = ({ navigation, route }: Props) => {
         colors={Colors.onlineGradientArray}
       />
       <SafeAreaView style={styles.safe}>
+        <Toast
+          toast={ToastMessage.item_may_be_bagged}
+          style={{ marginVertical: 10 }}
+        />
         <View style={styles.navHeader}>
-          <Text style={styles.title}>{t('translations:order_items')}</Text>
+          <Text style={styles.title}>{customerName}</Text>
           <BackNavButton onPress={() => navigation.goBack()} />
         </View>
         <Text style={styles.subtitle}>
@@ -98,25 +43,8 @@ export const ItemsCollected = ({ navigation, route }: Props) => {
         <View style={styles.separator} />
         <FlatList
           keyExtractor={(item, index) => index.toString()}
-          data={dataSource}
+          data={items}
           renderItem={renderItem}
-        />
-        <View style={styles.separator} />
-        <OrderItemCell
-          style={{ marginVertical: 22 }}
-          selected={false}
-          item={{ name: 'Cola Soda' }}
-          onPress={() => undefined}
-        />
-        <Button
-          isLoading={isLoading}
-          disabled={!allCollected}
-          style={{ marginBottom: 16 }}
-          textStyle={{ fontSize: 20, fontWeight: '700' }}
-          type={ButtonType.green}
-          icon={Images.Hamburger}
-          title={t('translations:confirm_items')}
-          onPress={onAllItemsCollected}
         />
       </SafeAreaView>
     </View>

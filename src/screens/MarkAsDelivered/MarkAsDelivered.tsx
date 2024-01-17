@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 import {
   View,
   Text,
-  FlatList,
   SafeAreaView,
   TouchableOpacity,
   Image,
   Alert,
-  ImageSourcePropType,
+  SectionListData,
+  SectionList,
 } from 'react-native';
 import { styles } from './MarkAsDelivered.styles';
 import { MainScreenProp, MainScreens } from '@app/navigation/main/types';
@@ -16,7 +16,6 @@ import { QuickNote } from '@app/components/QuickNote/QuickNote';
 import { CustomerNotes } from '@app/types/types';
 import { Images } from '@app/utilities/images';
 import { Button, ButtonType } from '@app/components/Button/Button';
-import { ADD_NOTE_CELL } from '@app/utilities/constants';
 import { PhotoCell } from '@app/components/PhotoCell/PhotoCell';
 import { RootState } from '@app/redux/store';
 import { useDispatch, useSelector } from 'react-redux';
@@ -25,18 +24,31 @@ import { useTranslation } from 'react-i18next';
 
 type Props = MainScreenProp<MainScreens.MarkAsDelivered>;
 
-type DataTypes = string | string[];
+type SectionListItem = {
+  notes: string[];
+};
 
-export const MarkAsDelivered = ({ navigation }: Props) => {
+export const MarkAsDelivered = ({ navigation, route }: Props) => {
   const { t } = useTranslation();
-  const [dataSource, setDataSource] = useState<DataTypes[]>([
-    [
-      CustomerNotes.BellnotRung,
-      CustomerNotes.DontBlockDoor,
-      CustomerNotes.HandleWithCare,
-      CustomerNotes.PreventLeaks,
-      ADD_NOTE_CELL,
-    ],
+  const { order } = route.params;
+  const [selectedPhoto, setSelectedPhoto] = useState<string | undefined>(
+    undefined,
+  );
+  const [data, setData] = useState<SectionListData<SectionListItem>[]>([
+    {
+      data: [
+        {
+          notes: [
+            CustomerNotes.BellnotRung,
+            CustomerNotes.DontBlockDoor,
+            CustomerNotes.HandleWithCare,
+            CustomerNotes.PreventLeaks,
+          ],
+        },
+      ],
+      title: t('translations:quick_note'),
+    },
+    { data: [{ notes: [] }], title: t('translations:add_note') },
   ]);
   const [selectedNotes, setSelectedNotes] = useState<string[]>([]);
   const dispatch = useDispatch();
@@ -61,10 +73,10 @@ export const MarkAsDelivered = ({ navigation }: Props) => {
 
   const addNote = (text: string | undefined) => {
     if (text) {
-      var temp = [...dataSource];
-      const noteArray = dataSource[0].filter(obj => obj !== ADD_NOTE_CELL);
-      temp[0] = [...noteArray, text, ADD_NOTE_CELL];
-      setDataSource(temp);
+      var temp = [...data];
+      const noteArray = data[1].data[0].notes.filter(obj => obj !== text);
+      temp[1].data[0].notes = [...noteArray, text];
+      setData(temp);
     }
   };
 
@@ -87,60 +99,62 @@ export const MarkAsDelivered = ({ navigation }: Props) => {
     );
   };
 
-  const onDeletePhoto = (photo: ImageSourcePropType) => {
-    const temp = dataSource.filter(item => item !== photo);
-    setDataSource(temp);
+  const onDeletePhoto = (photo: string) => {
+    setSelectedPhoto(undefined);
   };
 
-  const renderItem = ({ item, index }: DataTypes) => {
-    if (index === 0) {
-      return (
-        <View>
-          <Text style={styles.textNote}>{t('translations:quick_note')}</Text>
-          <View style={styles.contentContainerStyle}>
-            {item.map(note => {
-              if (note === ADD_NOTE_CELL) {
-                return (
-                  <TouchableOpacity
-                    style={styles.buttonAddNote}
-                    onPress={onAddNote}>
-                    <Image source={Images.PlusCircle} />
-                    <Text style={styles.textAddNote}>
-                      {t('translations:type_a_note')}
-                    </Text>
-                  </TouchableOpacity>
-                );
-              }
+  const renderItem = ({
+    item,
+    index,
+    section,
+  }: {
+    item: SectionListItem;
+    index: number;
+    section: number;
+  }) => {
+    return (
+      <View style={styles.contentContainerStyle}>
+        {item.notes &&
+          item.notes.map(note => {
+            return (
+              <QuickNote
+                createdByUser={section.title === t('translations:add_note')}
+                text={note}
+                selected={noteSelected(note)}
+                onPress={handleNotePress}
+              />
+            );
+          })}
+      </View>
+    );
+  };
 
-              return (
-                <QuickNote
-                  text={note}
-                  selected={noteSelected(note)}
-                  onPress={handleNotePress}
-                />
-              );
-            })}
-          </View>
+  const renderSectionHeader = ({
+    section: { title, data },
+  }: {
+    section: SectionListData<SectionListItem>;
+  }): ReactElement => {
+    if (title === t('translations:quick_note')) {
+      return (
+        <View style={styles.containerHeader}>
+          <Text style={styles.textNotesHeader}>{title}</Text>
+          <View style={styles.headerLine} />
         </View>
       );
-    } else {
-      return (
-        <PhotoCell
-          image={item}
-          onDelete={() => onDeletePhoto(item)}
-          onRetake={() =>
-            navigation.navigate(MainScreens.PhotoAttachment, {
-              onAttach: onAttachPhoto,
-            })
-          }
-        />
-      );
     }
+    return (
+      <View style={[styles.noteHeader]}>
+        <Text style={styles.textNotesHeader}>{t('translations:add_note')}</Text>
+        <View style={styles.notesDash} />
+        <TouchableOpacity style={styles.addNote} onPress={() => onAddNote()}>
+          <Image source={Images.PlusBlack} />
+        </TouchableOpacity>
+      </View>
+    );
   };
 
   const onAttachPhoto = (photo: string) => {
-    //TODO: string url path
-    setDataSource([...dataSource, photo]);
+    setSelectedPhoto(photo);
   };
 
   const handleConfirm = () => {
@@ -163,38 +177,80 @@ export const MarkAsDelivered = ({ navigation }: Props) => {
     <View style={styles.container}>
       <SafeAreaView style={styles.safe}>
         <View style={styles.navHeader}>
-          <Text style={styles.title}>{t('translations:for_the_customer')}</Text>
+          <Text style={styles.title}>
+            {t('translations:marking_as_delivered')}
+          </Text>
           <BackNavButton onPress={() => navigation.goBack()} />
         </View>
 
-        <FlatList
+        <SectionList
           showsVerticalScrollIndicator={false}
           style={[styles.gridContainer]}
-          data={dataSource}
+          sections={data}
           renderItem={renderItem}
           keyExtractor={(item, index) => `${index}`}
+          renderSectionHeader={renderSectionHeader}
+          stickySectionHeadersEnabled={true}
         />
 
-        <Button
-          textStyle={styles.buttonTextStyle}
-          icon={Images.Camera}
-          type={ButtonType.black}
-          title={t('translations:take_a_photo')}
-          onPress={() =>
-            navigation.navigate(MainScreens.PhotoAttachment, {
-              onAttach: onAttachPhoto,
-            })
-          }
-        />
+        <Text style={styles.textShow}>
+          {t('translations:show_the_customer')}
+        </Text>
+
+        {selectedPhoto && (
+          <PhotoCell
+            style={{ marginBottom: 16 }}
+            image={selectedPhoto}
+            onDelete={() => onDeletePhoto(selectedPhoto)}
+            onRetake={() =>
+              navigation.navigate(MainScreens.PhotoAttachment, {
+                onAttach: onAttachPhoto,
+              })
+            }
+          />
+        )}
+        {!selectedPhoto && (
+          <Button
+            textStyle={styles.buttonTextStyle}
+            style={styles.buttonConfirm}
+            icon={Images.Camera}
+            type={ButtonType.black}
+            title={t('translations:take_a_photo')}
+            onPress={() =>
+              navigation.navigate(MainScreens.PhotoAttachment, {
+                onAttach: onAttachPhoto,
+              })
+            }
+          />
+        )}
+
         <Button
           loading={isLoading}
           style={styles.buttonConfirm}
-          disabled={selectedNotes.length !== dataSource[0].length - 1}
           textStyle={styles.buttonTextStyle}
-          icon={Images.Checkmark}
+          icon={Images.CheckWhite}
           type={ButtonType.green}
           title={t('translations:confirm_mark_as_delivered')}
           onPress={handleConfirm}
+        />
+
+        {selectedPhoto && (
+          <Button
+            style={styles.buttonConfirm}
+            textStyle={styles.buttonTextStyle}
+            type={ButtonType.white}
+            title={t('translations:handed_to_customer')}
+            onPress={() => undefined}
+          />
+        )}
+        <Button
+          style={styles.buttonConfirm}
+          textStyle={styles.buttonTextStyle}
+          type={ButtonType.redBGRedText}
+          title={t('translations:report_issue')}
+          onPress={() => {
+            navigation.navigate(MainScreens.ReportIssue, { order: order });
+          }}
         />
       </SafeAreaView>
     </View>

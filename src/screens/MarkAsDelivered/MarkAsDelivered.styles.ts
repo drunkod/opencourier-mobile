@@ -22,11 +22,11 @@ export const styles = StyleSheet.create({
     right: 0,
     textAlign: 'center',
     fontWeight: '700',
-    fontSize: 32,
+    fontSize: 26,
   },
   gridContainer: {
     flex: 1,
-    marginBottom: 20,
+    marginTop: 10,
   },
   contentContainerStyle: {
     flexDirection: 'row',
@@ -53,11 +53,62 @@ export const styles = StyleSheet.create({
     marginLeft: 4,
   },
   buttonConfirm: {
-    marginBottom: 16,
-    marginTop: 19,
+    marginBottom: 19,
   },
   buttonTextStyle: {
-    fontSize: 20,
+    fontSize: 16,
     fontWeight: '700',
+  },
+  textShow: {
+    fontSize: 16,
+    color: Colors.black1,
+    marginBottom: 19,
+  },
+  noteHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    overflow: 'hidden',
+    paddingBottom: 12,
+    paddingTop: 8,
+  },
+  textNotesHeader: {
+    fontSize: 16,
+    fontWeight: '400',
+    color: Colors.black4,
+  },
+  notesDash: {
+    height: 1,
+    backgroundColor: Colors.gray9,
+    flex: 1,
+    marginLeft: 8,
+  },
+  containerInstructions: {
+    marginTop: 4,
+    overflow: 'hidden',
+  },
+  addNote: {
+    borderRadius: 8,
+    width: 32,
+    height: 32,
+    backgroundColor: Colors.gray1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: 8,
+  },
+  headerText: {
+    fontSize: 24,
+    lineHeight: 24,
+    color: Colors.gray21,
+  },
+  containerHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: Colors.white,
+    paddingBottom: 16,
+  },
+  headerLine: {
+    height: 1,
+    backgroundColor: Colors.gray1,
+    flex: 1,
   },
 });

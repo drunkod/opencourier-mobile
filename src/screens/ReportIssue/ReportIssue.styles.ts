@@ -38,4 +38,33 @@ export const styles = StyleSheet.create({
     height: 1,
     backgroundColor: Colors.gray12,
   },
+  cellHorizonal: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 8,
+    marginTop: 38,
+  },
+  cellText: {
+    fontSize: 12,
+    fontWeight: '600',
+    flex: 1,
+  },
+  arrow: {
+    width: 14,
+    height: 14,
+  },
+  contentReported: {
+    flex: 1,
+    alignItems: 'center',
+  },
+  textThanks: {
+    fontSize: 16,
+    fontWeight: '700',
+    textAlign: 'center',
+  },
+  textErrors: {
+    fontSize: 16,
+    textAlign: 'center',
+    marginVertical: 10,
+  },
 });

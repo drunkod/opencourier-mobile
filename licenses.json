@@ -53,12 +53,6 @@
         "licenseUrl": "https://github.com/reduxjs/redux-toolkit/raw/master/LICENSE",
         "parents": "opendeli"
     },
-    "add@2.0.6": {
-        "licenses": "MIT",
-        "repository": "https://github.com/ben-ng/add",
-        "licenseUrl": "https://github.com/ben-ng/add",
-        "parents": "opendeli"
-    },
     "axios@1.6.2": {
         "licenses": "MIT",
         "repository": "https://github.com/axios/axios",
@@ -213,12 +207,6 @@
         "licenses": "MIT",
         "repository": "https://github.com/redux-saga/redux-saga/tree/main/packages/core",
         "licenseUrl": "https://github.com/redux-saga/redux-saga/tree/main/packages/core/raw/master/LICENSE",
-        "parents": "opendeli"
-    },
-    "yarn@1.22.21": {
-        "licenses": "BSD-2-Clause",
-        "repository": "https://github.com/yarnpkg/yarn",
-        "licenseUrl": "https://github.com/yarnpkg/yarn/raw/master/LICENSE",
         "parents": "opendeli"
     }
 }

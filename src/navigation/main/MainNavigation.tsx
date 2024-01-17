@@ -23,6 +23,7 @@ import { EarningsMethodScreen } from '@app/screens/SettingsStack/EarningsMethod/
 import { OrderPreferenceScreen } from '@app/screens/SettingsStack/OrderPreference/OrderPreference';
 import { WeightOrderScreen } from '@app/screens/SettingsStack/WeightOrder/WeightOrder';
 import { ShiftAvailabilityScreen } from '@app/screens/SettingsStack/ShiftAvailability/ShiftAvailabilityScreen';
+import { ReportIssue } from '@app/screens/ReportIssue/ReportIssue';
 
 const MainStackNavigator = createNativeStackNavigator();
 
@@ -139,6 +140,11 @@ export const MainStack = () => {
       <MainStackNavigator.Screen
         name={MainScreens.ShiftAvailabilityScreen}
         component={ShiftAvailabilityScreen}
+        options={DEFAULT_OPTIONS}
+      />
+      <MainStackNavigator.Screen
+        name={MainScreens.ReportIssue}
+        component={ReportIssue}
         options={DEFAULT_OPTIONS}
       />
     </MainStackNavigator.Navigator>

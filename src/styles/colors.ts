@@ -1,5 +1,6 @@
 export const Colors = {
   white: '#fff',
+  white2: '#FFFCF4',
   black: '#000',
   black1: '#393938',
   black2: '#344054',
@@ -41,6 +42,7 @@ export const Colors = {
   blue4: '#427DB6',
   blue5: '#ECF2F8',
   blue6: '#2F5981',
+  blue7: '#6897C5',
   red1: '#DC4C44',
   red2: '#FAE1DF',
   red3: 'rgba(237, 146, 152, 1)',

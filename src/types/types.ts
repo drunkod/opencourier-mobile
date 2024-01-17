@@ -281,6 +281,8 @@ export enum ToastMessage {
   pickupBeforeContinuing = 'pickup_before_continue',
   waitingForNewOrders = 'waiting_for_orders',
   addressCopied = 'address_copied',
+  get_closer = 'get_closer_to_restaurant',
+  item_may_be_bagged = 'item_may_be_bagged',
 }
 
 export type Vehicle = {
@@ -323,3 +325,10 @@ export type ShiftAvailability = {
   day: string;
   shifts: ShiftRange[];
 };
+
+export enum OrderState {
+  orderPickup,
+  confirmingOrderItems,
+  orderDeliveryInProgress,
+  deliveryDone,
+}

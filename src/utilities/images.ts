@@ -90,8 +90,14 @@ import arrowRightThin from '@app/assets/icons/right_icon.png';
 import calendarThin from '@app/assets/icons/Calendar.png';
 import handCoins from '@app/assets/icons/HandCoins.png';
 import handHeart from '@app/assets/icons/HandHeart.png';
+import Cone from '@app/assets/icons/cone.png';
+import Flag from '@app/assets/icons/flag.png';
+import CheckmarkHollow from '@app/assets/icons/CheckHollow.png';
 
 export const Images = {
+  CheckmarkHollow: CheckmarkHollow,
+  Flag: Flag,
+  Cone: Cone,
   HandHeart: handHeart,
   HandCoins: handCoins,
   CalendarThin: calendarThin,

@@ -24,15 +24,17 @@ export enum MainScreens {
   WeightOrderScreen = 'WeightOrderScreen',
   OrderPreferenceScreen = 'OrderPreferenceScreen',
   ShiftAvailabilityScreen = 'ShiftAvailabilityScreen',
+  ReportIssue = 'ReportIssue',
 }
 
 export type MainStackParamList = {
   Drawer: undefined;
   ItemsCollected: {
-    order: Order;
+    customerName: string;
+    items: OrderItem[];
   };
   MarkAsDelivered: {
-    items: OrderItem[];
+    order: Order;
   };
   PhotoAttachment: {
     onAttach: (photo: string) => void;
@@ -46,6 +48,9 @@ export type MainStackParamList = {
   WeightOrderScreen: undefined;
   OrderPreferenceScreen: undefined;
   ShiftAvailabilityScreen: undefined;
+  ReportIssue: {
+    order: Order;
+  };
 };
 
 export type MainNavigationProp = NavigationProp<MainStackParamList>;

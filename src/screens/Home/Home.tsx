@@ -17,6 +17,7 @@ import {
   MapDestination,
   MapLinkingOptions,
   Order,
+  OrderState,
   PickupInstruction,
   UserStatus,
 } from '@app/types/types';
@@ -40,6 +41,9 @@ import { ReportAnIncident } from '@app/components/ReportAnIncident/ReportAnIncid
 type Props = DrawerScreenProp<DrawerScreens.Home>;
 
 export const HomeScreen = ({ navigation }: Props) => {
+  const [orderState, setOrderState] = useState<OrderState>(
+    OrderState.orderPickup,
+  );
   const [reportIncidentDismissed, setReportIncidentDismissed] =
     useState<boolean>(false);
   const { t } = useTranslation();
@@ -203,14 +207,12 @@ export const HomeScreen = ({ navigation }: Props) => {
               Clipboard.setString(order.pickup.location.addressLine1)
             }
             onConfirmItems={() => {
-              navigation.navigate(MainScreens.ItemsCollected, {
-                order: item,
-              });
+              setOrderState(OrderState.orderDeliveryInProgress);
             }}
             onCallCustomer={() => Linking.openURL(`tel://${12341251511}`)}
             onCallRestaurant={() => Linking.openURL(`tel://${12341251511}`)}
-            onMarkAsDelivered={() =>
-              navigation.navigate(MainScreens.MarkAsDelivered)
+            onMarkAsDelivered={order =>
+              navigation.navigate(MainScreens.MarkAsDelivered, { order: order })
             }
             order={item}
             onRestaurantAddressPress={order =>
@@ -229,6 +231,17 @@ export const HomeScreen = ({ navigation }: Props) => {
             onPickupInstructionPress={onPickupInstructionPress}
             onNoteDelete={onDeleteNote}
             onNoteEdit={onEditNote}
+            onOrderItemsListForCustomer={() => {
+              navigation.navigate(MainScreens.ItemsCollected, {
+                customerName: item.customer_name,
+                items: item.items,
+              });
+              setOrderState(OrderState.confirmingOrderItems);
+            }}
+            onReportIssue={order =>
+              navigation.navigate(MainScreens.ReportIssue, { order: order })
+            }
+            orderState={orderState}
           />
         );
       case HomeTabItem.History:
@@ -440,7 +453,7 @@ export const HomeScreen = ({ navigation }: Props) => {
       {selectedTab === HomeTabItem.History && !reportIncidentDismissed && (
         <ReportAnIncident onDismiss={() => setReportIncidentDismissed(true)} />
       )}
-      
+
       {showEmptyState && <HomeEmptyStateComponent state={emptyState} />}
       {!showEmptyState && (
         <FlatList

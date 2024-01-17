@@ -19,9 +19,16 @@ type Props = {
   onClose?: () => void;
   toast: ToastMessage;
   onEnable?: () => void;
+  disableClose?: boolean;
 };
 
-export const Toast = ({ style, onClose, toast, onEnable }: Props) => {
+export const Toast = ({
+  style,
+  onClose,
+  toast,
+  onEnable,
+  disableClose = false,
+}: Props) => {
   const { t } = useTranslation();
 
   const backgroundColor = useMemo(() => {
@@ -38,6 +45,10 @@ export const Toast = ({ style, onClose, toast, onEnable }: Props) => {
         return Colors.green7;
       case ToastMessage.addressCopied:
         return Colors.green7;
+      case ToastMessage.get_closer:
+        return Colors.red5;
+      case ToastMessage.item_may_be_bagged:
+        return Colors.gray20;
     }
   }, [toast]);
 
@@ -55,6 +66,10 @@ export const Toast = ({ style, onClose, toast, onEnable }: Props) => {
         return Colors.green1;
       case ToastMessage.addressCopied:
         return Colors.green1;
+      case ToastMessage.get_closer:
+        return Colors.red1;
+      case ToastMessage.item_may_be_bagged:
+        return Colors.blue7;
     }
   }, [toast]);
 
@@ -81,7 +96,8 @@ export const Toast = ({ style, onClose, toast, onEnable }: Props) => {
         </TouchableOpacity>
       )}
       {toast !== ToastMessage.waitingForNewOrders &&
-        toast !== ToastMessage.pickupBeforeContinuing && (
+        toast !== ToastMessage.pickupBeforeContinuing &&
+        !disableClose && (
           <TouchableOpacity
             style={styles.buttonClose}
             onPress={() => onClose && onClose()}>

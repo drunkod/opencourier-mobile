@@ -16,10 +16,17 @@ type Props = {
   style?: StyleProp<ViewStyle>;
   text: string;
   selected: boolean;
+  createdByUser: boolean;
   onPress: (note: string) => void;
 };
 
-export const QuickNote = ({ style, text, selected, onPress }: Props) => {
+export const QuickNote = ({
+  style,
+  text,
+  selected,
+  onPress,
+  createdByUser = false,
+}: Props) => {
   const { t } = useTranslation();
   const icon = useMemo(() => {
     switch (text) {
@@ -42,6 +49,7 @@ export const QuickNote = ({ style, text, selected, onPress }: Props) => {
       style={[
         styles.container,
         style,
+        createdByUser && { backgroundColor: Colors.white2, borderWidth: 0 },
         selected && {
           borderColor: Colors.green1,
           backgroundColor: Colors.green1,

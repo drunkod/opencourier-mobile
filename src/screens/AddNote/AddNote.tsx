@@ -12,6 +12,7 @@ import { styles } from './AddNote.styles';
 import { useTranslation } from 'react-i18next';
 import { Button, ButtonType } from '@app/components/Button/Button';
 import { Images } from '@app/utilities/images';
+import { Colors } from '@app/styles/colors';
 
 type Props = RootScreenProp<RootScreen.AddNoteModal>;
 
@@ -67,6 +68,15 @@ export const AddNote = ({ navigation, route }: Props) => {
           <Image source={Images.Info} style={styles.iconinfo} />
           <Text style={styles.textInfo}>
             {t('translations:avoid_mentioning')}
+          </Text>
+        </View>
+        <View style={styles.containerInfo}>
+          <Image
+            source={Images.Info}
+            style={[styles.iconinfo, { tintColor: Colors.red1 }]}
+          />
+          <Text style={[styles.textInfo, { color: Colors.red1 }]}>
+            {t('translations:avoid_mentioning_consumer')}
           </Text>
         </View>
 
