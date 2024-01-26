@@ -21,6 +21,7 @@ export const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '600',
     height: 24,
+    paddingVertical: 0,
   },
   labelError: {
     alignSelf: 'stretch',

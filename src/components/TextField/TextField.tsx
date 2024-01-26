@@ -95,7 +95,7 @@ export const TextField = forwardRef((props: TextFieldProps, ref) => {
           </TouchableOpacity>
         )}
       </View>
-      {error && !isFocused && (
+      {error !== undefined && !isFocused && (
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <Image source={Images.RedInfo} />
           <Text style={styles.labelError}>{error}</Text>

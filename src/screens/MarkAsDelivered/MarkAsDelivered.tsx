@@ -21,6 +21,7 @@ import { RootState } from '@app/redux/store';
 import { useDispatch, useSelector } from 'react-redux';
 import { markAsDelivered } from '@app/redux/order/order';
 import { useTranslation } from 'react-i18next';
+import { RootScreen } from '@app/navigation/types';
 
 type Props = MainScreenProp<MainScreens.MarkAsDelivered>;
 
@@ -81,22 +82,10 @@ export const MarkAsDelivered = ({ navigation, route }: Props) => {
   };
 
   const onAddNote = () => {
-    Alert.prompt(
-      t('translations:add_note'),
-      '',
-      [
-        {
-          text: t('translations:cancel'),
-          onPress: () => undefined,
-          style: 'cancel',
-        },
-        {
-          text: 'OK',
-          onPress: note => addNote(note),
-        },
-      ],
-      'plain-text',
-    );
+    navigation.navigate(RootScreen.AddNoteModal, {
+      onNoteAdded: addNote,
+      order: order,
+    });
   };
 
   const onDeletePhoto = (photo: string) => {

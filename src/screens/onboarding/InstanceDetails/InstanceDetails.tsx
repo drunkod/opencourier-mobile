@@ -53,6 +53,7 @@ export const InstanceDetails = ({ navigation, route }: Props) => {
           style={{ marginBottom: 22 }}
         />
         <Button
+          style={{ marginBottom: 16 }}
           icon={Images.SignIn}
           type={ButtonType.grayBGBlackText}
           title={t('translations:login_to_instance')}

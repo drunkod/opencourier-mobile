@@ -11,6 +11,7 @@ import { Button, ButtonType } from '@app/components/Button/Button';
 import { Images } from '@app/utilities/images';
 import { TextField } from '@app/components/TextField/TextField';
 import { validateEmail } from '@app/utilities/text';
+import { RootScreen } from '@app/navigation/types';
 
 type Props = OnboardingScreenProp<OnboardingScreen.JoinInstance>;
 
@@ -42,31 +43,40 @@ export const JoinInstance = ({ navigation, route }: Props) => {
   const validateFields = () => {
     var oldState = errors;
 
+    var emailError: string | undefined;
     if (email.length > 0) {
-      if (validateEmail(email)) {
-        oldState.email = undefined;
-      } else {
-        oldState.email = 'Email invalid!';
+      if (!validateEmail(email)) {
+        emailError = 'Email invalid!';
       }
     }
 
+    var passwordError: string | undefined;
+    var confirmPasswordError: string | undefined;
     if (password.length > 0) {
       if (password.length < 5) {
-        oldState.password = 'Password too short!';
-      } else {
-        oldState.password = undefined;
+        passwordError = 'Password too short!';
+      }
+      if (
+        oldState.password === undefined &&
+        confrimPassword !== password &&
+        confrimPassword.length > 0
+      ) {
+        confirmPasswordError = 'Passwords do not match!';
+      }
+    } else {
+      oldState.password = undefined;
+      if (confrimPassword.length > 0) {
+        confirmPasswordError = 'Passwords do not match!';
       }
     }
 
-    if (confrimPassword.length > 0) {
-      if (confrimPassword !== password) {
-        oldState.password = 'Passwords do not match!';
-      } else {
-        oldState.password = undefined;
-      }
-    }
-
-    setErrors(oldState);
+    setErrors({
+      name: undefined,
+      username: undefined,
+      email: emailError,
+      password: passwordError,
+      confrimPassword: confirmPasswordError,
+    });
   };
 
   useEffect(() => {
@@ -83,6 +93,7 @@ export const JoinInstance = ({ navigation, route }: Props) => {
       />
       <ScrollView contentContainerStyle={styles.content}>
         <TextField
+          key={'name'}
           error={errors.name}
           value={name}
           placeholder={t('translations:full_name')}
@@ -91,6 +102,7 @@ export const JoinInstance = ({ navigation, route }: Props) => {
           style={styles.textField}
         />
         <TextField
+          key={'username'}
           error={errors.username}
           value={username}
           placeholder={t('translations:user_name')}
@@ -99,6 +111,7 @@ export const JoinInstance = ({ navigation, route }: Props) => {
           style={styles.textField}
         />
         <TextField
+          key={'email'}
           error={errors.email}
           value={email}
           placeholder={t('translations:email_address')}
@@ -107,6 +120,7 @@ export const JoinInstance = ({ navigation, route }: Props) => {
           style={styles.textField}
         />
         <TextField
+          key={'password'}
           error={errors.password}
           secureTextEntry
           value={password}
@@ -116,6 +130,7 @@ export const JoinInstance = ({ navigation, route }: Props) => {
           style={styles.textField}
         />
         <TextField
+          key={'confirmPassword'}
           error={errors.confrimPassword}
           secureTextEntry
           value={confrimPassword}
@@ -129,11 +144,7 @@ export const JoinInstance = ({ navigation, route }: Props) => {
           icon={Images.PlusCircle}
           type={ButtonType.green}
           title={t('translations:join_instance')}
-          onPress={() =>
-            navigation.navigate(OnboardingScreen.JoinInstance, {
-              instance: instance,
-            })
-          }
+          onPress={() => navigation.navigate(RootScreen.Main)}
           style={{ marginBottom: 22 }}
         />
 

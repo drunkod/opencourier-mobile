@@ -232,11 +232,16 @@ export const ShiftAvailabilityScreen = ({ navigation }: Props) => {
           modal
           open={showModal}
           title={
-            dayToAddShiftTo?.startOrEnd === 'start'
+            shiftToAdd?.start === undefined
               ? `Select the start of your ${dayToAddShiftTo?.shift.day} shift`
               : `Select the end of your ${dayToAddShiftTo?.shift.day} shift`
           }
           mode={'time'}
+          minimumDate={
+            shiftToAdd?.start !== undefined
+              ? moment(shiftToAdd.start, formatShift).toDate()
+              : undefined
+          }
           date={selectedPickerDate}
           onConfirm={setSelectedPickerDate}
           onCancel={() => undefined}

@@ -15,7 +15,7 @@ export const styles = StyleSheet.create({
     marginBottom: 22,
   },
   title: {
-    fontSize: 32,
+    fontSize: 28,
     fontWeight: '700',
     color: Colors.black1,
     marginLeft: 16,
@@ -24,7 +24,6 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
   org: {
-    height: 46,
     backgroundColor: Colors.gray24,
     borderRadius: 12,
     marginBottom: 16,

@@ -27,7 +27,7 @@ export default {
   account_information: 'Account information',
   manage_your_account: 'Manage your account and personal information',
   accessibility: 'Accessibility',
-  earning_method: 'Eearning Method',
+  earning_method: 'Earning Method',
   select_earning_method: 'Select your preference for earning method',
   enable_enhcanced_accessibility:
     'Enable enhanced accessibility options for an improved app experience, tailored to your needs',
