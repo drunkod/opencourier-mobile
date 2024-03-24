@@ -90,8 +90,8 @@ export type Organization = {
 export type User = {
   firstname: string;
   lastname: string;
-  profilePictureUrl: string;
-  address: string;
+  profilePictureUrl?: string;
+  address?: string;
   location?: { lat: number; lon: number };
 };
 

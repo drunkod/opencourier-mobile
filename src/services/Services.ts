@@ -9,7 +9,7 @@ export type Services = {
 };
 
 const Services = (): Services => {
-  const client = DemoClient();
+  const client = Client();
   const uService = userService(client);
   const oService = orderService(client);
 

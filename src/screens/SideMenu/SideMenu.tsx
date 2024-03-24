@@ -25,6 +25,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { setUserStatus } from '@app/redux/user/user';
 import { useTranslation } from 'react-i18next';
 import RNRestart from 'react-native-restart';
+import { selectUser } from '@app/redux/user/user';
 
 type Props = RootScreenProp<RootScreen.Loading>;
 
@@ -45,7 +46,9 @@ export const SideMenu = ({ navigation }: Props) => {
   const [selectedOrg, setSelectedOrg] = useState<Organization>(
     TEST_ORG_ARRAY[0],
   );
-  const { userStatus } = useSelector((state: RootState) => state.user);
+  const userState = useSelector(selectUser);
+  const userStatus = userState.userStatus;
+  const user = userState.user;
   const dispatch = useDispatch();
 
   const isSwitchOn = (item: SideMenuItem) => {
@@ -130,7 +133,7 @@ export const SideMenu = ({ navigation }: Props) => {
             onPress={() => undefined}
           />
           <Text style={styles.textName}>
-            {t('translations:hi') + ' Delena!'}
+            {t('translations:hi') + ` ${user.firstname}!`}
           </Text>
         </View>
         <OrganizationSelect

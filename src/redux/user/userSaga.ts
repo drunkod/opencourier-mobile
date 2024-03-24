@@ -32,6 +32,7 @@ function* signupUserSaga(service: UserService): Generator<any, void, any> {
       const res = yield call(service.signup, payload);
       yield put(signupFinished(res));
     } catch (error) {
+      console.log('signup error: ', error);
       yield put(signupError(error as string));
     }
   }

@@ -12,32 +12,35 @@ import { Images } from '@app/utilities/images';
 import { TextField } from '@app/components/TextField/TextField';
 import { validateEmail } from '@app/utilities/text';
 import { RootScreen } from '@app/navigation/types';
+import { useDispatch } from 'react-redux';
+import { signup } from '@app/redux/user/user';
+import { SignupParams } from '@app/services/types';
 
 type Props = OnboardingScreenProp<OnboardingScreen.JoinInstance>;
 
 type TextFieldErrors = {
-  name: string | undefined;
-  username: string | undefined;
+  firstname: string | undefined;
+  lastname: string | undefined;
   email: string | undefined;
   password: string | undefined;
-  confrimPassword: string | undefined;
+  confirmPassword: string | undefined;
 };
 
 export const JoinInstance = ({ navigation, route }: Props) => {
   const { instance } = route.params;
   const { t } = useTranslation();
-  const [name, setName] = useState<string>('');
-  const [username, setUsername] = useState<string>('');
+  const [firstname, setFirstname] = useState<string>('');
+  const [lastname, setLastname] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  const [confrimPassword, setConfirmPassword] = useState<string>('');
+  const [confirmPassword, setConfirmPassword] = useState<string>('');
 
   const [errors, setErrors] = useState<TextFieldErrors>({
-    name: undefined,
-    username: undefined,
+    firstname: undefined,
+    lastname: undefined,
     email: undefined,
     password: undefined,
-    confrimPassword: undefined,
+    confirmPassword: undefined,
   });
 
   const validateFields = () => {
@@ -58,30 +61,32 @@ export const JoinInstance = ({ navigation, route }: Props) => {
       }
       if (
         oldState.password === undefined &&
-        confrimPassword !== password &&
-        confrimPassword.length > 0
+        confirmPassword !== password &&
+        confirmPassword.length > 0
       ) {
         confirmPasswordError = 'Passwords do not match!';
       }
     } else {
       oldState.password = undefined;
-      if (confrimPassword.length > 0) {
+      if (confirmPassword.length > 0) {
         confirmPasswordError = 'Passwords do not match!';
       }
     }
 
     setErrors({
-      name: undefined,
-      username: undefined,
+      firstname: undefined,
+      lastname: undefined,
       email: emailError,
       password: passwordError,
-      confrimPassword: confirmPasswordError,
+      confirmPassword: confirmPasswordError,
     });
   };
 
   useEffect(() => {
     validateFields();
-  }, [name, username, email, password, confrimPassword]);
+  }, [firstname, lastname, email, password, confirmPassword]);
+
+  const dispatch = useDispatch()
 
   return (
     <View style={styles.container}>
@@ -94,19 +99,19 @@ export const JoinInstance = ({ navigation, route }: Props) => {
       <ScrollView contentContainerStyle={styles.content}>
         <TextField
           key={'name'}
-          error={errors.name}
-          value={name}
-          placeholder={t('translations:full_name')}
-          onChangeText={setName}
+          error={errors.firstname}
+          value={firstname}
+          placeholder={t('translations:first_name')}
+          onChangeText={setFirstname}
           onBlur={validateFields}
           style={styles.textField}
         />
         <TextField
-          key={'username'}
-          error={errors.username}
-          value={username}
-          placeholder={t('translations:user_name')}
-          onChangeText={setUsername}
+          key={'lastname'}
+          error={errors.lastname}
+          value={lastname}
+          placeholder={t('translations:last_name')}
+          onChangeText={setLastname}
           onBlur={validateFields}
           style={styles.textField}
         />
@@ -131,9 +136,9 @@ export const JoinInstance = ({ navigation, route }: Props) => {
         />
         <TextField
           key={'confirmPassword'}
-          error={errors.confrimPassword}
+          error={errors.confirmPassword}
           secureTextEntry
-          value={confrimPassword}
+          value={confirmPassword}
           placeholder={t('translations:confirm_password')}
           onChangeText={setConfirmPassword}
           onBlur={validateFields}
@@ -144,7 +149,11 @@ export const JoinInstance = ({ navigation, route }: Props) => {
           icon={Images.PlusCircle}
           type={ButtonType.green}
           title={t('translations:join_instance')}
-          onPress={() => navigation.navigate(RootScreen.Main)}
+          onPress={() => {
+            console.log("Dispatching signup")
+            dispatch(signup({ firstname, lastname, email, password } as SignupParams))
+          }
+          }
           style={{ marginBottom: 22 }}
         />
 

@@ -3,10 +3,12 @@ import { Order, Pagination } from '@app/types/types';
 export type LoginParams = {
   email: string;
   password: string;
-  rememberLogin: boolean;
+  rememberLogin?: boolean;
 };
 
 export type SignupParams = {
+  firstname: string;
+  lastname: string;
   email: string;
   password: string;
 };
