@@ -9,11 +9,8 @@ import { UserStatusSelector } from '@app/components/UserStatusSelector/UserStatu
 import { SideMenuItemSwitch } from '@app/components/SideMenuItemSwitch/SideMenuItemSwitch';
 import { SideMenuItemPlain } from '@app/components/SideMenuItemPlain/SideMenuItemPlain';
 import { OrganizationSelect } from '@app/components/OrganizationSelect/OrganizationSelect';
-import { MainScreens } from '@app/navigation/main/types';
 import { TEST_ORG_ARRAY } from '@app/utilities/testData';
-import { OrganizationScreens } from '@app/navigation/organizationNavigation/types';
 import {
-  getAutoAcceptOrders,
   getAutoAcceptOrdersStorage,
   getSelectedOrganizationStorage,
   setAutoAcceptOrdersStorage,
@@ -22,7 +19,7 @@ import {
 import { DrawerScreens } from '@app/navigation/drawer/types';
 import { RootState } from '@app/redux/store';
 import { useSelector, useDispatch } from 'react-redux';
-import { setUserStatus } from '@app/redux/user/user';
+import { updateUserStatus } from '@app/redux/user/user';
 import { useTranslation } from 'react-i18next';
 import RNRestart from 'react-native-restart';
 import { selectUser } from '@app/redux/user/user';
@@ -47,8 +44,8 @@ export const SideMenu = ({ navigation }: Props) => {
     TEST_ORG_ARRAY[0],
   );
   const userState = useSelector(selectUser);
-  const userStatus = userState.userStatus;
   const user = userState.user;
+  const userStatus = user.status;
   const dispatch = useDispatch();
 
   const isSwitchOn = (item: SideMenuItem) => {
@@ -118,7 +115,7 @@ export const SideMenu = ({ navigation }: Props) => {
     }
     navigation.navigate(RootScreen.UserStatusModal, {
       status: status,
-      onAccept: newStatus => dispatch(setUserStatus(newStatus)),
+      onAccept: newStatus => dispatch(updateUserStatus(newStatus)),
       onCancel: () => undefined,
     });
   };

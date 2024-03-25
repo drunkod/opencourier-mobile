@@ -16,16 +16,17 @@ import {
   SettingsCellType,
 } from '@app/components/SettingsCell/SettingsCell';
 import { Images } from '@app/utilities/images';
+import { useSelector } from 'react-redux';
+import { selectUser } from '@app/redux/user/user';
 
 type Props = MainScreenProp<MainScreens.OperatingArea>;
 
 export const OperatingArea = ({ navigation }: Props) => {
   const { t } = useTranslation();
-  const [areas, setAreas] = useState<string[]>([
-    'City Area 1 - Downtown',
-    'City Area 2 - Residental',
-    'City Area 3 - Business District',
-  ]);
+  const user = useSelector(selectUser);
+  const [areas, setAreas] = useState<string[]>(
+    user.settings.preferredAreas || []
+  );
 
   const renderItem = ({ item, index }: { item: string; index: number }) => {
     return (

@@ -23,13 +23,13 @@ export const Router = () => {
   const user = useSelector(selectUser)
 
   // usePushNotifications(true);
-  if (user.isLoading) {
-    return <RootStack.Screen
-      name={RootScreen.Loading}
-      component={LoadingScreen}
-      options={DEFAULT_OPTIONS}
-    />
-  }
+  // if (user.isLoading) {
+  //   return <RootStack.Screen
+  //     name={RootScreen.Loading}
+  //     component={LoadingScreen}
+  //     options={DEFAULT_OPTIONS}
+  //   />
+  // }
   return (
     <RootStack.Navigator>
       {!user.user ? (

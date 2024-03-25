@@ -1,4 +1,7 @@
+import { Point, Polygon } from 'geojson';
 import moment, { Moment } from 'moment';
+import { CuisineTypes, DeliverySpeed, DietaryRestrictions, FoodPreferences, OrderPreferences, OrderSetting, RestaurantTypes, VehicleType } from './enums';
+import { Settings } from 'react-native';
 
 export enum UserStatus {
   Online = 'online',
@@ -88,11 +91,30 @@ export type Organization = {
 };
 
 export type User = {
+  id: string;
   firstname: string;
   lastname: string;
+  status: UserStatus;
+  orderSetting: OrderSetting;
   profilePictureUrl?: string;
   address?: string;
-  location?: { lat: number; lon: number };
+  location?: Point;
+};
+
+export type Setting = {
+  deliveryPolygon: Polygon | null;
+  vehicleType: VehicleType | null;
+  preferredAreas: string[] | null;
+  shiftAvailability: ShiftAvailability | null;
+  orderPreferences: OrderPreferences[] | null;
+  foodPreferences: FoodPreferences[] | null;
+  earningGoals: EarningGoals | null;
+  deliverySpeed: DeliverySpeed | null;
+  restaurantTypes: RestaurantTypes[] | null;
+  cuisineTypes: CuisineTypes[] | null;
+  preferredRestaurantPartners: string[] | null;
+  dietaryRestrictions: DietaryRestrictions[] | null;
+  payRate: PayRate | null;
 };
 
 export type Restaurant = {
@@ -131,7 +153,7 @@ export type Order = {
   pickupInstructions?: PickupInstruction[];
   restaurantNotes?: string[];
   clientNotes?: string[];
-  items: OrderItem[];
+  items: Item[];
 };
 
 export type PickupInstruction = {
@@ -139,15 +161,7 @@ export type PickupInstruction = {
   count?: number;
 };
 
-export type OrderItem = {
-  name: string;
-  quantity: number;
-  size: string;
-  dimensions: Dimensions;
-  price: number;
-  must_be_upright: boolean;
-  weight: number;
-};
+
 
 export type Coordinates = {
   latitude: number;
@@ -173,12 +187,12 @@ export type CourierTip = {
   upvotes: number;
 };
 
-export type Dimensions = {
-  length: number;
-  width: number;
-  height: number;
-  unit: string;
-};
+// export type Dimensions = {
+//   length: number;
+//   width: number;
+//   height: number;
+//   unit: string;
+// };
 
 export type Income = {
   currency: string;
@@ -198,10 +212,10 @@ export type Pagination = {
   nextPage: number;
 };
 
-export type ConfirmItemsCheck = {
-  orderId: string;
-  confirmedItems: boolean;
-};
+// export type ConfirmItemsCheck = {
+//   orderId: string;
+//   confirmedItems: boolean;
+// };
 
 export enum MapDestination {
   customer,
@@ -316,15 +330,64 @@ export type WeightOrder = {
   info: string;
 };
 
-export type ShiftRange = {
-  start: string;
-  end: string;
-};
+// export type ShiftRange = {
+//   start: string;
+//   end: string;
+// };
+
+// export type ShiftAvailability = {
+//   day: string;
+//   shifts: ShiftRange[];
+// };
 
 export type ShiftAvailability = {
-  day: string;
-  shifts: ShiftRange[];
+  sunday: Date[][];
+  monday: Date[][];
+  tuesday: Date[][];
+  wednesday: Date[][];
+  thursday: Date[][];
+  friday: Date[][];
+  saturday: Date[][];
 };
+
+export type EarningGoals = {
+  daily: number;
+  weekly: number;
+};
+
+export type PayRate = {
+  hourlyRate: number;
+  perDeliveryRate: number;
+  // Per mile
+  distanceBasedRate: number;
+  surgePricingPreference: number;
+  minimumEarningsGuarantee: number;
+};
+
+export type Item = {
+  name: string;
+  quantity: number;
+  size: 'small' | 'medium' | 'large';
+  price: number;
+  length: number;
+  width: number;
+  height: number;
+  weight: number;
+  keepUpright: boolean;
+  confirmed: boolean;
+};
+
+
+
+// export type OrderItem = {
+//   name: string;
+//   quantity: number;
+//   size: string;
+//   dimensions: Dimensions;
+//   price: number;
+//   must_be_upright: boolean;
+//   weight: number;
+// };
 
 export enum OrderState {
   orderPickup,

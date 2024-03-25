@@ -86,7 +86,7 @@ export const JoinInstance = ({ navigation, route }: Props) => {
     validateFields();
   }, [firstname, lastname, email, password, confirmPassword]);
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   return (
     <View style={styles.container}>

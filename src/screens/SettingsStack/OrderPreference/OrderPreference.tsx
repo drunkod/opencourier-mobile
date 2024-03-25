@@ -10,15 +10,22 @@ import {
 } from '@app/components/SettingsCell/SettingsCell';
 import { OrderPreference } from '@app/types/types';
 import { SUPPORTED_ORDER_PREFERENCES } from '@app/utilities/constants';
+import { FoodPreferences } from '@app/types/enums';
+import { selectUser } from '@app/redux/user/user';
+import { useSelector } from 'react-redux';
 
 type Props = MainScreenProp<MainScreens.OrderPreferenceScreen>;
 
 export const OrderPreferenceScreen = ({ navigation }: Props) => {
   const { t } = useTranslation();
-  const [selectedPreference, setSelectedPreference] = useState<string>(
-    SUPPORTED_ORDER_PREFERENCES[1].name,
-  );
-  const preferences = SUPPORTED_ORDER_PREFERENCES;
+  const user = useSelector(selectUser);
+  const [selectedPreference, setSelectedPreference] = useState<string
+    | null>(
+      user.settings.foodPreferences ? user.settings.foodPreferences[0].toString() : null,
+    );
+  const preferences = Object.keys(FoodPreferences).filter((item) => {
+    return isNaN(Number(item));
+  });;;
 
   const onSelect = (item: string) => {
     setSelectedPreference(item);
@@ -28,16 +35,16 @@ export const OrderPreferenceScreen = ({ navigation }: Props) => {
     item,
     index,
   }: {
-    item: OrderPreference;
+    item: string;
     index: number;
   }) => {
     return (
       <SettingsCell
         style={{ marginBottom: 16 }}
-        title={item.name}
+        title={item}
         cellType={SettingsCellType.radioButton}
         onSelect={onSelect}
-        isSelected={selectedPreference === item.name}
+        isSelected={selectedPreference === item}
       />
     );
   };
@@ -47,7 +54,7 @@ export const OrderPreferenceScreen = ({ navigation }: Props) => {
       <SafeAreaView style={styles.safe}>
         <View style={styles.navHeader}>
           <BackNavButton onPress={() => navigation.goBack()} />
-          <Text style={styles.title}>{t('translations:order_preference')}</Text>
+          <Text style={styles.title}>{t('translations:food_preferences')}</Text>
         </View>
         <FlatList
           contentContainerStyle={styles.list}

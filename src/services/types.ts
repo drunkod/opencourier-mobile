@@ -13,6 +13,10 @@ export type SignupParams = {
   password: string;
 };
 
+export type UserParams = {
+  id: string;
+}
+
 export type MarkAsDeliveredParams = {
   order: Order;
   photos: string[];

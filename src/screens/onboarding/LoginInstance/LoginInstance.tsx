@@ -15,6 +15,9 @@ import { Colors } from '@app/styles/colors';
 import { DrawerScreens } from '@app/navigation/drawer/types';
 import { RootScreen } from '@app/navigation/types';
 import { generateBoxShadowStyle } from '@app/utilities/styles';
+import { login } from '@app/redux/user/user';
+import { useDispatch } from 'react-redux';
+import { LoginParams } from '@app/services/types';
 
 type Props = OnboardingScreenProp<OnboardingScreen.LoginInstance>;
 
@@ -68,6 +71,8 @@ export const LoginInstance = ({ navigation, route }: Props) => {
     validateFields();
   }, [email, password]);
 
+  const dispatch = useDispatch()
+
   return (
     <View style={styles.container}>
       <Image source={Images.NoiseBG} style={styles.background} />
@@ -100,7 +105,10 @@ export const LoginInstance = ({ navigation, route }: Props) => {
               icon={Images.Logout}
               type={ButtonType.green}
               title={t('translations:log_in')}
-              onPress={() => navigation.navigate(RootScreen.Main)}
+              onPress={() => {
+                console.log("Dispatching login")
+                dispatch(login({ email, password } as LoginParams))
+              }}
               style={{ marginBottom: 22 }}
             />
           </>

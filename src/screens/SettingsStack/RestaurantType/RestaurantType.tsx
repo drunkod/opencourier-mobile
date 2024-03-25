@@ -8,17 +8,21 @@ import {
   SettingsCell,
   SettingsCellType,
 } from '@app/components/SettingsCell/SettingsCell';
-import { RestauranType } from '@app/types/types';
-import { SUPPORTED_RESTAURANTS } from '@app/utilities/constants';
+import { RestaurantTypes } from '@app/types/enums';
+import { selectUser } from '@app/redux/user/user';
+import { useSelector } from 'react-redux';
 
 type Props = MainScreenProp<MainScreens.RestaurantTypeScreen>;
 
 export const RestaurantTypeScreen = ({ navigation }: Props) => {
   const { t } = useTranslation();
-  const [selectedRestaurant, setSelectedRestaurant] = useState<string>(
-    SUPPORTED_RESTAURANTS[1].name,
+  const user = useSelector(selectUser);
+  const [selectedRestaurant, setSelectedRestaurant] = useState<string | null>(
+    user.settings.cuisineTypes ? user.settings.cuisineTypes[0].toString() : null,
   );
-  const restaurants = SUPPORTED_RESTAURANTS;
+  const restaurants = Object.keys(RestaurantTypes).filter((item) => {
+    return isNaN(Number(item));
+  });
 
   const onSelect = (item: string) => {
     setSelectedRestaurant(item);
@@ -28,16 +32,16 @@ export const RestaurantTypeScreen = ({ navigation }: Props) => {
     item,
     index,
   }: {
-    item: RestauranType;
+    item: string;
     index: number;
   }) => {
     return (
       <SettingsCell
         style={{ marginBottom: 16 }}
-        title={item.name}
+        title={item}
         cellType={SettingsCellType.radioButton}
         onSelect={onSelect}
-        isSelected={selectedRestaurant === item.name}
+        isSelected={selectedRestaurant === item}
       />
     );
   };

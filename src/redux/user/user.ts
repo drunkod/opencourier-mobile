@@ -1,32 +1,52 @@
-import { LoginParams, SignupParams } from '@app/services/types';
-import { User, UserStatus } from '@app/types/types';
+import {
+  UserParams,
+  LoginParams,
+  SignupParams,
+} from '@app/services/types';
+import { OrderSetting } from '@app/types/enums';
+import { Setting, User, UserStatus } from '@app/types/types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface UserState {
   user?: User;
-  loginFinished: boolean;
-  loginError?: string;
-  signupFinished: boolean;
-  signupError?: string;
-  getUserFinished: boolean;
-  getUserError?: string;
-  userStatus: UserStatus;
-  fcmToken?: string;
-  getFcmTokenFinished: boolean;
-  getFcmTokenError?: string;
+  settings?: Setting;
   isLoading?: boolean;
+  fcmToken?: string;
+  getFcmToken: {
+    getFcmTokenFinished: boolean;
+    getFcmTokenError?: string;
+  };
+  login?: {
+    loginFinished: boolean;
+    loginError?: string;
+  };
+  signup?: {
+    signupFinished: boolean;
+    signupError?: string;
+  };
+  updateUser?: {
+    updateUserFinished: boolean;
+    updateUserError: string;
+  };
+  getUserSettings: {
+    getUserSettingsFinished: boolean;
+    getUserSettingsError?: string;
+  };
+  updateUserSettings: {
+    updateUserSettingsFinished: boolean;
+    updateUserSettingsError?: string;
+  };
+  updateUserStatus: {
+    updateUserStatusFinished: boolean;
+    updateUserStatusError?: string;
+  };
+  updateOrderSetting: {
+    updateOrderSettingFinished: boolean;
+    updateOrderSettingError?: string;
+  };
 }
 
-const initialState: UserState = {
-  user: undefined,
-  loginFinished: false,
-  signupFinished: false,
-  getUserFinished: false,
-  userStatus: UserStatus.Online,
-  fcmToken: undefined,
-  getFcmTokenFinished: false,
-  isLoading: false,
-};
+const initialState: UserState = {} as UserState;
 
 // Redux allows us to write mutating logic in reducers
 export const userSlice = createSlice({
@@ -35,67 +55,161 @@ export const userSlice = createSlice({
   reducers: {
     getFcmToken: (state, _action: PayloadAction<string>) => {
       state.isLoading = true;
-      state.getFcmTokenFinished = false;
-      state.getFcmTokenError = undefined;
+      state.getFcmToken = {
+        getFcmTokenFinished: false,
+        getFcmTokenError: undefined,
+      };
     },
     getFcmTokenFinished: (state, action: PayloadAction<string>) => {
       state.isLoading = false;
-      state.getFcmTokenFinished = true;
+      state.getFcmToken = {
+        getFcmTokenFinished: true,
+        getFcmTokenError: undefined,
+      };
       state.fcmToken = action.payload;
     },
     getFcmTokenError: (state, action: PayloadAction<string>) => {
       state.isLoading = false;
-      state.getFcmTokenFinished = true;
-      state.getFcmTokenError = action.payload;
+      state.getFcmToken = {
+        getFcmTokenFinished: true,
+        getFcmTokenError: action.payload,
+      };
     },
     login: (state, _action: PayloadAction<LoginParams>) => {
       state.isLoading = true;
-      state.loginFinished = false;
-      state.loginError = undefined;
+      state.login = {
+        loginFinished: false,
+        loginError: undefined,
+      };
     },
-    loginFinished: (state, action: PayloadAction<User>) => {
+    loginFinished: (
+      state,
+      action: PayloadAction<User>,
+    ) => {
       state.isLoading = false;
-      state.loginFinished = true;
       state.user = action.payload;
+      state.login = {
+        loginFinished: true,
+      };
       // console.warn('login finished');
     },
     loginError: (state, action: PayloadAction<string>) => {
       state.isLoading = false;
-      state.loginFinished = true;
-      state.loginError = action.payload;
+      state.login = {
+        loginFinished: true,
+        loginError: action.payload,
+      };
     },
     signup: (state, _action: PayloadAction<SignupParams>) => {
       state.isLoading = true;
-      state.signupFinished = false;
-      state.signupError = undefined;
+      state.signup = {
+        signupFinished: false,
+        signupError: undefined,
+      };
     },
-    signupFinished: (state, action: PayloadAction<User>) => {
+    signupFinished: (
+      state,
+      action: PayloadAction<User>,
+    ) => {
       state.isLoading = false;
       state.user = action.payload;
-      state.signupFinished = true;
+      state.signup = {
+        signupFinished: true,
+      };
     },
     signupError: (state, action: PayloadAction<string>) => {
       state.isLoading = false;
-      state.signupFinished = true;
-      state.signupError = action.payload;
+      state.signup = {
+        signupFinished: true,
+        signupError: action.payload,
+      };
     },
-    getUser: state => {
+    getUserSettings: (state, _action: PayloadAction<UserParams>) => {
       state.isLoading = true;
-      state.getUserFinished = false;
-      state.getUserError = undefined;
+      state.getUserSettings = {
+        getUserSettingsFinished: false,
+        getUserSettingsError: undefined,
+      };
     },
-    getUserFinished: (state, action: PayloadAction<User>) => {
+    getUserSettingsFinished: (state, action: PayloadAction<Setting>) => {
       state.isLoading = false;
-      state.getUserFinished = true;
-      state.user = action.payload;
+      state.settings = action.payload;
+      state.getUserSettings = {
+        getUserSettingsFinished: true,
+      };
     },
-    getUserError: (state, action: PayloadAction<string>) => {
+    getUserSettingsError: (state, action: PayloadAction<string>) => {
       state.isLoading = false;
-      state.getUserFinished = true;
-      state.getUserError = action.payload;
+      state.getUserSettings = {
+        getUserSettingsFinished: true,
+        getUserSettingsError: action.payload,
+      };
     },
-    setUserStatus: (state, action: PayloadAction<UserStatus>) => {
-      state.userStatus = action.payload;
+    updateUserSettings: (state, _action: PayloadAction<Setting>) => {
+      state.isLoading = true;
+      state.updateUserSettings = {
+        updateUserSettingsFinished: false,
+        updateUserSettingsError: undefined,
+      };
+    },
+    updateUserSettingsFinished: (state, action: PayloadAction<Setting>) => {
+      state.isLoading = false;
+      state.settings = action.payload;
+      state.updateUserSettings = {
+        updateUserSettingsFinished: true,
+      };
+    },
+    updateUserSettingsError: (state, action: PayloadAction<string>) => {
+      state.isLoading = false;
+      state.updateUserSettings = {
+        updateUserSettingsFinished: true,
+        updateUserSettingsError: action.payload,
+      };
+    },
+    updateUserStatus: (state, _action: PayloadAction<UserStatus>) => {
+      state.isLoading = true;
+      state.updateUserStatus = {
+        updateUserStatusFinished: false,
+        updateUserStatusError: undefined,
+      };
+    },
+    updateUserStatusFinished: (state, action: PayloadAction<UserStatus>) => {
+      state.isLoading = false;
+      state.user.status = action.payload;
+      state.updateUserStatus = {
+        updateUserStatusFinished: true,
+      };
+    },
+    updateUserStatusError: (state, action: PayloadAction<string>) => {
+      state.isLoading = false;
+      state.updateUserStatus = {
+        updateUserStatusFinished: true,
+        updateUserStatusError: action.payload,
+      };
+    },
+    updateOrderSetting: (state, _action: PayloadAction<OrderSetting>) => {
+      state.isLoading = true;
+      state.updateOrderSetting = {
+        updateOrderSettingFinished: false,
+        updateOrderSettingError: undefined,
+      };
+    },
+    updateOrderSettingFinished: (
+      state,
+      action: PayloadAction<OrderSetting>,
+    ) => {
+      state.isLoading = false;
+      state.user.orderSetting = action.payload;
+      state.updateOrderSetting = {
+        updateOrderSettingFinished: true,
+      };
+    },
+    updateOrderSettingError: (state, action: PayloadAction<string>) => {
+      state.isLoading = false;
+      state.updateOrderSetting = {
+        updateOrderSettingFinished: true,
+        updateOrderSettingError: action.payload,
+      };
     },
   },
 });
@@ -107,13 +221,21 @@ export const {
   login,
   loginFinished,
   loginError,
-  getUser,
-  getUserError,
-  getUserFinished,
   signup,
   signupError,
   signupFinished,
-  setUserStatus,
+  getUserSettings,
+  getUserSettingsFinished,
+  getUserSettingsError,
+  updateUserSettings,
+  updateUserSettingsFinished,
+  updateUserSettingsError,
+  updateOrderSetting,
+  updateOrderSettingFinished,
+  updateOrderSettingError,
+  updateUserStatus,
+  updateUserStatusFinished,
+  updateUserStatusError,
   getFcmToken,
   getFcmTokenError,
   getFcmTokenFinished,

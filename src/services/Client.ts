@@ -1,5 +1,4 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
-import { apiUrl } from '../utilities/config';
 //@ts-ignore
 
 export interface UClient extends AxiosInstance {}

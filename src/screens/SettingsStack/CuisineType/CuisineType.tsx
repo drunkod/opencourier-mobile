@@ -8,36 +8,41 @@ import {
   SettingsCell,
   SettingsCellType,
 } from '@app/components/SettingsCell/SettingsCell';
-import { CuisineType } from '@app/types/types';
-import { SUPPORTED_CUISINES } from '@app/utilities/constants';
+import { selectUser } from '@app/redux/user/user';
+import { useSelector } from 'react-redux';
+import { CuisineTypes } from '@app/types/enums';
 
 type Props = MainScreenProp<MainScreens.CuisineTypeScreen>;
 
 export const CuisineTypeScreen = ({ navigation }: Props) => {
   const { t } = useTranslation();
-  const [selectedCuisine, setSelectedCuisine] = useState<string>(
-    SUPPORTED_CUISINES[1].name,
+  const user = useSelector(selectUser);
+  console.log(user.settings);
+  const [selectedCuisine, setSelectedCuisine] = useState<string | null>(
+    user.settings.cuisineTypes ? user.settings.cuisineTypes[0].toString() : null,
   );
-  const cuisines = SUPPORTED_CUISINES;
+  const cuisines = Object.keys(CuisineTypes).filter((item) => {
+    return isNaN(Number(item));
+  });
 
-  const onSelect = (item: string) => {
-    setSelectedCuisine(item);
+  const onSelect = (cuisine: string) => {
+    setSelectedCuisine(cuisine);
   };
 
   const renderItem = ({
     item,
     index,
   }: {
-    item: CuisineType;
+    item: string;
     index: number;
   }) => {
     return (
       <SettingsCell
         style={{ marginBottom: 16 }}
-        title={item.name}
+        title={item}
         cellType={SettingsCellType.radioButton}
         onSelect={onSelect}
-        isSelected={selectedCuisine === item.name}
+        isSelected={selectedCuisine === item}
       />
     );
   };
