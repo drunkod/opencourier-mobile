@@ -4,6 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 export const AUTO_ACCEPT_ORDERS_KEY = 'auto_accept_orders';
 export const SELECTED_ORG_KEY = 'selected_org_key';
 
+// QQQ: Shouldn't this just be stored in the backend?
 export const setAutoAcceptOrdersStorage = async (accept: boolean) => {
   const stringValue = accept ? 'yes' : 'no';
   await AsyncStorage.setItem(AUTO_ACCEPT_ORDERS_KEY, stringValue);

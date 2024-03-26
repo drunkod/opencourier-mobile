@@ -9,23 +9,25 @@ import {
   SettingsCellType,
 } from '@app/components/SettingsCell/SettingsCell';
 import { RestaurantTypes } from '@app/types/enums';
-import { selectUser } from '@app/redux/user/user';
-import { useSelector } from 'react-redux';
+import { selectUser, updateUserSettings } from '@app/redux/user/user';
+import { useDispatch, useSelector } from 'react-redux';
 
 type Props = MainScreenProp<MainScreens.RestaurantTypeScreen>;
 
 export const RestaurantTypeScreen = ({ navigation }: Props) => {
   const { t } = useTranslation();
   const user = useSelector(selectUser);
+  const dispatch = useDispatch();
   const [selectedRestaurant, setSelectedRestaurant] = useState<string | null>(
-    user.settings.cuisineTypes ? user.settings.cuisineTypes[0].toString() : null,
+    user.settings!.restaurantTypes ? user.settings!.restaurantTypes[0].toString() : null,
   );
   const restaurants = Object.keys(RestaurantTypes).filter((item) => {
     return isNaN(Number(item));
   });
 
-  const onSelect = (item: string) => {
-    setSelectedRestaurant(item);
+  const onSelect = (restaurantType: string) => {
+    setSelectedRestaurant(restaurantType);
+    dispatch(updateUserSettings({ id: user.user!.id, settings: { restaurantTypes: [restaurantType as unknown as RestaurantTypes] } }))
   };
 
   const renderItem = ({

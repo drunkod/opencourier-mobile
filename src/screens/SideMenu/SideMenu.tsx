@@ -19,10 +19,11 @@ import {
 import { DrawerScreens } from '@app/navigation/drawer/types';
 import { RootState } from '@app/redux/store';
 import { useSelector, useDispatch } from 'react-redux';
-import { updateUserStatus } from '@app/redux/user/user';
+import { updateOrderSetting, updateUserStatus } from '@app/redux/user/user';
 import { useTranslation } from 'react-i18next';
 import RNRestart from 'react-native-restart';
 import { selectUser } from '@app/redux/user/user';
+import { OrderSetting } from '@app/types/enums';
 
 type Props = RootScreenProp<RootScreen.Loading>;
 
@@ -38,14 +39,13 @@ const section2 = [
 
 export const SideMenu = ({ navigation }: Props) => {
   const { t } = useTranslation();
+  const { user } = useSelector(selectUser);
   const [realTimeLocation, setRealTimeLocation] = useState<boolean>(false);
-  const [autoAcceptOrders, setAutoAcceptOrders] = useState<boolean>(false);
+  const [autoAcceptOrders, setAutoAcceptOrders] = useState<boolean>(user?.orderSetting == 'auto_accept' as unknown as OrderSetting);
   const [selectedOrg, setSelectedOrg] = useState<Organization>(
     TEST_ORG_ARRAY[0],
   );
-  const userState = useSelector(selectUser);
-  const user = userState.user;
-  const userStatus = user.status;
+  const [status, setStatus] = useState<UserStatus>(user!.status);
   const dispatch = useDispatch();
 
   const isSwitchOn = (item: SideMenuItem) => {
@@ -61,8 +61,10 @@ export const SideMenu = ({ navigation }: Props) => {
   const handleSwitchValueChange = (item: SideMenuItem, value: boolean) => {
     switch (item) {
       case SideMenuItem.AutoOrders:
-        setAutoAcceptOrdersStorage(value);
-        return setAutoAcceptOrders(value);
+        //setAutoAcceptOrdersStorage(value);
+        dispatch(updateOrderSetting({ id: user!.id, data: { orderSetting: (value ? 'auto_accept' : 'manual') as unknown as OrderSetting } }));
+        setAutoAcceptOrders(value);
+        return;
       case SideMenuItem.Location:
         return setRealTimeLocation(value);
     }
@@ -80,10 +82,14 @@ export const SideMenu = ({ navigation }: Props) => {
       if (org !== undefined) {
         setSelectedOrg(org);
       }
-      const accept = await getAutoAcceptOrdersStorage();
-      setAutoAcceptOrders(accept);
+      //const accept = await getAutoAcceptOrdersStorage();
+      //setAutoAcceptOrders(accept);
     })();
   }, []);
+
+  useEffect(() => {
+    setStatus(user!.status);
+  }, [user!.status])
 
   const handlePress = (item: SideMenuItem) => {
     switch (item) {
@@ -106,16 +112,18 @@ export const SideMenu = ({ navigation }: Props) => {
     }
   };
 
-  const onUserStatusSelect = (status: UserStatus) => {
-    if (status === userStatus) {
+  const onUserStatusSelect = (newStatus: UserStatus) => {
+    if (newStatus === status) {
       return;
     }
-    if (userStatus === UserStatus.Offline && status === UserStatus.LastCall) {
+    if (status === UserStatus.Offline && newStatus === UserStatus.LastCall) {
       return;
     }
     navigation.navigate(RootScreen.UserStatusModal, {
-      status: status,
-      onAccept: newStatus => dispatch(updateUserStatus(newStatus)),
+      status: newStatus,
+      onAccept: newStatus => {
+        dispatch(updateUserStatus({ id: user!.id, data: { status: newStatus } }));
+      },
       onCancel: () => undefined,
     });
   };
@@ -126,11 +134,11 @@ export const SideMenu = ({ navigation }: Props) => {
         <View style={styles.containerProfile}>
           <ProfileBadge
             discreteStatusIndicator
-            userStatus={userStatus}
+            userStatus={status}
             onPress={() => undefined}
           />
           <Text style={styles.textName}>
-            {t('translations:hi') + ` ${user.firstname}!`}
+            {t('translations:hi') + ` ${user!.firstname}!`}
           </Text>
         </View>
         <OrganizationSelect
@@ -146,7 +154,7 @@ export const SideMenu = ({ navigation }: Props) => {
         />
         <UserStatusSelector
           style={styles.cell}
-          selected={userStatus}
+          selected={status}
           onPress={onUserStatusSelect}
         />
         <View style={styles.separator} />

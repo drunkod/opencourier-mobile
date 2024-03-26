@@ -37,6 +37,7 @@ import { RootState } from '@app/redux/store';
 import { useTranslation } from 'react-i18next';
 import { RootScreen } from '@app/navigation/types';
 import { ReportAnIncident } from '@app/components/ReportAnIncident/ReportAnIncident';
+import { selectUser } from '@app/redux/user/user';
 
 type Props = DrawerScreenProp<DrawerScreens.Home>;
 
@@ -76,7 +77,8 @@ export const HomeScreen = ({ navigation }: Props) => {
     itemsConfirmedForOrder,
     confirmedItems,
   } = useHomeOrders();
-  const { userStatus } = useSelector((state: RootState) => state.user);
+  const { user } = useSelector(selectUser);
+  const userStatus = user?.status
 
   const onProfilePress = () => {
     navigation.toggleDrawer();

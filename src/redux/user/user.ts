@@ -2,6 +2,7 @@ import {
   UserParams,
   LoginParams,
   SignupParams,
+  SettingsParams,
 } from '@app/services/types';
 import { OrderSetting } from '@app/types/enums';
 import { Setting, User, UserStatus } from '@app/types/types';
@@ -133,6 +134,7 @@ export const userSlice = createSlice({
     },
     getUserSettingsFinished: (state, action: PayloadAction<Setting>) => {
       state.isLoading = false;
+      console.log('fetched settings ', action.payload);
       state.settings = action.payload;
       state.getUserSettings = {
         getUserSettingsFinished: true,
@@ -145,7 +147,7 @@ export const userSlice = createSlice({
         getUserSettingsError: action.payload,
       };
     },
-    updateUserSettings: (state, _action: PayloadAction<Setting>) => {
+    updateUserSettings: (state, _action: PayloadAction<SettingsParams>) => {
       state.isLoading = true;
       state.updateUserSettings = {
         updateUserSettingsFinished: false,
@@ -154,6 +156,7 @@ export const userSlice = createSlice({
     },
     updateUserSettingsFinished: (state, action: PayloadAction<Setting>) => {
       state.isLoading = false;
+      console.log("updated settings ", action.payload);
       state.settings = action.payload;
       state.updateUserSettings = {
         updateUserSettingsFinished: true,
@@ -166,16 +169,16 @@ export const userSlice = createSlice({
         updateUserSettingsError: action.payload,
       };
     },
-    updateUserStatus: (state, _action: PayloadAction<UserStatus>) => {
+    updateUserStatus: (state, _action: PayloadAction<UserParams>) => {
       state.isLoading = true;
       state.updateUserStatus = {
         updateUserStatusFinished: false,
         updateUserStatusError: undefined,
       };
     },
-    updateUserStatusFinished: (state, action: PayloadAction<UserStatus>) => {
+    updateUserStatusFinished: (state, action: PayloadAction<User>) => {
       state.isLoading = false;
-      state.user.status = action.payload;
+      state.user!.status = action.payload.status;
       state.updateUserStatus = {
         updateUserStatusFinished: true,
       };
@@ -187,7 +190,7 @@ export const userSlice = createSlice({
         updateUserStatusError: action.payload,
       };
     },
-    updateOrderSetting: (state, _action: PayloadAction<OrderSetting>) => {
+    updateOrderSetting: (state, _action: PayloadAction<UserParams>) => {
       state.isLoading = true;
       state.updateOrderSetting = {
         updateOrderSettingFinished: false,
@@ -196,10 +199,10 @@ export const userSlice = createSlice({
     },
     updateOrderSettingFinished: (
       state,
-      action: PayloadAction<OrderSetting>,
+      action: PayloadAction<User>,
     ) => {
       state.isLoading = false;
-      state.user.orderSetting = action.payload;
+      state.user!.orderSetting = action.payload.orderSetting;
       state.updateOrderSetting = {
         updateOrderSettingFinished: true,
       };

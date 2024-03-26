@@ -11,24 +11,26 @@ import {
 import { OrderPreference } from '@app/types/types';
 import { SUPPORTED_ORDER_PREFERENCES } from '@app/utilities/constants';
 import { FoodPreferences } from '@app/types/enums';
-import { selectUser } from '@app/redux/user/user';
-import { useSelector } from 'react-redux';
+import { selectUser, updateUserSettings } from '@app/redux/user/user';
+import { useDispatch, useSelector } from 'react-redux';
 
 type Props = MainScreenProp<MainScreens.OrderPreferenceScreen>;
 
 export const OrderPreferenceScreen = ({ navigation }: Props) => {
   const { t } = useTranslation();
   const user = useSelector(selectUser);
+  const dispatch = useDispatch();
   const [selectedPreference, setSelectedPreference] = useState<string
     | null>(
-      user.settings.foodPreferences ? user.settings.foodPreferences[0].toString() : null,
+      user.settings!.foodPreferences ? user.settings!.foodPreferences[0].toString() : null,
     );
   const preferences = Object.keys(FoodPreferences).filter((item) => {
     return isNaN(Number(item));
   });;;
 
-  const onSelect = (item: string) => {
-    setSelectedPreference(item);
+  const onSelect = (preference: string) => {
+    setSelectedPreference(preference);
+    dispatch(updateUserSettings({ id: user.user!.id, settings: { foodPreferences: [preference as unknown as FoodPreferences] } }))
   };
 
   const renderItem = ({

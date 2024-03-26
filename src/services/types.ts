@@ -1,4 +1,5 @@
-import { Order, Pagination } from '@app/types/types';
+import { OrderSetting } from '@app/types/enums';
+import { Order, Pagination, Setting, UserStatus } from '@app/types/types';
 
 export type LoginParams = {
   email: string;
@@ -15,6 +16,17 @@ export type SignupParams = {
 
 export type UserParams = {
   id: string;
+  data?: { orderSetting: OrderSetting } | { status: UserStatus };
+}
+
+export type SettingsParams = {
+  id: string;
+  settings: Setting;
+}
+
+export type UserServiceResponse = {
+  data: any;
+  error: any;
 }
 
 export type MarkAsDeliveredParams = {

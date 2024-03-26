@@ -25,7 +25,7 @@ export const OperatingArea = ({ navigation }: Props) => {
   const { t } = useTranslation();
   const user = useSelector(selectUser);
   const [areas, setAreas] = useState<string[]>(
-    user.settings.preferredAreas || []
+    user.settings!.preferredAreas || []
   );
 
   const renderItem = ({ item, index }: { item: string; index: number }) => {

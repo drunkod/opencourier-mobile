@@ -11,36 +11,48 @@ import {
 } from '@app/components/SettingsCell/SettingsCell';
 import { WeightOrder } from '@app/types/types';
 import { SUPPORTED_WEIGHT_ORDERS } from '@app/utilities/constants';
+import { selectUser, updateUserSettings } from '@app/redux/user/user';
+import { useDispatch, useSelector } from 'react-redux';
+import { OrderPreferences } from '@app/types/enums';
 
 type Props = MainScreenProp<MainScreens.WeightOrderScreen>;
 
+const weightInfo = new Map(
+  [['small_orders', 'weight_info_small'], ['medium_orders', 'weight_info_medium'],
+  ['large_orders', 'weight_info_large']]);
+
 export const WeightOrderScreen = ({ navigation }: Props) => {
   const { t } = useTranslation();
-  const [selectedOrder, setSelectedOrder] = useState<string>(
-    SUPPORTED_WEIGHT_ORDERS[1].name,
+  const user = useSelector(selectUser);
+  const dispatch = useDispatch();
+  const [selectedOrder, setSelectedOrder] = useState<string | null>(
+    user.settings!.orderPreferences ? user.settings!.orderPreferences[0].toString() : null
   );
-  const orders = SUPPORTED_WEIGHT_ORDERS;
+  const orders = Object.keys(OrderPreferences).filter((item) => {
+    return isNaN(Number(item));
+  });
 
-  const onSelect = (item: string) => {
-    setSelectedOrder(item);
+  const onSelect = (orderPreference: string) => {
+    setSelectedOrder(orderPreference);
+    dispatch(updateUserSettings({ id: user.user!.id, settings: { orderPreferences: [orderPreference as unknown as OrderPreferences] } }))
   };
 
   const renderItem = ({
     item,
     index,
   }: {
-    item: WeightOrder;
+    item: string;
     index: number;
   }) => {
     return (
       <SettingsCell
         style={{ marginBottom: 16 }}
-        title={item.name}
-        subtitle={item.info}
+        title={item}
+        subtitle={weightInfo.get(item) || ""}
         cellType={SettingsCellType.radioButton}
         radioButtonType={RadioButtonType.checkmark}
         onSelect={onSelect}
-        isSelected={selectedOrder === item.name}
+        isSelected={selectedOrder === item}
       />
     );
   };

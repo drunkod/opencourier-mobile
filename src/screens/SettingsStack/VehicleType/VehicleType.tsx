@@ -10,28 +10,36 @@ import {
 } from '@app/components/SettingsCell/SettingsCell';
 import { Vehicle } from '@app/types/types';
 import { SUPPORTED_VEHICLES } from '@app/utilities/constants';
+import { selectUser, updateUserSettings } from '@app/redux/user/user';
+import { useDispatch, useSelector } from 'react-redux';
+import { VehicleType } from '@app/types/enums';
 
 type Props = MainScreenProp<MainScreens.VehicleTypeScreen>;
 
 export const VehicleTypeScreen = ({ navigation }: Props) => {
   const { t } = useTranslation();
-  const [selectedVehicle, setSelectedVehicle] = useState<string>(
-    SUPPORTED_VEHICLES[1].name,
+  const dispatch = useDispatch()
+  const user = useSelector(selectUser);
+  const [selectedVehicle, setSelectedVehicle] = useState<string | null>(
+    user.settings!.vehicleType ? user.settings!.vehicleType.toString() : null, 
   );
-  const ringtones = SUPPORTED_VEHICLES;
+  const vehicles = Object.keys(VehicleType).filter((item) => {
+    return isNaN(Number(item));
+  });
 
-  const onSelect = (item: string) => {
-    setSelectedVehicle(item);
+  const onSelect = (vehicle: string) => {
+    setSelectedVehicle(vehicle);
+    dispatch(updateUserSettings({ id: user.user!.id, settings: { vehicleType: vehicle as unknown as VehicleType } }))
   };
 
-  const renderItem = ({ item, index }: { item: Vehicle; index: number }) => {
+  const renderItem = ({ item, index }: { item: string; index: number }) => {
     return (
       <SettingsCell
         style={{ marginBottom: 16 }}
-        title={item.name}
+        title={item}
         cellType={SettingsCellType.radioButton}
         onSelect={onSelect}
-        isSelected={selectedVehicle === item.name}
+        isSelected={selectedVehicle === item}
       />
     );
   };
@@ -47,7 +55,7 @@ export const VehicleTypeScreen = ({ navigation }: Props) => {
           contentContainerStyle={styles.list}
           showsVerticalScrollIndicator={false}
           keyExtractor={(item, index) => index.toString()}
-          data={ringtones}
+          data={vehicles}
           renderItem={renderItem}
         />
       </SafeAreaView>

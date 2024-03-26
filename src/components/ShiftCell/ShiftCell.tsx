@@ -11,18 +11,18 @@ import {
 import { styles } from './ShiftCell.styles';
 import { Images } from '@app/utilities/images';
 import { useTranslation } from 'react-i18next';
-import { ShiftAvailability, ShiftRange } from '@app/types/types';
+import { Shift, ShiftRange } from '@app/types/types';
 import { Colors } from '@app/styles/colors';
 import moment from 'moment';
 import { formatShift } from '@app/utilities/dates';
 
 type Props = {
   style?: StyleProp<ViewStyle>;
-  item: ShiftAvailability;
+  item: Shift;
   isSelected: boolean;
-  onAdd: (item: ShiftAvailability) => void;
-  onDelete: (item: ShiftAvailability, range: ShiftRange) => void;
-  onSelect: (item: ShiftAvailability) => void;
+  onAdd: (item: Shift) => void;
+  onDelete: (item: Shift, range: ShiftRange) => void;
+  onSelect: (item: Shift) => void;
 };
 
 export const ShiftCell = ({
@@ -56,11 +56,11 @@ export const ShiftCell = ({
       </TouchableOpacity>
       {isSelected && (
         <View style={styles.containerRanges}>
-          {item.shifts.map(obj => (
+          {item.shiftRanges.map(obj => (
             <View style={styles.containerShift}>
-              <Text style={styles.textTime}>{obj.start}</Text>
+              <Text style={styles.textTime}>{moment(obj.start).format(formatShift)}</Text>
               <Text> - </Text>
-              <Text style={styles.textTime}>{obj.end}</Text>
+              <Text style={styles.textTime}>{moment(obj.end).format(formatShift)}</Text>
               <View style={{ height: 0, flex: 1 }} />
               <TouchableOpacity
                 onPress={() => onDelete(item, obj)}

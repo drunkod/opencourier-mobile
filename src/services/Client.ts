@@ -7,6 +7,7 @@ const timeout = 10000;
 
 export const Client = (): UClient => {
   const options: AxiosRequestConfig = {
+    baseURL: 'http://10.0.0.187:3001/',
     timeout: timeout,
     headers: {
       Accept: 'application/json',

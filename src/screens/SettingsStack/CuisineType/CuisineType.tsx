@@ -8,8 +8,8 @@ import {
   SettingsCell,
   SettingsCellType,
 } from '@app/components/SettingsCell/SettingsCell';
-import { selectUser } from '@app/redux/user/user';
-import { useSelector } from 'react-redux';
+import { selectUser, updateUserSettings } from '@app/redux/user/user';
+import { useDispatch, useSelector } from 'react-redux';
 import { CuisineTypes } from '@app/types/enums';
 
 type Props = MainScreenProp<MainScreens.CuisineTypeScreen>;
@@ -17,9 +17,9 @@ type Props = MainScreenProp<MainScreens.CuisineTypeScreen>;
 export const CuisineTypeScreen = ({ navigation }: Props) => {
   const { t } = useTranslation();
   const user = useSelector(selectUser);
-  console.log(user.settings);
+  const dispatch = useDispatch();
   const [selectedCuisine, setSelectedCuisine] = useState<string | null>(
-    user.settings.cuisineTypes ? user.settings.cuisineTypes[0].toString() : null,
+    user.settings!.cuisineTypes ? user.settings!.cuisineTypes[0].toString() : null
   );
   const cuisines = Object.keys(CuisineTypes).filter((item) => {
     return isNaN(Number(item));
@@ -27,6 +27,7 @@ export const CuisineTypeScreen = ({ navigation }: Props) => {
 
   const onSelect = (cuisine: string) => {
     setSelectedCuisine(cuisine);
+    dispatch(updateUserSettings({id: user.user!.id, settings: {cuisineTypes: [cuisine as unknown as CuisineTypes]}}))
   };
 
   const renderItem = ({

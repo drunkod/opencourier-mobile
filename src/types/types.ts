@@ -102,19 +102,19 @@ export type User = {
 };
 
 export type Setting = {
-  deliveryPolygon: Polygon | null;
-  vehicleType: VehicleType | null;
-  preferredAreas: string[] | null;
-  shiftAvailability: ShiftAvailability | null;
-  orderPreferences: OrderPreferences[] | null;
-  foodPreferences: FoodPreferences[] | null;
-  earningGoals: EarningGoals | null;
-  deliverySpeed: DeliverySpeed | null;
-  restaurantTypes: RestaurantTypes[] | null;
-  cuisineTypes: CuisineTypes[] | null;
-  preferredRestaurantPartners: string[] | null;
-  dietaryRestrictions: DietaryRestrictions[] | null;
-  payRate: PayRate | null;
+  deliveryPolygon?: Polygon | null;
+  vehicleType?: VehicleType | null;
+  preferredAreas?: string[] | null;
+  shiftAvailability?: ShiftAvailability | null;
+  orderPreferences?: OrderPreferences[] | null;
+  foodPreferences?: FoodPreferences[] | null;
+  earningGoals?: EarningGoals | null;
+  deliverySpeed?: DeliverySpeed | null;
+  restaurantTypes?: RestaurantTypes[] | null;
+  cuisineTypes?: CuisineTypes[] | null;
+  preferredRestaurantPartners?: string[] | null;
+  dietaryRestrictions?: DietaryRestrictions[] | null;
+  payRate?: PayRate | null;
 };
 
 export type Restaurant = {
@@ -330,15 +330,15 @@ export type WeightOrder = {
   info: string;
 };
 
-// export type ShiftRange = {
-//   start: string;
-//   end: string;
-// };
+export type ShiftRange = {
+  start: Date;
+  end: Date;
+};
 
-// export type ShiftAvailability = {
-//   day: string;
-//   shifts: ShiftRange[];
-// };
+export type Shift = {
+  day: string;
+  shiftRanges: ShiftRange[];
+};
 
 export type ShiftAvailability = {
   sunday: Date[][];

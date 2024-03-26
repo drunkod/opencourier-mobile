@@ -313,6 +313,9 @@ export default {
   small: 'Small',
   medium: 'Medium',
   large: 'Large',
+  small_orders: 'Small',
+  medium_orders: 'Medium',
+  large_orders: 'Large',
   weight_info_small:
     '• Weight: Up to 5 lbs (approx. 2.3 kg)\n• Dimensions: Fits in a small bag or container (up to 12"x12"x12")\n• Typical Contents: Single meal orders, small parcels',
   weight_info_medium:
