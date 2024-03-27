@@ -1,18 +1,15 @@
 import { Coordinates, User } from '@app/types/types';
+import { Point } from 'geojson';
 import { createContext } from 'react';
 
 interface Props {
-  user?: User;
-  setUser: (user: User) => void;
-  location?: Coordinates;
-  setLocation?: (coordinates: Coordinates) => void;
+  watchId?: number | undefined;
+  setWatchId?: (watchId: number | undefined) => void;
 }
 
 const defaultAuthProps: Props = {
-  user: undefined,
-  setUser: () => {},
-  location: undefined,
-  setLocation: () => {},
+  watchId: undefined,
+  setWatchId: () => {},
 };
 
 const UserContext = createContext<Props>(defaultAuthProps);

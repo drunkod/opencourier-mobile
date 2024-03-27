@@ -135,11 +135,11 @@ export const SettingsScreen = ({ navigation }: Props) => {
   ];
 
   const dispatch = useDispatch();
-  const user = useSelector(selectUser);
+  const { user }  = useSelector(selectUser);
 
   useEffect(() => {
     console.log('Dispatching get user settings');
-    dispatch(getUserSettings({ id: user.user.id }))
+    dispatch(getUserSettings({ id: user!.id }))
     //pullToken();
   }, []);
 

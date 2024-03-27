@@ -1,5 +1,6 @@
 import { OrderSetting } from '@app/types/enums';
 import { Order, Pagination, Setting, UserStatus } from '@app/types/types';
+import { Point } from 'geojson';
 
 export type LoginParams = {
   email: string;
@@ -16,7 +17,7 @@ export type SignupParams = {
 
 export type UserParams = {
   id: string;
-  data?: { orderSetting: OrderSetting } | { status: UserStatus };
+  data?: { orderSetting: OrderSetting } | { status: UserStatus } | { currentLocation: Point| null };
 }
 
 export type SettingsParams = {

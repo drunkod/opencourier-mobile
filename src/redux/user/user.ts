@@ -27,7 +27,7 @@ interface UserState {
   };
   updateUser?: {
     updateUserFinished: boolean;
-    updateUserError: string;
+    updateUserError?: string;
   };
   getUserSettings: {
     getUserSettingsFinished: boolean;
@@ -44,6 +44,10 @@ interface UserState {
   updateOrderSetting: {
     updateOrderSettingFinished: boolean;
     updateOrderSettingError?: string;
+  };
+  updateCurrentLocation: {
+    updateCurrentLocationFinished: boolean;
+    updateCurrentLocationError?: string;
   };
 }
 
@@ -83,10 +87,7 @@ export const userSlice = createSlice({
         loginError: undefined,
       };
     },
-    loginFinished: (
-      state,
-      action: PayloadAction<User>,
-    ) => {
+    loginFinished: (state, action: PayloadAction<User>) => {
       state.isLoading = false;
       state.user = action.payload;
       state.login = {
@@ -108,10 +109,7 @@ export const userSlice = createSlice({
         signupError: undefined,
       };
     },
-    signupFinished: (
-      state,
-      action: PayloadAction<User>,
-    ) => {
+    signupFinished: (state, action: PayloadAction<User>) => {
       state.isLoading = false;
       state.user = action.payload;
       state.signup = {
@@ -156,7 +154,7 @@ export const userSlice = createSlice({
     },
     updateUserSettingsFinished: (state, action: PayloadAction<Setting>) => {
       state.isLoading = false;
-      console.log("updated settings ", action.payload);
+      console.log('updated settings ', action.payload);
       state.settings = action.payload;
       state.updateUserSettings = {
         updateUserSettingsFinished: true,
@@ -197,10 +195,7 @@ export const userSlice = createSlice({
         updateOrderSettingError: undefined,
       };
     },
-    updateOrderSettingFinished: (
-      state,
-      action: PayloadAction<User>,
-    ) => {
+    updateOrderSettingFinished: (state, action: PayloadAction<User>) => {
       state.isLoading = false;
       state.user!.orderSetting = action.payload.orderSetting;
       state.updateOrderSetting = {
@@ -212,6 +207,27 @@ export const userSlice = createSlice({
       state.updateOrderSetting = {
         updateOrderSettingFinished: true,
         updateOrderSettingError: action.payload,
+      };
+    },
+    updateCurrentLocation: (state, _action: PayloadAction<UserParams>) => {
+      state.isLoading = true;
+      state.updateCurrentLocation = {
+        updateCurrentLocationFinished: false,
+        updateCurrentLocationError: undefined,
+      };
+    },
+    updateCurrentLocationFinished: (state, action: PayloadAction<User>) => {
+      state.isLoading = false;
+      state.user!.orderSetting = action.payload.orderSetting;
+      state.updateCurrentLocation = {
+        updateCurrentLocationFinished: true,
+      };
+    },
+    updateCurrentLocationError: (state, action: PayloadAction<string>) => {
+      state.isLoading = false;
+      state.updateCurrentLocation = {
+        updateCurrentLocationFinished: true,
+        updateCurrentLocationError: action.payload,
       };
     },
   },
@@ -239,6 +255,9 @@ export const {
   updateUserStatus,
   updateUserStatusFinished,
   updateUserStatusError,
+  updateCurrentLocation,
+  updateCurrentLocationFinished,
+  updateCurrentLocationError,
   getFcmToken,
   getFcmTokenError,
   getFcmTokenFinished,

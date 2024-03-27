@@ -17,6 +17,7 @@ export interface UserService {
   updateUserSettings: (params: SettingsParams) => Promise<UserServiceResponse>;
   updateOrderSetting: (params: UserParams) => Promise<UserServiceResponse>;
   updateUserStatus: (params: UserParams) => Promise<UserServiceResponse>;
+  updateCurrentLocation: (params: UserParams) => Promise<UserServiceResponse>;
 }
 
 const userService = (client: UClient): UserService => {
@@ -304,6 +305,52 @@ const userService = (client: UClient): UserService => {
       });
   };
 
+    const updateCurrentLocation = async (
+      params: UserParams,
+    ): Promise<UserServiceResponse> => {
+      //TODO: API
+      // const data = await client.get<User>('user/user');
+      // return data.data;
+      const { id, data } = params;
+      console.log("Updating location with params", params)
+      return client
+        .patch(`/couriers/current-location/${id}`, data)
+        .then(res => {
+          const courier = res.data.courier;
+          console.log('Courier with updated location ', courier);
+
+          const user: User = {
+            id: courier.id,
+            firstname: courier.firstName,
+            lastname: courier.lastName,
+            location: courier.currentLocation,
+            status: courier.status,
+            orderSetting: courier.orderSetting,
+          };
+
+          return { data: user, error: null };
+        })
+        .catch(function (error) {
+          if (error.response) {
+            // The request was made and the server responded with a status code
+            // that falls out of the range of 2xx
+            console.log(error.response.data);
+            console.log(error.response.status);
+            console.log(error.response.headers);
+          } else if (error.request) {
+            // The request was made but no response was received
+            // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+            // http.ClientRequest in node.js
+            console.log(error.request);
+          } else {
+            // Something happened in setting up the request that triggered an Error
+            console.log('Error', error.message);
+          }
+          console.log(error.config);
+          return { data: null, error };
+        });
+    };
+
   return {
     login,
     signup,
@@ -311,6 +358,7 @@ const userService = (client: UClient): UserService => {
     updateUserSettings,
     updateOrderSetting,
     updateUserStatus,
+    updateCurrentLocation,
   };
 };
 

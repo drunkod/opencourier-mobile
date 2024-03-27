@@ -10,6 +10,8 @@ import { InProgressAdress } from '../InProgressAddress/InProgressAddress';
 import { InProgressNotes } from '../InProgressNotes/InProgressNotes';
 import { InProgressMap } from '../InProgressMap/InProgressMap';
 import { NextStep } from '../NextStep/NextStep';
+import { useSelector } from 'react-redux';
+import { selectUser } from '@app/redux/user/user';
 
 type Props = {
   style?: StyleProp<ViewStyle>;
@@ -55,12 +57,13 @@ export const InProgressCell = ({
   const { t } = useTranslation();
   const [topExpanded, setTopExpanded] = useState<boolean>(true);
   const [bottomExpanded, setBottomExpanded] = useState<boolean>(false);
-  const { user } = useContext(UserContext);
+  const { user } = useSelector(selectUser)
   const [distance, setDistance] = useState<number>(0); // meters
   const [duration, setDuration] = useState<number>(0); // seconds
 
   const getDistance = async () => {
-    const url = `http://router.project-osrm.org/route/v1/driving/${user?.location?.lon},${user?.location?.lat};${order.pickup.coordinates.longitude},${order.pickup.coordinates.latitude};${order.dropoff.coordinates.longitude},${order.dropoff.coordinates.latitude}`;
+    // TODO: Make sure coordinates are correct
+    const url = `http://router.project-osrm.org/route/v1/driving/${user?.location?.coordinates[0]},${user?.location?.coordinates[1]};${order.pickup.coordinates.longitude},${order.pickup.coordinates.latitude};${order.dropoff.coordinates.longitude},${order.dropoff.coordinates.latitude}`;
     await fetch(url)
       .then(response => response.json())
       .then(json => {
@@ -113,7 +116,7 @@ export const InProgressCell = ({
                 (orderState === OrderState.confirmingOrderItems && (
                   <InProgressMap
                     order={order}
-                    user={user}
+                    user={user!}
                     distance={distance}
                     duration={duration}
                   />

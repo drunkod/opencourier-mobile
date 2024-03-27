@@ -4,34 +4,18 @@ import { NavigationContainer } from '@react-navigation/native';
 import { Coordinates, User } from '@app/types/types';
 import Geolocation from 'react-native-geolocation-service';
 import UserContext from '@app/context/userContext';
-import { Provider } from 'react-redux';
+import { Provider, useDispatch, useSelector } from 'react-redux';
 import store from './src/redux/store';
 import { useLocationPermission } from '@app/hooks/useLocationPermission';
+import { Point } from 'geojson';
+import { selectUser, updateCurrentLocation } from '@app/redux/user/user';
+import { track } from '@app/utilities/geo';
 
 const App = () => {
-  const { locationPermission } = useLocationPermission();
-  const [user, setUser] = useState<User>();
-  const [location, setLocation] = useState<Coordinates>();
-
-  useEffect(() => {
-    if (locationPermission) {
-      Geolocation.getCurrentPosition(
-        position => {
-          setLocation({
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude,
-          });
-        },
-        error => {
-          // console.warn('Location error: ', error);
-        },
-        { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 },
-      );
-    }
-  }, [locationPermission]);
+  const [watchId, setWatchId] = useState<number | undefined>(undefined);
 
   return (
-    <UserContext.Provider value={{ user, setUser, location, setLocation }}>
+    <UserContext.Provider value={{ watchId, setWatchId }}>
       <Provider store={store}>
         <NavigationContainer>
           <Router />

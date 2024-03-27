@@ -18,6 +18,9 @@ import {
   updateUserStatus,
   updateUserStatusError,
   updateUserStatusFinished,
+  updateCurrentLocation,
+  updateCurrentLocationError,
+  updateCurrentLocationFinished,
 } from './user';
 import { UserService } from '../../services/userService';
 import { Setting, User } from '@app/types/types';
@@ -137,6 +140,27 @@ function* updateOrderSettingSaga(
   }
 }
 
+function* updateCurrentLocationSaga(
+  service: UserService,
+): Generator<any, void, any> {
+  while (true) {
+    const { payload } = yield take(updateCurrentLocation);
+    try {
+      const res: UserServiceResponse = yield call(
+        service.updateCurrentLocation,
+        payload,
+      );
+      if (res.data) {
+        yield put(updateCurrentLocationFinished(res.data));
+      } else {
+        yield put(updateCurrentLocationError(res.error as string));
+      }
+    } catch (error) {
+      yield put(updateCurrentLocationError(error as string));
+    }
+  }
+}
+
 export function* userSagas(service: UserService): Generator {
   yield all([
     fork(loginUserSaga, service),
@@ -145,5 +169,6 @@ export function* userSagas(service: UserService): Generator {
     fork(updateOrderSettingSaga, service),
     fork(updateUserSettingsSaga, service),
     fork(updateUserStatusSaga, service),
+    fork(updateCurrentLocationSaga, service),
   ]);
 }

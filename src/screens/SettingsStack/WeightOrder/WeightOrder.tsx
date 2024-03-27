@@ -23,10 +23,10 @@ const weightInfo = new Map(
 
 export const WeightOrderScreen = ({ navigation }: Props) => {
   const { t } = useTranslation();
-  const user = useSelector(selectUser);
+  const { user, settings } = useSelector(selectUser);
   const dispatch = useDispatch();
   const [selectedOrder, setSelectedOrder] = useState<string | null>(
-    user.settings!.orderPreferences ? user.settings!.orderPreferences[0].toString() : null
+    settings!.orderPreferences ? settings!.orderPreferences[0].toString() : null
   );
   const orders = Object.keys(OrderPreferences).filter((item) => {
     return isNaN(Number(item));
@@ -34,7 +34,7 @@ export const WeightOrderScreen = ({ navigation }: Props) => {
 
   const onSelect = (orderPreference: string) => {
     setSelectedOrder(orderPreference);
-    dispatch(updateUserSettings({ id: user.user!.id, settings: { orderPreferences: [orderPreference as unknown as OrderPreferences] } }))
+    dispatch(updateUserSettings({ id: user!.id, settings: { orderPreferences: [orderPreference as unknown as OrderPreferences] } }))
   };
 
   const renderItem = ({

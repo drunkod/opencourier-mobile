@@ -98,7 +98,7 @@ export type User = {
   orderSetting: OrderSetting;
   profilePictureUrl?: string;
   address?: string;
-  location?: Point;
+  location?: Point | null;
 };
 
 export type Setting = {

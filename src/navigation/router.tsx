@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { RootScreen, RootStackParamList } from '@app/navigation/types';
 import { LoadingScreen } from '@app/screens/Loading/Loading';
@@ -12,15 +12,23 @@ import { AddNote } from '@app/screens/AddNote/AddNote';
 import { DeleteNote } from '@app/screens/DeleteNote/DeleteNote';
 import { DatePickerScreen } from '@app/screens/DatePicker/DatePicker';
 import User from '@app/context/userContext';
-import { useSelector } from 'react-redux';
-import { selectUser } from '@app/redux/user/user';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectUser, updateCurrentLocation } from '@app/redux/user/user';
+import { track } from '@app/utilities/geo';
+import { Point } from 'geojson';
+import Geolocation from 'react-native-geolocation-service';
+import { useLocationPermission } from '@app/hooks/useLocationPermission';
+import UserContext from '@app/context/userContext';
 
 const RootStack = createNativeStackNavigator<RootStackParamList>();
 
 const DEFAULT_OPTIONS = { headerShown: false };
 
 export const Router = () => {
-  const user = useSelector(selectUser)
+  const { user } = useSelector(selectUser)
+  const { setWatchId, watchId } = useContext(UserContext);
+  const { locationPermission } = useLocationPermission();
+  const dispatch = useDispatch();
 
   // usePushNotifications(true);
   // if (user.isLoading) {
@@ -30,9 +38,23 @@ export const Router = () => {
   //     options={DEFAULT_OPTIONS}
   //   />
   // }
+
+  useEffect(() => {
+    if (locationPermission) {
+      console.log("Beginning location tracking")
+      const newWatchId = track((currentLocation: Point) => user && dispatch(updateCurrentLocation({ id: user.id, data: { currentLocation } })));
+      setWatchId!(newWatchId)
+    } else {
+      console.log("Stopping location tracking")
+      user && dispatch(updateCurrentLocation({ id: user.id, data: { currentLocation: null } }));
+      watchId && Geolocation.clearWatch(watchId);
+      setWatchId!(undefined);
+    }
+  }, [locationPermission]);
+
   return (
     <RootStack.Navigator>
-      {!user.user ? (
+      {!user ? (
         <RootStack.Screen
           name={RootScreen.Onboarding}
           component={OnboardingStack}

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { View, Text } from 'react-native';
 import { RootScreen, RootScreenProp } from '@app/navigation/types';
 import { styles } from './SideMenu.styles';
@@ -19,11 +19,16 @@ import {
 import { DrawerScreens } from '@app/navigation/drawer/types';
 import { RootState } from '@app/redux/store';
 import { useSelector, useDispatch } from 'react-redux';
-import { updateOrderSetting, updateUserStatus } from '@app/redux/user/user';
+import { updateCurrentLocation, updateOrderSetting, updateUserStatus } from '@app/redux/user/user';
 import { useTranslation } from 'react-i18next';
 import RNRestart from 'react-native-restart';
 import { selectUser } from '@app/redux/user/user';
 import { OrderSetting } from '@app/types/enums';
+import { useLocationPermission } from '@app/hooks/useLocationPermission';
+import { track } from '@app/utilities/geo';
+import { Point } from 'geojson';
+import UserContext from '@app/context/userContext';
+import Geolocation from 'react-native-geolocation-service';
 
 type Props = RootScreenProp<RootScreen.Loading>;
 
@@ -40,12 +45,14 @@ const section2 = [
 export const SideMenu = ({ navigation }: Props) => {
   const { t } = useTranslation();
   const { user } = useSelector(selectUser);
-  const [realTimeLocation, setRealTimeLocation] = useState<boolean>(false);
+  const { requestLocationPermission, locationPermission } = useLocationPermission();
+  const [realTimeLocation, setRealTimeLocation] = useState<boolean>(locationPermission);
   const [autoAcceptOrders, setAutoAcceptOrders] = useState<boolean>(user?.orderSetting == 'auto_accept' as unknown as OrderSetting);
   const [selectedOrg, setSelectedOrg] = useState<Organization>(
     TEST_ORG_ARRAY[0],
   );
-  const [status, setStatus] = useState<UserStatus>(user!.status);
+  const [ status, setStatus ] = useState<UserStatus>(user!.status);
+  const { watchId, setWatchId } = useContext(UserContext);
   const dispatch = useDispatch();
 
   const isSwitchOn = (item: SideMenuItem) => {
@@ -64,9 +71,22 @@ export const SideMenu = ({ navigation }: Props) => {
         //setAutoAcceptOrdersStorage(value);
         dispatch(updateOrderSetting({ id: user!.id, data: { orderSetting: (value ? 'auto_accept' : 'manual') as unknown as OrderSetting } }));
         setAutoAcceptOrders(value);
-        return;
+        break;
       case SideMenuItem.Location:
-        return setRealTimeLocation(value);
+        if (value) {
+          !locationPermission && requestLocationPermission();
+          console.log("Beginning location tracking")
+          const newWatchId = track((currentLocation: Point) => dispatch(updateCurrentLocation({ id: user!.id, data: { currentLocation } })));
+          setWatchId!(newWatchId);
+          setRealTimeLocation(value);
+        }  else {
+          console.log("Stopping location tracking")
+          dispatch(updateCurrentLocation({ id: user!.id, data: { currentLocation: null } }))
+          watchId && Geolocation.clearWatch(watchId);
+          setWatchId!(undefined);
+          setRealTimeLocation(value);
+        }
+        break;
     }
   };
 
@@ -90,6 +110,10 @@ export const SideMenu = ({ navigation }: Props) => {
   useEffect(() => {
     setStatus(user!.status);
   }, [user!.status])
+
+  useEffect(() => {
+    setRealTimeLocation(locationPermission);
+  }, [locationPermission]);
 
   const handlePress = (item: SideMenuItem) => {
     switch (item) {

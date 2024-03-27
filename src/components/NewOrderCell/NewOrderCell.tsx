@@ -16,6 +16,7 @@ import Map from '../Map/Map';
 import { RootState } from '@app/redux/store';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import { selectUser } from '@app/redux/user/user';
 
 type Props = {
   style?: StyleProp<ViewStyle>;
@@ -39,7 +40,7 @@ export const NewOrderCell = ({
   secondsRemaining,
 }: Props) => {
   const { t } = useTranslation();
-  const { user } = useSelector((state: RootState) => state.user);
+  const { user } = useSelector(selectUser);
 
   return (
     <View style={[styles.container, style]}>
