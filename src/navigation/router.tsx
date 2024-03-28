@@ -13,7 +13,7 @@ import { DeleteNote } from '@app/screens/DeleteNote/DeleteNote';
 import { DatePickerScreen } from '@app/screens/DatePicker/DatePicker';
 import User from '@app/context/userContext';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectUser, updateCurrentLocation } from '@app/redux/user/user';
+import { selectUser, updateUser } from '@app/redux/user/user';
 import { track } from '@app/utilities/geo';
 import { Point } from 'geojson';
 import Geolocation from 'react-native-geolocation-service';
@@ -42,11 +42,11 @@ export const Router = () => {
   useEffect(() => {
     if (locationPermission) {
       console.log("Beginning location tracking")
-      const newWatchId = track((currentLocation: Point) => user && dispatch(updateCurrentLocation({ id: user.id, data: { currentLocation } })));
+      const newWatchId = track((currentLocation: Point) => user && dispatch(updateUser({ id: user.id, data: { currentLocation } })));
       setWatchId!(newWatchId)
     } else {
       console.log("Stopping location tracking")
-      user && dispatch(updateCurrentLocation({ id: user.id, data: { currentLocation: null } }));
+      user && dispatch(updateUser({ id: user.id, data: { currentLocation: null } }));
       watchId && Geolocation.clearWatch(watchId);
       setWatchId!(undefined);
     }

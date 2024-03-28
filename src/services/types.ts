@@ -22,7 +22,7 @@ export type UserParams = {
 
 export type SettingsParams = {
   id: string;
-  settings: Setting;
+  settings?: Setting;
 }
 
 export type UserServiceResponse = {

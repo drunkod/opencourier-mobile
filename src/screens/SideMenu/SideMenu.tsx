@@ -19,7 +19,7 @@ import {
 import { DrawerScreens } from '@app/navigation/drawer/types';
 import { RootState } from '@app/redux/store';
 import { useSelector, useDispatch } from 'react-redux';
-import { updateCurrentLocation, updateOrderSetting, updateUserStatus } from '@app/redux/user/user';
+import { updateUser } from '@app/redux/user/user';
 import { useTranslation } from 'react-i18next';
 import RNRestart from 'react-native-restart';
 import { selectUser } from '@app/redux/user/user';
@@ -69,19 +69,19 @@ export const SideMenu = ({ navigation }: Props) => {
     switch (item) {
       case SideMenuItem.AutoOrders:
         //setAutoAcceptOrdersStorage(value);
-        dispatch(updateOrderSetting({ id: user!.id, data: { orderSetting: (value ? 'auto_accept' : 'manual') as unknown as OrderSetting } }));
+        dispatch(updateUser({ id: user!.id, data: { orderSetting: (value ? 'auto_accept' : 'manual') as unknown as OrderSetting } }));
         setAutoAcceptOrders(value);
         break;
       case SideMenuItem.Location:
         if (value) {
           !locationPermission && requestLocationPermission();
           console.log("Beginning location tracking")
-          const newWatchId = track((currentLocation: Point) => dispatch(updateCurrentLocation({ id: user!.id, data: { currentLocation } })));
+          const newWatchId = track((currentLocation: Point) => dispatch(updateUser({ id: user!.id, data: { currentLocation } })));
           setWatchId!(newWatchId);
           setRealTimeLocation(value);
         }  else {
           console.log("Stopping location tracking")
-          dispatch(updateCurrentLocation({ id: user!.id, data: { currentLocation: null } }))
+          dispatch(updateUser({ id: user!.id, data: { currentLocation: null } }))
           watchId && Geolocation.clearWatch(watchId);
           setWatchId!(undefined);
           setRealTimeLocation(value);
@@ -146,7 +146,8 @@ export const SideMenu = ({ navigation }: Props) => {
     navigation.navigate(RootScreen.UserStatusModal, {
       status: newStatus,
       onAccept: newStatus => {
-        dispatch(updateUserStatus({ id: user!.id, data: { status: newStatus } }));
+        console.log("dispatching update user");
+        dispatch(updateUser({ id: user!.id, data: { status: newStatus } }));
       },
       onCancel: () => undefined,
     });

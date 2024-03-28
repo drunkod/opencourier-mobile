@@ -9,18 +9,12 @@ import {
   signupFinished,
   signupError,
   getUserSettingsError,
-  updateOrderSetting,
-  updateOrderSettingError,
-  updateOrderSettingFinished,
   updateUserSettings,
   updateUserSettingsError,
   updateUserSettingsFinished,
-  updateUserStatus,
-  updateUserStatusError,
-  updateUserStatusFinished,
-  updateCurrentLocation,
-  updateCurrentLocationError,
-  updateCurrentLocationFinished,
+  updateUser,
+  updateUserFinished,
+  updateUserError,
 } from './user';
 import { UserService } from '../../services/userService';
 import { Setting, User } from '@app/types/types';
@@ -99,64 +93,21 @@ function* updateUserSettingsSaga(
     }
   }
 }
-
-function* updateUserStatusSaga(
+function* updateUserSaga(
   service: UserService,
 ): Generator<any, void, any> {
   while (true) {
-    const { payload } = yield take(updateUserStatus);
+    const { payload } = yield take(updateUser);
     try {
       const res: UserServiceResponse = yield call(
-        service.updateUserStatus,
+        service.updateUser,
         payload,
       );
       if (res.data) {
-        yield put(updateUserStatusFinished(res.data));
+        yield put(updateUserFinished(res.data));
       }
     } catch (error) {
-      yield put(updateUserStatusError(error as string));
-    }
-  }
-}
-
-function* updateOrderSettingSaga(
-  service: UserService,
-): Generator<any, void, any> {
-  while (true) {
-    const { payload } = yield take(updateOrderSetting);
-    try {
-      const res: UserServiceResponse = yield call(
-        service.updateOrderSetting,
-        payload,
-      );
-      if (res.data) {
-        yield put(updateOrderSettingFinished(res.data));
-      } else {
-        yield put(updateOrderSettingError(res.error as string));
-      }
-    } catch (error) {
-      yield put(updateOrderSettingError(error as string));
-    }
-  }
-}
-
-function* updateCurrentLocationSaga(
-  service: UserService,
-): Generator<any, void, any> {
-  while (true) {
-    const { payload } = yield take(updateCurrentLocation);
-    try {
-      const res: UserServiceResponse = yield call(
-        service.updateCurrentLocation,
-        payload,
-      );
-      if (res.data) {
-        yield put(updateCurrentLocationFinished(res.data));
-      } else {
-        yield put(updateCurrentLocationError(res.error as string));
-      }
-    } catch (error) {
-      yield put(updateCurrentLocationError(error as string));
+      yield put(updateUserError(error as string));
     }
   }
 }
@@ -166,9 +117,7 @@ export function* userSagas(service: UserService): Generator {
     fork(loginUserSaga, service),
     fork(signupUserSaga, service),
     fork(getUserSettingsSaga, service),
-    fork(updateOrderSettingSaga, service),
     fork(updateUserSettingsSaga, service),
-    fork(updateUserStatusSaga, service),
-    fork(updateCurrentLocationSaga, service),
+    fork(updateUserSaga, service),
   ]);
 }

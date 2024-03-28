@@ -37,18 +37,6 @@ interface UserState {
     updateUserSettingsFinished: boolean;
     updateUserSettingsError?: string;
   };
-  updateUserStatus: {
-    updateUserStatusFinished: boolean;
-    updateUserStatusError?: string;
-  };
-  updateOrderSetting: {
-    updateOrderSettingFinished: boolean;
-    updateOrderSettingError?: string;
-  };
-  updateCurrentLocation: {
-    updateCurrentLocationFinished: boolean;
-    updateCurrentLocationError?: string;
-  };
 }
 
 const initialState: UserState = {} as UserState;
@@ -167,67 +155,25 @@ export const userSlice = createSlice({
         updateUserSettingsError: action.payload,
       };
     },
-    updateUserStatus: (state, _action: PayloadAction<UserParams>) => {
+    updateUser: (state, _action: PayloadAction<UserParams>) => {
       state.isLoading = true;
-      state.updateUserStatus = {
-        updateUserStatusFinished: false,
-        updateUserStatusError: undefined,
+      state.updateUser = {
+        updateUserFinished: false,
+        updateUserError: undefined,
       };
     },
-    updateUserStatusFinished: (state, action: PayloadAction<User>) => {
+    updateUserFinished: (state, action: PayloadAction<User>) => {
       state.isLoading = false;
-      state.user!.status = action.payload.status;
-      state.updateUserStatus = {
-        updateUserStatusFinished: true,
+      state.user= action.payload;
+      state.updateUser = {
+        updateUserFinished: true,
       };
     },
-    updateUserStatusError: (state, action: PayloadAction<string>) => {
+    updateUserError: (state, action: PayloadAction<string>) => {
       state.isLoading = false;
-      state.updateUserStatus = {
-        updateUserStatusFinished: true,
-        updateUserStatusError: action.payload,
-      };
-    },
-    updateOrderSetting: (state, _action: PayloadAction<UserParams>) => {
-      state.isLoading = true;
-      state.updateOrderSetting = {
-        updateOrderSettingFinished: false,
-        updateOrderSettingError: undefined,
-      };
-    },
-    updateOrderSettingFinished: (state, action: PayloadAction<User>) => {
-      state.isLoading = false;
-      state.user!.orderSetting = action.payload.orderSetting;
-      state.updateOrderSetting = {
-        updateOrderSettingFinished: true,
-      };
-    },
-    updateOrderSettingError: (state, action: PayloadAction<string>) => {
-      state.isLoading = false;
-      state.updateOrderSetting = {
-        updateOrderSettingFinished: true,
-        updateOrderSettingError: action.payload,
-      };
-    },
-    updateCurrentLocation: (state, _action: PayloadAction<UserParams>) => {
-      state.isLoading = true;
-      state.updateCurrentLocation = {
-        updateCurrentLocationFinished: false,
-        updateCurrentLocationError: undefined,
-      };
-    },
-    updateCurrentLocationFinished: (state, action: PayloadAction<User>) => {
-      state.isLoading = false;
-      state.user!.orderSetting = action.payload.orderSetting;
-      state.updateCurrentLocation = {
-        updateCurrentLocationFinished: true,
-      };
-    },
-    updateCurrentLocationError: (state, action: PayloadAction<string>) => {
-      state.isLoading = false;
-      state.updateCurrentLocation = {
-        updateCurrentLocationFinished: true,
-        updateCurrentLocationError: action.payload,
+      state.updateUser = {
+        updateUserFinished: true,
+        updateUserError: action.payload,
       };
     },
   },
@@ -249,15 +195,9 @@ export const {
   updateUserSettings,
   updateUserSettingsFinished,
   updateUserSettingsError,
-  updateOrderSetting,
-  updateOrderSettingFinished,
-  updateOrderSettingError,
-  updateUserStatus,
-  updateUserStatusFinished,
-  updateUserStatusError,
-  updateCurrentLocation,
-  updateCurrentLocationFinished,
-  updateCurrentLocationError,
+  updateUser,
+  updateUserFinished,
+  updateUserError,
   getFcmToken,
   getFcmTokenError,
   getFcmTokenFinished,
