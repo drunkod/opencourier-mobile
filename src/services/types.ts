@@ -36,6 +36,20 @@ export type MarkAsDeliveredParams = {
   tags: string[];
 };
 
+export type NewOrdersParams = {
+  excludedIds: string[]
+}
+
+export type OrderServiceParams = {
+  id?: string;
+  data?: any;
+}
+
+export type OrderServiceReponse = {
+  data: any;
+  error: any;
+};
+
 export type GetOrdersParams = {
   status: 'in_progress' | 'completed' | 'new';
   page: number;
@@ -46,3 +60,13 @@ export type GetOrdersReponse = {
   deliveries: Order[];
   pagination: Pagination;
 };
+
+export type GeoParams = {
+  point: Point[];
+  mode?: 'drive' | 'motorcycle' | 'bicycle' | 'walk' | 'scooter'
+}
+
+export type GeoServiceResponse = {
+  data: any;
+  error: any;
+}

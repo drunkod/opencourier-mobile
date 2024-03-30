@@ -34,7 +34,7 @@ type Props = {
   style?: StyleProp<ViewStyle>;
   textStyle?: StyleProp<TextStyle>;
   type?: ButtonOrderType;
-  secondsRemaining?: number;
+  millisRemaining?: number;
   onPress: () => void;
 };
 
@@ -44,18 +44,16 @@ export const ButtonOrder = ({
   textStyle,
   type = ButtonOrderType.accept,
   onPress,
-  secondsRemaining = 0,
+  millisRemaining = 0,
 }: Props) => {
   const { t } = useTranslation();
-  const widthAnimation = useRef(new Animated.Value(PROGRESS_BAR_WIDTH)).current;
+  const widthAnimation = useRef(new Animated.Value((millisRemaining/AUTO_ACCEPT_DECLINE_TIMER)*PROGRESS_BAR_WIDTH)).current;
   const numberOfParalelograms = Math.floor(SCREEN_WIDTH / PARALELOGRAM_WIDTH);
 
   const animateElement = () => {
     Animated.timing(widthAnimation, {
-      toValue:
-        ((secondsRemaining * 1000) / AUTO_ACCEPT_DECLINE_TIMER) *
-        PROGRESS_BAR_WIDTH,
-      duration: 1000,
+      toValue: PROGRESS_BAR_WIDTH,
+      duration: AUTO_ACCEPT_DECLINE_TIMER,
       useNativeDriver: false,
     }).start();
   };

@@ -11,16 +11,35 @@ import {
 import { useEffect, useState } from 'react';
 import { AUTO_ACCEPT_DECLINE_TIMER } from '@app/utilities/constants';
 import { getAutoAcceptOrdersStorage } from '@app/utilities/storage';
-import {
-  TEST_API_NEW_ORDER,
-  TEST_NEW_ORDERS,
-  TEST_ORDERS_HISTORY,
-} from '@app/utilities/testData';
+import { selectUser } from '@app/redux/user/user';
+import { OrderSetting } from '@app/types/enums';
 
 type NewOrderTimer = {
   secondsRemaining: number;
   orderId: string;
 };
+
+class Timer {
+  started: Date;
+  callback: () => void;
+  delay: number;
+  id: NodeJS.Timeout;
+
+  constructor(callback: () => void, delay: number) {
+    this.callback = callback;
+    this.delay = delay;
+    this.started = new Date();
+    this.id = setTimeout(this.callback, this.delay);
+  }
+
+  stop() {
+    clearTimeout(this.id);
+  }
+
+  getTimeLeftMilli() {
+    return this.started ? this.started.valueOf() + this.delay - Date.now() : 0;
+  }
+}
 
 export const useHomeOrders = () => {
   const [confirmedItems, setConfirmedItems] = useState<ConfirmItemsCheck[]>([]);
@@ -29,6 +48,11 @@ export const useHomeOrders = () => {
   const [dataSourceHistory, setDataSourceHistory] = useState<Order[]>([]);
   const [dataSourceNew, setDataSourceNew] = useState<Order[]>([]);
   const [dataSourceInProgress, setDataSourceInProgress] = useState<Order[]>([]);
+
+  const [offerExpirationTimers, setOfferExpirationTimers] = useState<
+    Map<string, Timer>
+    >(new Map());
+  const { user } = useSelector(selectUser);
   const dispatch = useDispatch();
   const {
     newOrders,
@@ -49,8 +73,8 @@ export const useHomeOrders = () => {
     confirmedItemsForOrder,
   } = useSelector((state: RootState) => state.order);
 
-  const itemsConfirmedForOrder = (order: Order): boolean => {
-    const temp = confirmedItems.filter(obj => obj.orderId === order.order_id);
+  const itemsConfirmedForOrder = (order: Order) => {
+    const temp = confirmedItems.filter(obj => obj.orderId === order.id);
     if (temp.length > 0) {
       return temp[0].confirmedItems;
     } else {
@@ -58,63 +82,83 @@ export const useHomeOrders = () => {
     }
   };
 
-  useEffect(() => {
-    const id = setInterval(() => {
-      if (newOrdersTimers.length > 0) {
-        var timers = [...newOrdersTimers];
-        const timersNew: (NewOrderTimer | undefined)[] = timers.map(obj => {
-          if (obj !== undefined) {
-            const secsRemaining = obj.secondsRemaining - 1;
-            if (secsRemaining > -1) {
-              return {
-                orderId: obj.orderId,
-                secondsRemaining: secsRemaining,
-              };
-            } else {
-              const array = newOrders?.filter(temp => temp.id === obj.orderId);
-              if (array && array.length > 0) {
-                if (autoAcceptOrders) {
-                  dispatch(acceptOrder(array[0]));
-                } else {
-                  dispatch(declineOrder(array[0]));
-                }
-              }
-              return undefined;
-            }
-          }
-        });
-        const newTimers: NewOrderTimer[] = timersNew.filter(
-          obj => obj !== undefined,
-        );
-        setNewOrdersTimers(newTimers);
-      }
-    }, 1000);
+  // useEffect(() => {
+  //   const id = setInterval(() => {
+  //     if (newOrdersTimers.length > 0) {
+  //       var timers = [...newOrdersTimers];
+  //       const timersNew: (NewOrderTimer | undefined)[] = timers.map(obj => {
+  //         if (obj !== undefined) {
+  //           const secsRemaining = obj.secondsRemaining - 1;
+  //           if (secsRemaining > -1) {
+  //             return {
+  //               orderId: obj.orderId,
+  //               secondsRemaining: secsRemaining,
+  //             };
+  //           } else {
+  //             const array = newOrders?.filter(temp => temp.id === obj.orderId);
+  //             if (array && array.length > 0) {
+  //               if (autoAcceptOrders) {
+  //                 dispatch(acceptOrder(array[0]));
+  //               } else {
+  //                 dispatch(declineOrder(array[0]));
+  //               }
+  //             }
+  //             return undefined;
+  //           }
+  //         }
+  //       });
+  //       const newTimers: NewOrderTimer[] = timersNew.filter(
+  //         obj => obj !== undefined,
+  //       );
+  //       setNewOrdersTimers(newTimers);
+  //     }
+  //   }, 1000);
 
-    return () => {
-      clearInterval(id);
-    };
-  });
+  //   return () => {
+  //     clearInterval(id);
+  //   };
+  // });
+  const acceptOrderFn = (orderId: string) => {
+    console.log('Dispatching accept order', orderId);
+    offerExpirationTimers.get(orderId)?.stop();
+    offerExpirationTimers.delete(orderId);
+    dispatch(acceptOrder({ id: orderId, data: { courierId: user!.id } }));
+    const updateNewOrders = newOrders!.filter(
+      newOrder => newOrder.id != orderId,
+    );
+    setDataSourceNew(updateNewOrders);
+  };
+      //dispatch(acceptOrder({ id, data: { courierId: user!.id } }));
+
+  const declineOrderFn = (orderId: string) => { 
+    console.log('Dispatching decline order', orderId);
+    offerExpirationTimers.get(orderId)?.stop();
+    offerExpirationTimers.delete(orderId);
+    dispatch(declineOrder({ id: orderId, data: { courierId: user!.id } }));
+    const updateNewOrders = newOrders!.filter(
+      newOrder => newOrder.id != orderId,
+    );
+    setDataSourceNew(updateNewOrders);
+  }
 
   useEffect(() => {
     if (getNewOrdersFinished) {
       if (!getNewOrdersError) {
         if (newOrders !== undefined) {
-          var timersToAdd: NewOrderTimer[] = [];
-          newOrders.forEach(order => {
-            if (
-              newOrdersTimers.filter(timer => timer.orderId === order.id)
-                .length === 0
-            ) {
-              timersToAdd = [
-                ...timersToAdd,
-                {
-                  orderId: order.id,
-                  secondsRemaining: AUTO_ACCEPT_DECLINE_TIMER / 1000,
-                },
-              ];
-            }
-          });
-          setNewOrdersTimers([...newOrdersTimers, ...timersToAdd]);
+          const newOfferExpirationTimers = new Map(offerExpirationTimers);
+          newOrders.forEach(order =>
+            newOfferExpirationTimers.set(
+              order.id,
+              new Timer(
+                () =>
+                  user!.orderSetting == OrderSetting.auto_accept
+                    ? acceptOrderFn(order.id)
+                    : declineOrderFn(order.id),
+                AUTO_ACCEPT_DECLINE_TIMER,
+              ),
+            ),
+          );
+          setOfferExpirationTimers(newOfferExpirationTimers);
           setDataSourceNew(newOrders);
         }
       }
@@ -129,7 +173,7 @@ export const useHomeOrders = () => {
         }
       }
     }
-  }, [inProgressOrders, getInProgressOrdersError, getInProgressOrdersFinished]);
+  }, [inProgressOrders, getInProgressOrdersFinished]);
 
   useEffect(() => {
     if (getOrderHistoryFinished) {
@@ -145,7 +189,6 @@ export const useHomeOrders = () => {
     if (declineOrderFinished) {
       if (!declineOrderError) {
         fetchNewOrders();
-        fetchInProgressOrders();
       }
     }
   }, [declineOrderError, declineOrderFinished]);
@@ -160,17 +203,18 @@ export const useHomeOrders = () => {
   }, [acceptOrderError, acceptOrderFinished]);
 
   const fetchNewOrders = () => {
-    dispatch(getNewOrders({ status: 'new', perPage: 10, page: 1 }));
+    dispatch(getNewOrders({ excludedIds: user!.rejectedOrders }));
   };
 
   const fetchInProgressOrders = () => {
     dispatch(
-      getInProgressOrders({ status: 'in_progress', perPage: 10, page: 1 }),
+      getInProgressOrders({ data: { courierId: user!.id } }),
     );
   };
 
   const fetchHistory = () => {
-    dispatch(getOrderHistory({ status: 'completed', perPage: 10, page: 1 }));
+    console.log("dispatching fetch history")
+    dispatch(getOrderHistory({ data: { courierId: user!.id } }));
   };
 
   useEffect(() => {
@@ -178,10 +222,10 @@ export const useHomeOrders = () => {
       if (!confirmItemsError) {
         if (confirmedItemsForOrder !== undefined) {
           var rest = confirmedItems.filter(
-            obj => obj.orderId !== confirmedItemsForOrder.order_id,
+            obj => obj.orderId !== confirmedItemsForOrder.id,
           );
           rest.push({
-            orderId: confirmedItemsForOrder.order_id,
+            orderId: confirmedItemsForOrder.id,
             confirmedItems: true,
           });
           // console.warn('HERE!!!: ', confirmedItemsForOrder);
@@ -195,10 +239,10 @@ export const useHomeOrders = () => {
     fetchNewOrders();
     fetchInProgressOrders();
     fetchHistory();
-    (async () => {
-      const accept = await getAutoAcceptOrdersStorage();
-      setAutoAcceptOrders(accept);
-    })();
+    // (async () => {
+    //   const accept = await getAutoAcceptOrdersStorage();
+    //   setAutoAcceptOrders(accept);
+    // })();
   }, []);
 
   return {
@@ -213,6 +257,10 @@ export const useHomeOrders = () => {
     fetchInProgressOrders,
     fetchHistory,
     itemsConfirmedForOrder,
+    offerExpirationTimers,
+    setOfferExpirationTimers,
     confirmedItems,
+    acceptOrderFn, 
+    declineOrderFn,
   };
 };

@@ -39,9 +39,11 @@ export enum SideMenuItem {
 }
 
 export enum OrderStatus {
-  Delivered = 'delivered',
-  Canceled = 'canceled',
-  DroppingOff = 'dropping_off',
+  created = 'created',
+  dispatched = 'dispatched',
+  picked_up = 'picked_up',
+  dropped_off = 'dropped_off',
+  canceled = 'canceled',
 }
 
 export enum DeliveryType {
@@ -99,6 +101,7 @@ export type User = {
   profilePictureUrl?: string;
   address?: string;
   location?: Point | null;
+  rejectedOrders: string[];
 };
 
 export type Setting = {
@@ -126,33 +129,34 @@ export type Restaurant = {
 export type Order = {
   date: string;
   id: string;
-  order_id: string;
+  //order_id?: string;
   courier_id: string;
-  customer_id: string;
+  customer_id?: string;
   customer_name: string;
   merchant_id: string;
   merchant_name: string;
   merchant_phone_number: string;
   created_at: string;
   updated_at: string;
-  currency: 'USD';
+  // currency: 'USD';
+  merchant_notes_for_courier: string[];
   customer_notes_for_courier: string[];
   courier_notes_for_customer: string[];
-  courier_tips_for_merchant: CourierTip[];
-  pickup: { location: Location; coordinates: Coordinates };
-  dropoff: { location: Location; coordinates: Coordinates };
+  // courier_tips_for_merchant: CourierTip[];
+  pickup: { location: Location; point: Point };
+  dropoff: { location: Location; point: Point };
   undeliverable_action: string;
   undeliverable_reason: string;
-  return: { location: Location; coordinates: Coordinates };
+  return: { location: Location; point: Point };
   income: Income;
   status: OrderStatus;
-  deliveredTo: User;
-  restaurant: Restaurant;
-  price: number;
+  // deliveredTo: User;
+  // restaurant: Restaurant;
+  // price: number;
   deliveryInstructions?: DeliveryType[];
   pickupInstructions?: PickupInstruction[];
-  restaurantNotes?: string[];
-  clientNotes?: string[];
+  // restaurantNotes?: string[];
+  // clientNotes?: string[];
   items: Item[];
 };
 
@@ -176,9 +180,11 @@ export type CoordinatesRange = {
 export type Location = {
   addressLine1: string;
   addressLine2: string;
-  locality: string;
+  state: string;
+  city: string;
   postalCode: number;
   countryCode: string;
+  formatted: string;
 };
 
 export type CourierTip = {
@@ -198,7 +204,7 @@ export type Income = {
   currency: string;
   total_charge: number;
   fees: number;
-  total: number;
+  // total: number;
   pay: number;
   tips: number;
 };
@@ -212,10 +218,10 @@ export type Pagination = {
   nextPage: number;
 };
 
-// export type ConfirmItemsCheck = {
-//   orderId: string;
-//   confirmedItems: boolean;
-// };
+export type ConfirmItemsCheck = {
+  orderId: string;
+  confirmedItems: boolean;
+};
 
 export enum MapDestination {
   customer,
@@ -366,15 +372,14 @@ export type PayRate = {
 
 export type Item = {
   name: string;
-  quantity: number;
-  size: 'small' | 'medium' | 'large';
-  price: number;
-  length: number;
-  width: number;
-  height: number;
-  weight: number;
-  keepUpright: boolean;
-  confirmed: boolean;
+  quantity?: number;
+  size?: 'small' | 'medium' | 'large';
+  price?: number;
+  length?: number;
+  width?: number;
+  height?: number;
+  weight?: number;
+  keepUpright?: boolean;
 };
 
 

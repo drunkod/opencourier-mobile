@@ -1,4 +1,3 @@
-import user, { updateCurrentLocation } from '@app/redux/user/user';
 import { Point } from 'geojson';
 import Geolocation from 'react-native-geolocation-service';
 export function track(onUpdate: (point: Point) => void) {
@@ -31,3 +30,5 @@ export function track(onUpdate: (point: Point) => void) {
   );
   return newWatchId;
 }
+
+

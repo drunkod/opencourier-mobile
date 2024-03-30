@@ -32,17 +32,17 @@ export const InProgressAdress = ({
 }: Props) => {
   const address = useMemo(() => {
     if (customerOrRestaurant === 'customer') {
-      return `${order.dropoff.location.addressLine1 ?? 'N/A'} ${
-        order.dropoff.location.addressLine2 ?? 'N/A'
-      } ${order.dropoff.location.countryCode ?? 'N/A'} ${
-        order.dropoff.location.locality ?? 'N/A'
-      } ${order.dropoff.location.postalCode ?? 'N/A'}`;
+      return `${order.dropoff.location?.addressLine1 ?? 'N/A'} ${
+        order.dropoff.location?.addressLine2 ?? 'N/A'
+      } ${order.dropoff.location?.countryCode ?? 'N/A'} ${
+        order.dropoff.location?.locality ?? 'N/A'
+      } ${order.dropoff.location?.postalCode ?? 'N/A'}`;
     } else {
-      return `${order.pickup.location.addressLine1 ?? 'N/A'} ${
-        order.pickup.location.addressLine2 ?? 'N/A'
-      } ${order.pickup.location.countryCode ?? 'N/A'} ${
-        order.pickup.location.locality ?? 'N/A'
-      } ${order.pickup.location.postalCode ?? 'N/A'}`;
+      return `${order.pickup.location?.addressLine1 ?? 'N/A'} ${
+        order.pickup.location?.addressLine2 ?? 'N/A'
+      } ${order.pickup.location?.countryCode ?? 'N/A'} ${
+        order.pickup.location?.locality ?? 'N/A'
+      } ${order.pickup.location?.postalCode ?? 'N/A'}`;
     }
   }, [customerOrRestaurant]);
 

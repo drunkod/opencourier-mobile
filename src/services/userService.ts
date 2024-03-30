@@ -9,6 +9,7 @@ import {
 } from './types';
 import { Point } from 'geojson';
 import { OrderSetting } from '@app/types/enums';
+import { courierToUser } from './utils';
 
 export interface UserService {
   login: (params: LoginParams) => Promise<UserServiceResponse>;
@@ -35,14 +36,7 @@ const userService = (client: UClient): UserService => {
         client.defaults.headers.common.Authorization = `Bearer ${token}`;
 
         console.log(courier);
-        const user: User = {
-          id: courier.id,
-          firstname: courier.firstName,
-          lastname: courier.lastName,
-          location: courier.currentLocation,
-          status: courier.status,
-          orderSetting: courier.orderSetting as OrderSetting,
-        };
+        const user: User = courierToUser(courier);
 
         return { data: user, error: null };
       })
@@ -82,13 +76,7 @@ const userService = (client: UClient): UserService => {
 
         client.defaults.headers.common.Authorization = `Bearer ${token}`;
 
-        const user: User = {
-          id: courier.id,
-          firstname: courier.firstName,
-          lastname: courier.lastName,
-          status: courier.status,
-          orderSetting: courier.orderSetting as OrderSetting,
-        };
+        const user: User = courierToUser(courier);
 
         return { data: user, error: null };
       })
@@ -232,14 +220,7 @@ const userService = (client: UClient): UserService => {
         const courier = res.data.courier;
         console.log('Update user ', courier);
 
-        const user: User = {
-          id: courier.id,
-          firstname: courier.firstName,
-          lastname: courier.lastName,
-          location: courier.currentLocation,
-          status: courier.status,
-          orderSetting: courier.orderSetting,
-        };
+        const user: User = courierToUser(courier);
 
         return { data: user, error: null };
       })

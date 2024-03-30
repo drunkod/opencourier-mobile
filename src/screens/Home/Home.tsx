@@ -38,6 +38,7 @@ import { useTranslation } from 'react-i18next';
 import { RootScreen } from '@app/navigation/types';
 import { ReportAnIncident } from '@app/components/ReportAnIncident/ReportAnIncident';
 import { selectUser } from '@app/redux/user/user';
+import { OrderSetting } from '@app/types/enums';
 
 type Props = DrawerScreenProp<DrawerScreens.Home>;
 
@@ -48,6 +49,7 @@ export const HomeScreen = ({ navigation }: Props) => {
   const [reportIncidentDismissed, setReportIncidentDismissed] =
     useState<boolean>(false);
   const { t } = useTranslation();
+  const { user } = useSelector(selectUser);
   const [availableMapApps, setAvailableMapApps] = useState<string[]>([
     t('translations:cancel'),
   ]);
@@ -55,7 +57,7 @@ export const HomeScreen = ({ navigation }: Props) => {
   const [isSearching, setIsSearching] = useState<boolean>(false);
   const [searchText, setSearchText] = useState<string>('');
   const [dataSource, setDataSource] = useState<Order[]>([]);
-  const [autoAcceptOrders, setAutoAcceptOrders] = useState<boolean>(false);
+  const [autoAcceptOrders, setAutoAcceptOrders] = useState<boolean>(user!.orderSetting == OrderSetting.auto_accept);
   const [showMapActionSheet, setShowMapActionSheet] = useState<
     { order: Order; destination: MapDestination } | undefined
   >(undefined);
@@ -68,6 +70,8 @@ export const HomeScreen = ({ navigation }: Props) => {
     dataSourceInProgress,
     dataSourceNew,
     newOrdersTimers,
+    offerExpirationTimers,
+    setOfferExpirationTimers,
     getNewOrdersFinished,
     getInProgressOrdersFinished,
     getOrderHistoryFinished,
@@ -76,9 +80,9 @@ export const HomeScreen = ({ navigation }: Props) => {
     fetchNewOrders,
     itemsConfirmedForOrder,
     confirmedItems,
+    declineOrderFn,
+    acceptOrderFn,
   } = useHomeOrders();
-  const { user } = useSelector(selectUser);
-  const userStatus = user?.status
 
   const onProfilePress = () => {
     navigation.toggleDrawer();
@@ -87,7 +91,7 @@ export const HomeScreen = ({ navigation }: Props) => {
   const emptyState = useMemo(() => {
     switch (selectedTab) {
       case HomeTabItem.New:
-        return userStatus === UserStatus.Online
+        return user!.status === UserStatus.Online
           ? HomeEmptyState.WaitingNewOrders
           : HomeEmptyState.New;
       case HomeTabItem.InProgress:
@@ -95,7 +99,7 @@ export const HomeScreen = ({ navigation }: Props) => {
       case HomeTabItem.History:
         return HomeEmptyState.History;
     }
-  }, [selectedTab, userStatus]);
+  }, [selectedTab, user!.status]);
 
   const showEmptyState = useMemo(() => {
     switch (selectedTab) {
@@ -108,72 +112,73 @@ export const HomeScreen = ({ navigation }: Props) => {
     }
   }, [selectedTab, dataSourceHistory, dataSourceNew, dataSourceInProgress]);
 
-  const onAcceptNewOrder = (order: Order) => {
-    dispatch(acceptOrder(order));
-  };
+  // const onAcceptNewOrder = (order: Order) => {
+  //   dispatch(acceptOrder(order));
+  // };
 
-  const onDeclineNewOrder = (order: Order) => {
-    dispatch(declineOrder(order));
-  };
+  // const onDeclineNewOrder = (order: Order) => {
+  //   dispatch(declineOrder(order));
+  // };
 
   const getRemainingSecondsForNewOrder = (order: Order) => {
-    const arr = newOrdersTimers.filter(timer => timer.orderId === order.id);
-    if (arr.length > 0) {
-      return arr[0].secondsRemaining;
+    const timer = offerExpirationTimers.get(order.id);
+    if (timer) {
+      console.log(Math.round(timer.getTimeLeftMilli() / 1000))
+      return Math.round(timer.getTimeLeftMilli()/1000);
     } else {
       return 0;
     }
   };
 
   const onNoteEdited = (note: string, oldNote: CourierTip, order: Order) => {
-    if (note && note !== oldNote.tip_text) {
-      var temp = dataSource.filter(obj => obj.order_id === order.order_id);
-      if (temp.length > 0 && temp[0].courier_tips_for_merchant) {
-        const newNotes = temp[0].courier_tips_for_merchant.map(obj => {
-          if (
-            obj.courier_id === oldNote.courier_id &&
-            obj.tip_text === oldNote.tip_text
-          ) {
-            return {
-              courier_id: obj.courier_id,
-              tip_text: note,
-              upvotes: obj.upvotes,
-            };
-          }
-          return obj;
-        });
+    // if (note && note !== oldNote.tip_text) {
+    //   var temp = dataSource.filter(obj => obj.order_id === order.order_id);
+    //   if (temp.length > 0 && temp[0].courier_tips_for_merchant) {
+    //     const newNotes = temp[0].courier_tips_for_merchant.map(obj => {
+    //       if (
+    //         obj.courier_id === oldNote.courier_id &&
+    //         obj.tip_text === oldNote.tip_text
+    //       ) {
+    //         return {
+    //           courier_id: obj.courier_id,
+    //           tip_text: note,
+    //           upvotes: obj.upvotes,
+    //         };
+    //       }
+    //       return obj;
+    //     });
 
-        temp[0].courier_tips_for_merchant = [...newNotes];
-        setDataSource(temp);
-      }
-    }
+    //     temp[0].courier_tips_for_merchant = [...newNotes];
+    //     setDataSource(temp);
+    //   }
+    // }
   };
 
   const onNoteDeleted = (note: CourierTip, order: Order) => {
-    var temp = dataSource.filter(obj => obj.order_id === order.order_id);
-    if (temp.length > 0 && temp[0].courier_tips_for_merchant) {
-      temp[0].courier_tips_for_merchant =
-        temp[0].courier_tips_for_merchant.filter(
-          obj => obj.tip_text !== note.tip_text,
-        );
-      setDataSource(temp);
-    }
+    // var temp = dataSource.filter(obj => obj.order_id === order.order_id);
+    // if (temp.length > 0 && temp[0].courier_tips_for_merchant) {
+    //   temp[0].courier_tips_for_merchant =
+    //     temp[0].courier_tips_for_merchant.filter(
+    //       obj => obj.tip_text !== note.tip_text,
+    //     );
+    //   setDataSource(temp);
+    // }
   };
 
   const onEditNote = (order: Order, note: CourierTip) => {
-    navigation.navigate(RootScreen.AddNoteModal, {
-      order: order,
-      noteToEdit: note,
-      onNoteEdited: onNoteEdited,
-    });
+    // navigation.navigate(RootScreen.AddNoteModal, {
+    //   order: order,
+    //   noteToEdit: note,
+    //   onNoteEdited: onNoteEdited,
+    // });
   };
 
   const onDeleteNote = (order: Order, note: CourierTip) => {
-    navigation.navigate(RootScreen.DeleteNoteModal, {
-      onDelete: onNoteDeleted,
-      order: order,
-      note: note,
-    });
+    // navigation.navigate(RootScreen.DeleteNoteModal, {
+    //   onDelete: onNoteDeleted,
+    //   order: order,
+    //   note: note,
+    // });
   };
 
   const renderItem = ({ item }: { item: Order }) => {
@@ -181,40 +186,40 @@ export const HomeScreen = ({ navigation }: Props) => {
       case HomeTabItem.New:
         return (
           <NewOrderCell
-            secondsRemaining={getRemainingSecondsForNewOrder(item)}
+            millisRemaining={offerExpirationTimers.get(item.id)?.getTimeLeftMilli() ?? 0}
             autoAcceptOrders={autoAcceptOrders}
             order={item}
-            onAccept={onAcceptNewOrder}
-            onDecline={onDeclineNewOrder}
+            onAccept={(order) => acceptOrderFn(order.id)}
+            onDecline={(order) => declineOrderFn(order.id)}
             onCopyCustomer={order =>
-              Clipboard.setString(order.deliveredTo.address)
+              Clipboard.setString(order.dropoff.location.formatted)
             }
             onCopyRestaurant={order =>
-              Clipboard.setString(order.restaurant.address)
+              Clipboard.setString(order.pickup.location.formatted)
             }
           />
         );
       case HomeTabItem.InProgress:
         //TODO: TEMP FIX
-        if (item.dropoff.location === undefined) {
-          return <View />;
-        }
+        // if (item.dropoff.location === undefined) {
+        //   return <View />;
+        // }
         return (
           <InProgressCell
             itemsConfirmed={itemsConfirmedForOrder(item)}
-            onMessageCustomer={order =>
-              Clipboard.setString(order.dropoff.location.addressLine1)
+            onMessageCustomer={order => {}
+              //Clipboard.setString(order.dropoff?.location?.addressLine1)
             }
-            onMessageRestaurant={order =>
-              Clipboard.setString(order.pickup.location.addressLine1)
+            onMessageRestaurant={order => {}
+              //Clipboard.setString(order.pickup?.location?.addressLine1)
             }
             onConfirmItems={() => {
               setOrderState(OrderState.orderDeliveryInProgress);
             }}
             onCallCustomer={() => Linking.openURL(`tel://${12341251511}`)}
             onCallRestaurant={() => Linking.openURL(`tel://${12341251511}`)}
-            onMarkAsDelivered={order =>
-              navigation.navigate(MainScreens.MarkAsDelivered, { order: order })
+            onMarkAsDelivered={order => {}
+              // navigation.navigate(MainScreens.MarkAsDelivered, { order: order })
             }
             order={item}
             onRestaurantAddressPress={order =>
@@ -234,14 +239,14 @@ export const HomeScreen = ({ navigation }: Props) => {
             onNoteDelete={onDeleteNote}
             onNoteEdit={onEditNote}
             onOrderItemsListForCustomer={() => {
-              navigation.navigate(MainScreens.ItemsCollected, {
-                customerName: item.customer_name,
-                items: item.items,
-              });
-              setOrderState(OrderState.confirmingOrderItems);
+              // navigation.navigate(MainScreens.ItemsCollected, {
+              //   customerName: item.customer_name,
+              //   items: item.items,
+              // });
+              // setOrderState(OrderState.confirmingOrderItems);
             }}
-            onReportIssue={order =>
-              navigation.navigate(MainScreens.ReportIssue, { order: order })
+            onReportIssue={order => {}
+              // navigation.navigate(MainScreens.ReportIssue, { order: order })
             }
             orderState={orderState}
           />
@@ -252,27 +257,27 @@ export const HomeScreen = ({ navigation }: Props) => {
   };
 
   const onPickupInstructionPress = (order: Order, instruction: CourierTip) => {
-    var temp = dataSource.filter(obj => obj.id === order.id);
-    if (temp.length > 0 && temp[0].courier_tips_for_merchant) {
-      var newInstructions: CourierTip[] = temp[0].courier_tips_for_merchant.map(
-        ins => {
-          if (ins.tip_text === instruction.tip_text) {
-            return {
-              courier_id: instruction.courier_id,
-              tip_text: instruction.tip_text,
-              upvotes: instruction.upvotes ? instruction.upvotes + 1 : 2,
-            };
-          }
-          return ins;
-        },
-      );
-      temp[0].courier_tips_for_merchant = [...newInstructions];
-      setDataSource(temp);
-    }
+    // var temp = dataSource.filter(obj => obj.id === order.id);
+    // if (temp.length > 0 && temp[0].courier_tips_for_merchant) {
+    //   var newInstructions: CourierTip[] = temp[0].courier_tips_for_merchant.map(
+    //     ins => {
+    //       if (ins.tip_text === instruction.tip_text) {
+    //         return {
+    //           courier_id: instruction.courier_id,
+    //           tip_text: instruction.tip_text,
+    //           upvotes: instruction.upvotes ? instruction.upvotes + 1 : 2,
+    //         };
+    //       }
+    //       return ins;
+    //     },
+    //   );
+    //   temp[0].courier_tips_for_merchant = [...newInstructions];
+    //   setDataSource(temp);
+    // }
   };
 
   const onSelect = (buttonIndex: number) => {
-    const { order, destination } = showMapActionSheet;
+    const { order, destination } = showMapActionSheet ?? { order: undefined, destination: undefined };
     if (
       order !== undefined &&
       order.pickup !== undefined &&
@@ -288,8 +293,8 @@ export const HomeScreen = ({ navigation }: Props) => {
           ? labelCustomer
           : labelRestauran;
 
-      const latLngCustomer = `${order.dropoff.coordinates.latitude}, ${order.dropoff.coordinates.longitude}.`;
-      const latLngRestaurant = `${order.pickup.coordinates.latitude}, ${order.pickup.coordinates.longitude}.`;
+      const latLngCustomer = `${order.dropoff.point.coordinates[1]}, ${order.dropoff.point.coordinates[0]}.`;
+      const latLngRestaurant = `${order.pickup.point.coordinates[1]}, ${order.pickup.point.coordinates[0]}.`;
       const latLng = MapDestination.customer
         ? latLngCustomer
         : latLngRestaurant;
@@ -346,23 +351,23 @@ export const HomeScreen = ({ navigation }: Props) => {
   };
 
   const onNoteAdded = (note: string, order: Order) => {
-    if (note) {
-      var temp = dataSource.filter(obj => obj.order_id === order.order_id);
-      if (temp.length > 0 && temp[0].courier_tips_for_merchant) {
-        temp[0].courier_tips_for_merchant = [
-          ...temp[0].courier_tips_for_merchant,
-          { courier_id: order.courier_id, tip_text: note, upvotes: 0 },
-        ];
-        setDataSource(temp);
-      }
-    }
+    // if (note) {
+    //   var temp = dataSource.filter(obj => obj.order_id === order.order_id);
+    //   if (temp.length > 0 && temp[0].courier_tips_for_merchant) {
+    //     temp[0].courier_tips_for_merchant = [
+    //       ...temp[0].courier_tips_for_merchant,
+    //       { courier_id: order.courier_id, tip_text: note, upvotes: 0 },
+    //     ];
+    //     setDataSource(temp);
+    //   }
+    // }
   };
 
   const onAddNote = (order: Order) => {
-    navigation.navigate(RootScreen.AddNoteModal, {
-      onNoteAdded: onNoteAdded,
-      order: order,
-    });
+    // navigation.navigate(RootScreen.AddNoteModal, {
+    //   onNoteAdded: onNoteAdded,
+    //   order: order,
+    // });
   };
 
   const onRefresh = () => {
@@ -413,8 +418,8 @@ export const HomeScreen = ({ navigation }: Props) => {
 
   useEffect(() => {
     (async () => {
-      const accept = await getAutoAcceptOrdersStorage();
-      setAutoAcceptOrders(accept);
+      // const accept = await getAutoAcceptOrdersStorage();
+      // setAutoAcceptOrders(accept);
       checkInstalledMapApps();
     })();
   }, []);
@@ -438,7 +443,7 @@ export const HomeScreen = ({ navigation }: Props) => {
         onCloseOrderDeliveredNotification={() =>
           setOrderDeliveredNotif(!orderDeliveredNotif)
         }
-        userStatus={userStatus}
+        userStatus={user!.status}
         selectedTab={selectedTab}
         onProfile={onProfilePress}
         onSearch={setIsSearching}
@@ -468,7 +473,7 @@ export const HomeScreen = ({ navigation }: Props) => {
         />
       )}
 
-      {showMapActionSheet !== undefined && showActionSheeet(showMapActionSheet)}
+      <>{showMapActionSheet !== undefined && showActionSheeet(showMapActionSheet.order)}</>
     </View>
   );
 };

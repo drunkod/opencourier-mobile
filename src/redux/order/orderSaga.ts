@@ -23,13 +23,18 @@ import {
   declineOrderError,
 } from './order';
 import { OrderService } from '@app/services/orderService';
+import { updateUserFinished } from '../user/user';
 
 function* getNewOrdersSaga(service: OrderService): Generator<any, void, any> {
   while (true) {
     const { payload } = yield take(getNewOrders);
     try {
       const res = yield call(service.getNewOrders, payload);
-      yield put(getNewOrdersFinished(res));
+      if (res.data) {
+        yield put(getNewOrdersFinished(res.data));
+      } else {
+        put(getNewOrdersError(res.error));
+      }
     } catch (error) {
       yield put(getNewOrdersError(error as string));
     }
@@ -43,7 +48,11 @@ function* getInProgressOrdersSaga(
     const { payload } = yield take(getInProgressOrders);
     try {
       const res = yield call(service.getInProgressOrders, payload);
-      yield put(getInProgressOrdersFinished(res));
+      if (res.data) {
+        yield put(getInProgressOrdersFinished(res.data));
+      } else {
+        yield put(getInProgressOrdersError(res.error));
+      }
     } catch (error) {
       yield put(getInProgressOrdersError(error as string));
     }
@@ -57,7 +66,11 @@ function* getOrderHistorySaga(
     const { payload } = yield take(getOrderHistory);
     try {
       const res = yield call(service.getOrdersHistory, payload);
-      yield put(getOrderHistoryOrdersFinished(res));
+      if (res.data){
+        yield put(getOrderHistoryOrdersFinished(res.data));
+      } else {
+        yield put(getOrderHistoryError(res.error));
+      }
     } catch (error) {
       yield put(getOrderHistoryError(error as string));
     }
@@ -66,10 +79,14 @@ function* getOrderHistorySaga(
 
 function* acceptOrderSaga(service: OrderService): Generator<any, void, any> {
   while (true) {
-    const { order } = yield take(acceptOrder);
+    const { payload } = yield take(acceptOrder);
     try {
-      const res = yield call(service.acceptOrder, order);
-      yield put(acceptOrderFinished(res));
+      const res = yield call(service.acceptOrder, payload);
+      if (res.error) {
+        put(acceptOrderError(res.error));
+      } else {
+        yield put(acceptOrderFinished());
+      }
     } catch (error) {
       yield put(acceptOrderError(error as string));
     }
@@ -78,10 +95,15 @@ function* acceptOrderSaga(service: OrderService): Generator<any, void, any> {
 
 function* declineOrderSaga(service: OrderService): Generator<any, void, any> {
   while (true) {
-    const { order } = yield take(declineOrder);
+    const { payload } = yield take(declineOrder);
     try {
-      const res = yield call(service.declineOrder, order);
-      yield put(declineOrderFinished(res));
+      const res = yield call(service.declineOrder, payload);
+      if (res.data) {
+        yield put(updateUserFinished(res.data));
+        yield put(declineOrderFinished());
+      } else {
+        yield put(declineOrderFinished(res.error));
+      }
     } catch (error) {
       yield put(declineOrderError(error as string));
     }

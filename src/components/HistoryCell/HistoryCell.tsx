@@ -26,6 +26,12 @@ export const HistoryCell = ({ style, order, onPress }: Props) => {
   const date = moment(order.created_at, formatServer);
   const [colapsed, setColapsed] = useState<boolean>(false);
 
+  const formatTime = (time: string) => new Date(time).toLocaleTimeString("en-US", { timeStyle: "short" });
+  const formatCurrency = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: order.income.currency,
+  }).format;
+
   return (
     <TouchableOpacity onPress={() => onPress(order)}>
       <View style={[styles.container, style]}>
@@ -34,16 +40,16 @@ export const HistoryCell = ({ style, order, onPress }: Props) => {
           onPress={() => setColapsed(!colapsed)}>
           <View style={styles.containerTImes}>
             <View style={styles.containerTime}>
-              <Text style={styles.textTime}>{'3:10 PM'}</Text>
+              <Text style={styles.textTime}>{formatTime(order.date)}</Text>
             </View>
             <Text style={{}}>{'-'}</Text>
             <View style={styles.containerTime}>
-              <Text style={styles.textTime}>{'3:31 PM'}</Text>
+              <Text style={styles.textTime}>{formatTime(order.updated_at)}</Text>
             </View>
           </View>
           <View style={styles.containerCarret}>
             <View style={styles.containerStatus}>
-              <Text style={styles.textStatus}>{'$31.44'}</Text>
+              <Text style={styles.textStatus}>{formatCurrency(order.income.total_charge)}</Text>
             </View>
             <Image
               source={Images.CaretDown}
@@ -68,12 +74,12 @@ export const HistoryCell = ({ style, order, onPress }: Props) => {
           <View style={[styles.containerInfo]}>
             <Image source={Images.HandCoins} style={styles.iconSmall} />
             <Text style={styles.textInfo}>
-              {'$' + order?.income?.total_charge}
+              {formatCurrency(order?.income?.pay)}
             </Text>
           </View>
           <View style={styles.containerInfo}>
             <Image source={Images.HandHeart} style={styles.iconSmall} />
-            <Text style={styles.textInfo}>{'$' + '1.00'}</Text>
+            <Text style={styles.textInfo}>{formatCurrency(order.income.tips)}</Text>
           </View>
           <Button
             type={ButtonType.grayBGRedText}

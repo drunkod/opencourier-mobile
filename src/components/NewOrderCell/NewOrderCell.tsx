@@ -26,7 +26,7 @@ type Props = {
   onDecline: (order: Order) => void;
   onCopyCustomer: (order: Order) => void;
   onCopyRestaurant: (order: Order) => void;
-  secondsRemaining?: number;
+  millisRemaining?: number;
 };
 
 export const NewOrderCell = ({
@@ -37,14 +37,14 @@ export const NewOrderCell = ({
   autoAcceptOrders,
   onCopyCustomer,
   onCopyRestaurant,
-  secondsRemaining,
+  millisRemaining,
 }: Props) => {
   const { t } = useTranslation();
   const { user } = useSelector(selectUser);
 
   return (
     <View style={[styles.container, style]}>
-      <Text style={styles.textPrice}>{'$' + order.income?.total}</Text>
+      <Text style={styles.textPrice}>{'$' + order.income?.pay}</Text>
       <View style={styles.separator} />
       <View style={styles.content}>
         <View style={styles.containerLeft}>
@@ -83,7 +83,7 @@ export const NewOrderCell = ({
             <View style={styles.containerText}>
               <Text style={styles.textName}>{order.customer_name}</Text>
               <Text style={styles.textAddress}>
-                {order.dropoff.location.addressLine1}
+                {order.dropoff?.location?.addressLine1}
               </Text>
             </View>
             <TouchableOpacity onPress={() => onCopyCustomer(order)}>
@@ -97,13 +97,12 @@ export const NewOrderCell = ({
       {autoAcceptOrders ? (
         <>
           <ButtonOrder
-            secondsRemaining={secondsRemaining}
+            millisRemaining={millisRemaining}
             style={styles.buttonTop}
             type={ButtonOrderType.declineNow}
             onPress={() => onDecline(order)}
           />
           <ButtonOrder
-            secondsRemaining={secondsRemaining}
             type={ButtonOrderType.accept}
             onPress={() => onAccept(order)}
           />
@@ -111,6 +110,7 @@ export const NewOrderCell = ({
       ) : (
         <>
           <ButtonOrder
+            millisRemaining={millisRemaining}
             style={styles.buttonTop}
             type={ButtonOrderType.acceptNow}
             onPress={() => onAccept(order)}

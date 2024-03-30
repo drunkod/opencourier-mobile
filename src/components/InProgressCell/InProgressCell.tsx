@@ -63,20 +63,20 @@ export const InProgressCell = ({
 
   const getDistance = async () => {
     // TODO: Make sure coordinates are correct
-    const url = `http://router.project-osrm.org/route/v1/driving/${user?.location?.coordinates[0]},${user?.location?.coordinates[1]};${order.pickup.coordinates.longitude},${order.pickup.coordinates.latitude};${order.dropoff.coordinates.longitude},${order.dropoff.coordinates.latitude}`;
-    await fetch(url)
-      .then(response => response.json())
-      .then(json => {
-        if (json.routes[0].duration) {
-          setDuration(json.routes[0].duration);
-        }
-        if (json.routes[0].distance) {
-          setDistance(json.routes[0].distance);
-        }
-      })
-      .catch(error => {
-        // console.warn(error);
-      });
+    // const url = `http://router.project-osrm.org/route/v1/driving/${user?.location?.coordinates[0]},${user?.location?.coordinates[1]};${order.pickup.coordinates.longitude},${order.pickup.coordinates.latitude};${order.dropoff.coordinates.longitude},${order.dropoff.coordinates.latitude}`;
+    // await fetch(url)
+    //   .then(response => response.json())
+    //   .then(json => {
+    //     if (json.routes[0].duration) {
+    //       setDuration(json.routes[0].duration);
+    //     }
+    //     if (json.routes[0].distance) {
+    //       setDistance(json.routes[0].distance);
+    //     }
+    //   })
+    //   .catch(error => {
+    //     // console.warn(error);
+    //   });
   };
 
   useEffect(() => {
@@ -124,7 +124,8 @@ export const InProgressCell = ({
 
               <InProgressNotes
                 order={order}
-                notes={order.courier_tips_for_merchant}
+                notes={[]}
+                //notes={order.courier_tips_for_merchant}
                 headerTitle={t('translations:restaurant_notes')}
                 onNotePress={note => onPickupInstructionPress(order, note)}
                 expanded={topExpanded}
@@ -133,7 +134,8 @@ export const InProgressCell = ({
 
               <InProgressNotes
                 order={order}
-                notes={order.courier_tips_for_merchant}
+                notes={[]}
+                //notes={order.courier_tips_for_merchant}
                 headerTitle={t('translations:location_courier_notes')}
                 onNotePress={note => onPickupInstructionPress(order, note)}
                 onNoteDelete={(ord, note) => onNoteDelete(ord, note)}
@@ -169,7 +171,8 @@ export const InProgressCell = ({
 
               <InProgressNotes
                 order={order}
-                notes={order.courier_tips_for_merchant}
+                notes={[]}
+                //notes={order.courier_tips_for_merchant}
                 headerTitle={t('translations:customer_notes')}
                 onNotePress={note => onPickupInstructionPress(order, note)}
                 expanded={bottomExpanded}
@@ -178,11 +181,12 @@ export const InProgressCell = ({
 
               <InProgressNotes
                 order={order}
-                notes={order.courier_tips_for_merchant}
+                notes={[]}
+                //notes={order.courier_tips_for_merchant}
                 headerTitle={t('translations:location_courier_notes')}
                 onNotePress={note => onPickupInstructionPress(order, note)}
-                onNoteDelete={note => onNoteDelete(order, note)}
-                onNoteEdit={note => onNoteEdit(order, note)}
+                // onNoteDelete={note => onNoteDelete(order, note)}
+                // onNoteEdit={note => onNoteEdit(order, note)}
                 onNoteAdd={() => onAddNote(order)}
                 expanded={bottomExpanded}
                 noteEditingDisabled={false}
@@ -201,8 +205,8 @@ export const InProgressCell = ({
           setBottomExpanded(true);
         }}
         onMarkAsDelivered={() => onMarkAsDelivered(order)}
-        onOrderItemsListForCustomer={() =>
-          onOrderItemsListForCustomer(order, {})
+        onOrderItemsListForCustomer={() => {}
+         // onOrderItemsListForCustomer(order, {})
         }
         onReportIssue={() => onReportIssue(order)}
       />

@@ -2,6 +2,9 @@ import {
   GetOrdersParams,
   GetOrdersReponse,
   MarkAsDeliveredParams,
+  NewOrdersParams,
+  OrderServiceParams,
+  OrderServiceReponse,
 } from '@app/services/types';
 import { Order } from '@app/types/types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
@@ -44,59 +47,59 @@ export const orderSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    getNewOrders: (state, _action: PayloadAction<GetOrdersParams>) => {
+    getNewOrders: (state, _action: PayloadAction<NewOrdersParams>) => {
       state.getNewOrdersFinished = false;
       state.getNewOrdersError = undefined;
     },
-    getNewOrdersFinished: (state, action: PayloadAction<GetOrdersReponse>) => {
+    getNewOrdersFinished: (state, action: PayloadAction<Order[]>) => {
       state.getNewOrdersFinished = true;
-      state.newOrders = action.payload.deliveries;
+      state.newOrders = action.payload;
     },
     getNewOrdersError: (state, action: PayloadAction<string>) => {
       state.getNewOrdersFinished = true;
       state.getNewOrdersError = action.payload;
       state.newOrders = [];
     },
-    getInProgressOrders: (state, _action: PayloadAction<GetOrdersParams>) => {
+    getInProgressOrders: (state, _action: PayloadAction<OrderServiceParams>) => {
       state.getInProgressOrdersFinished = false;
       state.getInProgressOrdersError = undefined;
     },
     getInProgressOrdersFinished: (
       state,
-      action: PayloadAction<GetOrdersReponse>,
+      action: PayloadAction<Order[]>,
     ) => {
       state.getInProgressOrdersFinished = true;
-      state.inProgressOrders = action.payload.deliveries;
+      state.inProgressOrders = action.payload;
     },
     getInProgressOrdersError: (state, action: PayloadAction<string>) => {
       state.getInProgressOrdersFinished = true;
       state.getInProgressOrdersError = action.payload;
       state.inProgressOrders = [];
     },
-    getOrderHistory: (state, _action: PayloadAction<GetOrdersParams>) => {
+    getOrderHistory: (state, _action: PayloadAction<OrderServiceParams>) => {
       state.getOrderHistoryFinished = false;
       state.getOrderHistoryError = undefined;
     },
     getOrderHistoryOrdersFinished: (
       state,
-      action: PayloadAction<GetOrdersReponse>,
+      action: PayloadAction<Order[]>,
     ) => {
       state.getOrderHistoryFinished = true;
-      state.orderHistory = action.payload.deliveries;
+      state.orderHistory = action.payload;
     },
     getOrderHistoryError: (state, action: PayloadAction<string>) => {
       state.getOrderHistoryFinished = true;
       state.getOrderHistoryError = action.payload;
       state.orderHistory = [];
     },
-    acceptOrder: (state, action: PayloadAction<Order>) => {
+    acceptOrder: (state, action: PayloadAction<OrderServiceParams>) => {
       state.acceptOrderFinished = false;
       state.acceptOrderError = undefined;
       //DEMO
-      state.acceptedOrder = action.payload;
-      state.newOrders = state.newOrders?.filter(
-        temp => temp.id !== action.payload.id,
-      );
+      // state.acceptedOrder = action.payload;
+      // state.newOrders = state.newOrders?.filter(
+      //   temp => temp.id !== action.payload.id,
+      // );
     },
     acceptOrderFinished: state => {
       state.acceptOrderFinished = true;
@@ -105,11 +108,11 @@ export const orderSlice = createSlice({
       state.acceptOrderFinished = true;
       state.acceptOrderError = action.payload;
     },
-    declineOrder: (state, action: PayloadAction<Order>) => {
+    declineOrder: (state, _action: PayloadAction<OrderServiceParams>) => {
       state.declineOrderFinished = false;
       state.declineOrderError = undefined;
       //DEMO
-      state.declinedOrder = action.payload;
+      //state.declinedOrder = action.payload;
     },
     declineOrderFinished: state => {
       state.declineOrderFinished = true;
