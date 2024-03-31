@@ -7,9 +7,10 @@ import store from './src/redux/store';
 
 const App = () => {
   const [watchId, setWatchId] = useState<number | undefined>(undefined);
+  const [locationPermission, setLocationPermission] = useState<boolean>(false);
 
   return (
-    <UserContext.Provider value={{ watchId, setWatchId }}>
+    <UserContext.Provider value={{ watchId, setWatchId, locationPermission, setLocationPermission }}>
       <Provider store={store}>
         <NavigationContainer>
           <Router />

@@ -1,6 +1,15 @@
 import { Point, Polygon } from 'geojson';
 import moment, { Moment } from 'moment';
-import { CuisineTypes, DeliverySpeed, DietaryRestrictions, FoodPreferences, OrderPreferences, OrderSetting, RestaurantTypes, VehicleType } from './enums';
+import {
+  CuisineTypes,
+  DeliverySpeed,
+  DietaryRestrictions,
+  FoodPreferences,
+  OrderPreferences,
+  OrderSetting,
+  RestaurantTypes,
+  VehicleType,
+} from './enums';
 import { Settings } from 'react-native';
 
 export enum UserStatus {
@@ -133,6 +142,7 @@ export type Order = {
   courier_id: string;
   customer_id?: string;
   customer_name: string;
+  customerPhoneNumber?: string;
   merchant_id: string;
   merchant_name: string;
   merchant_phone_number: string;
@@ -143,29 +153,27 @@ export type Order = {
   customer_notes_for_courier: string[];
   courier_notes_for_customer: string[];
   // courier_tips_for_merchant: CourierTip[];
-  pickup: { location: Location; point: Point };
-  dropoff: { location: Location; point: Point };
+  pickup: Location;
+  dropoff: Location;
+  return: Location;
   undeliverable_action: string;
   undeliverable_reason: string;
-  return: { location: Location; point: Point };
   income: Income;
   status: OrderStatus;
   // deliveredTo: User;
   // restaurant: Restaurant;
   // price: number;
-  deliveryInstructions?: DeliveryType[];
-  pickupInstructions?: PickupInstruction[];
+  deliveryTypes?: DeliveryType[];
+  pickupTypes?: PickupType[];
   // restaurantNotes?: string[];
   // clientNotes?: string[];
   items: Item[];
 };
 
-export type PickupInstruction = {
+export type PickupruInstruction = {
   type: string;
   count?: number;
 };
-
-
 
 export type Coordinates = {
   latitude: number;
@@ -178,13 +186,19 @@ export type CoordinatesRange = {
 };
 
 export type Location = {
+  id: string;
   addressLine1: string;
   addressLine2: string;
-  state: string;
-  city: string;
-  postalCode: number;
-  countryCode: string;
-  formatted: string;
+  street?: string;
+  houseNumber?: string;
+  state?: string;
+  city?: string;
+  postCode?: string;
+  stateCode?: string;
+  countryCode?: string;
+  longitude: number;
+  latitude: number;
+  formattedAddress: string;
 };
 
 export type CourierTip = {
@@ -201,10 +215,10 @@ export type CourierTip = {
 // };
 
 export type Income = {
-  currency: string;
-  total_charge: number;
+  currencyCode: string;
+  totalCharge: number;
   fees: number;
-  // total: number;
+  totalCompensation: number;
   pay: number;
   tips: number;
 };
@@ -382,8 +396,6 @@ export type Item = {
   keepUpright?: boolean;
 };
 
-
-
 // export type OrderItem = {
 //   name: string;
 //   quantity: number;
@@ -394,9 +406,9 @@ export type Item = {
 //   weight: number;
 // };
 
-export enum OrderState {
-  orderPickup,
-  confirmingOrderItems,
-  orderDeliveryInProgress,
-  deliveryDone,
-}
+// export enum OrderState {
+//   orderPickup,
+//   confirmingOrderItems,
+//   orderDeliveryInProgress,
+//   deliveryDone,
+// }

@@ -40,17 +40,16 @@ export const Router = () => {
   // }
 
   useEffect(() => {
-    if (locationPermission) {
-      console.log("Beginning location tracking")
-      const newWatchId = track((currentLocation: Point) => user && dispatch(updateUser({ id: user.id, data: { currentLocation } })));
-      setWatchId!(newWatchId)
-    } else {
-      console.log("Stopping location tracking")
-      user && dispatch(updateUser({ id: user.id, data: { currentLocation: null } }));
+    if (!user || !locationPermission) {
+      console.log("Location Tracking Disabled")
       watchId && Geolocation.clearWatch(watchId);
-      setWatchId!(undefined);
+      setWatchId(undefined);
+    } else if (!watchId) {
+      console.log("Location Tracking Enabled")
+      const newWatchId = track((currentLocation: Point) => dispatch(updateUser({ id: user.id, data: { currentLocation } })));
+      setWatchId(newWatchId)
     }
-  }, [locationPermission]);
+  }, [locationPermission, user?.id]);
 
   return (
     <RootStack.Navigator>

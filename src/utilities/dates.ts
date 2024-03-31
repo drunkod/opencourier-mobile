@@ -30,3 +30,10 @@ export const nameOfDay = (date: Moment): string => {
 export const shortDate = (date: Moment): string => {
   return date.format(formatEarnings);
 };
+
+export const formatTime = (time: string) =>
+  new Date(time).toLocaleTimeString('en-US', { timeStyle: 'short' });
+
+export function secondsToMinutes(seconds: number): number {
+  return Math.ceil(Math.ceil(seconds) / 60);
+}

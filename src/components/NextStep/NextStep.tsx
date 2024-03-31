@@ -10,13 +10,13 @@ import {
 import { styles } from './NextStep.styles';
 import { Images } from '@app/utilities/images';
 import { useTranslation } from 'react-i18next';
-import { Order, OrderState, ToastMessage, User } from '@app/types/types';
+import { Order, ToastMessage, User } from '@app/types/types';
 import { Button, ButtonType } from '../Button/Button';
 import { Toast } from '../Toast/Toast';
+import { OrderStatus } from '@app/types/enums';
 
 type Props = {
   style?: StyleProp<ViewStyle>;
-  state: OrderState;
   order: Order;
   onReportIssue?: (order: Order) => void;
   onConfirmOrderItems: (order: Order) => void;
@@ -26,7 +26,6 @@ type Props = {
 
 export const NextStep = ({
   style,
-  state,
   order,
   onReportIssue,
   onConfirmOrderItems,
@@ -59,30 +58,27 @@ export const NextStep = ({
         <Image source={Images.ArrowsForward} />
         <Text style={styles.textNextStep}>Next Step</Text>
       </View>
-      {state === OrderState.orderPickup && (
+      {order.status === OrderStatus.dispatched && (
         <Toast
           toast={ToastMessage.get_closer}
           disableClose
           style={{ marginBottom: 10 }}
         />
       )}
-      {(state === OrderState.confirmingOrderItems ||
-        state === OrderState.orderPickup) &&
+      {order.status === OrderStatus.dispatched &&
         userCell()}
-      {(state === OrderState.confirmingOrderItems ||
-        state === OrderState.orderPickup) && (
+      {order.status === OrderStatus.dispatched && (
         <Button
           style={{ marginHorizontal: 12, marginTop: 10 }}
           type={ButtonType.green}
           icon={Images.Hamburger}
           title={t('translations:confirm_items')}
-          disabled={state === OrderState.orderPickup}
           onPress={() => {
             onConfirmOrderItems(order);
           }}
         />
       )}
-      {state === OrderState.orderDeliveryInProgress && (
+      {order.status === OrderStatus.picked_up && (
         <>
           <Button
             style={{ marginHorizontal: 12, marginTop: 10 }}

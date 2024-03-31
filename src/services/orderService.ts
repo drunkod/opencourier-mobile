@@ -9,7 +9,7 @@ import {
   OrderServiceReponse,
 } from './types';
 import { OrderSetting, OrderStatus } from '@app/types/enums';
-import { courierToUser, offerToOrder } from './utils';
+import { parseUser, parseOrder } from './utils';
 
 export interface OrderService {
   getNewOrders: (params: NewOrdersParams) => Promise<OrderServiceReponse>;
@@ -33,7 +33,7 @@ const orderService = (client: UClient): OrderService => {
   const getNewOrders = async (
     params: NewOrdersParams,
   ): Promise<OrderServiceReponse> => {
-    console.log("Get new order params", params)
+    console.log('Get new order params', params);
     return client
       .post('/offers/', {
         excludedIds: params.excludedIds,
@@ -42,7 +42,7 @@ const orderService = (client: UClient): OrderService => {
       .then(res => {
         const offers: any[] = res.data.offers;
         console.log('fetched offers', offers);
-        const orders: Order[] = offers.map(offer => offerToOrder(offer));
+        const orders: Order[] = offers.map(offer => parseOrder(offer));
         return { data: orders, error: null };
       })
       .catch(function (error) {
@@ -69,7 +69,7 @@ const orderService = (client: UClient): OrderService => {
   const getInProgressOrders = async (
     params: OrderServiceParams,
   ): Promise<OrderServiceReponse> => {
-    console.log("Get in progress orders params", params)
+    console.log('Get in progress orders params', params);
     return await client
       .post('/deliveries/', {
         courierIds: [params.data.courierId],
@@ -79,7 +79,9 @@ const orderService = (client: UClient): OrderService => {
       .then(res => {
         const deliveries: any[] = res.data.deliveries;
         console.log('fetched in progress orders', deliveries);
-        const orders: Order[] = deliveries.map(delivery => offerToOrder(delivery));
+        const orders: Order[] = deliveries.map(delivery =>
+          parseOrder(delivery),
+        );
         return { data: orders, error: null };
       })
       .catch(function (error) {
@@ -117,7 +119,7 @@ const orderService = (client: UClient): OrderService => {
         const deliveries: any[] = res.data.deliveries;
         console.log('fetched completed orders', deliveries);
         const orders: Order[] = deliveries.map(delivery =>
-          offerToOrder(delivery),
+          parseOrder(delivery),
         );
         return { data: orders, error: null };
       })
@@ -142,7 +144,9 @@ const orderService = (client: UClient): OrderService => {
       });
   };
 
-  const acceptOrder = async (params: OrderServiceParams): Promise<OrderServiceReponse> => {
+  const acceptOrder = async (
+    params: OrderServiceParams,
+  ): Promise<OrderServiceReponse> => {
     console.log('Accept order params', params);
     return client
       .post(`/offers/accept/${params.id}`, {
@@ -176,17 +180,17 @@ const orderService = (client: UClient): OrderService => {
   const declineOrder = async (
     params: OrderServiceParams,
   ): Promise<OrderServiceReponse> => {
-    console.log("Decline order params", params);
+    console.log('Decline order params', params);
     return client
       .post(`/offers/reject/${params.id}`, {
         courierId: params.data.courierId,
       })
-      .then((res) => {
+      .then(res => {
         const courier = res.data.courier;
         console.log('Order declined successfully');
-          const user: User = courierToUser(courier);
+        const user: User = parseUser(courier);
 
-          return { data: user, error: null };
+        return { data: user, error: null };
       })
       .catch(function (error) {
         if (error.response) {

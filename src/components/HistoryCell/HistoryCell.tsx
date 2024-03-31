@@ -11,9 +11,10 @@ import { Images } from '@app/utilities/images';
 import { styles } from './HistoryCell.styles';
 import { Order } from '@app/types/types';
 import moment from 'moment';
-import { formatServer, formatSpaced } from '@app/utilities/dates';
+import { formatTime, formatServer, formatSpaced } from '@app/utilities/dates';
 import { useTranslation } from 'react-i18next';
 import { Button, ButtonType } from '../Button/Button';
+import { currencyFormatter } from '@app/utilities/currency';
 
 type Props = {
   style?: StyleProp<ViewStyle>;
@@ -26,11 +27,7 @@ export const HistoryCell = ({ style, order, onPress }: Props) => {
   const date = moment(order.created_at, formatServer);
   const [colapsed, setColapsed] = useState<boolean>(false);
 
-  const formatTime = (time: string) => new Date(time).toLocaleTimeString("en-US", { timeStyle: "short" });
-  const formatCurrency = new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: order.income.currency,
-  }).format;
+  
 
   return (
     <TouchableOpacity onPress={() => onPress(order)}>
@@ -49,7 +46,7 @@ export const HistoryCell = ({ style, order, onPress }: Props) => {
           </View>
           <View style={styles.containerCarret}>
             <View style={styles.containerStatus}>
-              <Text style={styles.textStatus}>{formatCurrency(order.income.total_charge)}</Text>
+              <Text style={styles.textStatus}>{currencyFormatter(order.income.totalCharge)}</Text>
             </View>
             <Image
               source={Images.CaretDown}
@@ -74,12 +71,12 @@ export const HistoryCell = ({ style, order, onPress }: Props) => {
           <View style={[styles.containerInfo]}>
             <Image source={Images.HandCoins} style={styles.iconSmall} />
             <Text style={styles.textInfo}>
-              {formatCurrency(order?.income?.pay)}
+              {currencyFormatter(order?.income?.pay)}
             </Text>
           </View>
           <View style={styles.containerInfo}>
             <Image source={Images.HandHeart} style={styles.iconSmall} />
-            <Text style={styles.textInfo}>{formatCurrency(order.income.tips)}</Text>
+            <Text style={styles.textInfo}>{currencyFormatter(order.income.tips)}</Text>
           </View>
           <Button
             type={ButtonType.grayBGRedText}

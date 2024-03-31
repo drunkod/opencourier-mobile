@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { StyleProp, ViewStyle, View } from 'react-native';
 import { styles } from './InProgressCell.styles';
-import { CourierTip, Order, OrderState, User } from '@app/types/types';
+import { CourierTip, Order, User } from '@app/types/types';
 import { Images } from '@app/utilities/images';
 import UserContext from '@app/context/userContext';
 import { useTranslation } from 'react-i18next';
@@ -12,12 +12,13 @@ import { InProgressMap } from '../InProgressMap/InProgressMap';
 import { NextStep } from '../NextStep/NextStep';
 import { useSelector } from 'react-redux';
 import { selectUser } from '@app/redux/user/user';
+import { getDistance } from '@app/utilities/geo';
+import { OrderStatus } from '@app/types/enums';
 
 type Props = {
   style?: StyleProp<ViewStyle>;
   order: Order;
   itemsConfirmed: boolean;
-  orderState: OrderState;
   onConfirmItems: (order: Order) => void;
   onMarkAsDelivered: (order: Order) => void;
   onAddNote: (order: Order) => void;
@@ -52,7 +53,6 @@ export const InProgressCell = ({
   onCallRestaurant,
   onOrderItemsListForCustomer,
   onReportIssue,
-  orderState,
 }: Props) => {
   const { t } = useTranslation();
   const [topExpanded, setTopExpanded] = useState<boolean>(true);
@@ -61,26 +61,15 @@ export const InProgressCell = ({
   const [distance, setDistance] = useState<number>(0); // meters
   const [duration, setDuration] = useState<number>(0); // seconds
 
-  const getDistance = async () => {
-    // TODO: Make sure coordinates are correct
-    // const url = `http://router.project-osrm.org/route/v1/driving/${user?.location?.coordinates[0]},${user?.location?.coordinates[1]};${order.pickup.coordinates.longitude},${order.pickup.coordinates.latitude};${order.dropoff.coordinates.longitude},${order.dropoff.coordinates.latitude}`;
-    // await fetch(url)
-    //   .then(response => response.json())
-    //   .then(json => {
-    //     if (json.routes[0].duration) {
-    //       setDuration(json.routes[0].duration);
-    //     }
-    //     if (json.routes[0].distance) {
-    //       setDistance(json.routes[0].distance);
-    //     }
-    //   })
-    //   .catch(error => {
-    //     // console.warn(error);
-    //   });
-  };
-
   useEffect(() => {
-    getDistance();
+    if (user!.location && order.pickup && order.dropoff) {
+      const coordinates = [[user!.location.coordinates[0], user!.location.coordinates[1]], [order.pickup.longitude, order.pickup.latitude], [order.dropoff.longitude, order.dropoff.latitude]
+      ]
+      getDistance(coordinates).then(({ duration, distance }) => {
+        setDuration(duration);
+        setDistance(distance);
+      })
+    }
   }, []);
 
   return (
@@ -91,10 +80,7 @@ export const InProgressCell = ({
           icon={Images.Storefront}
           expanded={topExpanded}
           onExpandedPress={() => setTopExpanded(!topExpanded)}
-          finished={
-            orderState === OrderState.orderDeliveryInProgress ||
-            orderState === OrderState.deliveryDone
-          }
+          finished={order.status == OrderStatus.picked_up}
         />
 
         <View style={styles.containerContentRestaurant}>
@@ -112,15 +98,14 @@ export const InProgressCell = ({
                 onCopyAddress={() => onMessageRestaurant(order)}
                 expanded={topExpanded}
               />
-              {orderState === OrderState.orderPickup ||
-                (orderState === OrderState.confirmingOrderItems && (
+              {order.status === OrderStatus.dispatched && (
                   <InProgressMap
                     order={order}
                     user={user!}
                     distance={distance}
                     duration={duration}
                   />
-                ))}
+                )}
 
               <InProgressNotes
                 order={order}
@@ -153,7 +138,7 @@ export const InProgressCell = ({
           icon={Images.HouseGray}
           expanded={bottomExpanded}
           onExpandedPress={() => setBottomExpanded(!bottomExpanded)}
-          finished={orderState === OrderState.deliveryDone}
+          finished={order.status == OrderStatus.dropped_off}
         />
 
         <View style={styles.containerContentRestaurant}>
@@ -198,7 +183,6 @@ export const InProgressCell = ({
 
       <NextStep
         order={order}
-        state={orderState}
         onConfirmOrderItems={() => {
           onConfirmItems(order);
           setTopExpanded(false);

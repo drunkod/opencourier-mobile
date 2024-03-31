@@ -5,6 +5,8 @@ import { Images } from '@app/utilities/images';
 import Map from '../Map/Map';
 import { useTranslation } from 'react-i18next';
 import { Order, User } from '@app/types/types';
+import { metersToMiles } from '@app/utilities/geo';
+import { secondsToMinutes } from '@app/utilities/dates';
 
 type Props = {
   style?: StyleProp<ViewStyle>;
@@ -28,15 +30,11 @@ export const InProgressMap = ({
       <View style={styles.containerAway}>
         <View style={styles.containerTextAway}>
           <Image source={Images.Distance} />
-          <Text style={styles.textDistance}>{`${Math.ceil(
-            Math.ceil(distance / 1000) / 1.6,
-          )} mi ${t('translations:away')}`}</Text>
+          <Text style={styles.textDistance}>{`${metersToMiles(distance)} mi ${t('translations:away')}`}</Text>
         </View>
         <View style={styles.containerTextAway}>
           <Image source={Images.Clock} />
-          <Text style={styles.textDistance}>{`${Math.ceil(
-            Math.ceil(duration) / 60,
-          )} min ${t('translations:away')}`}</Text>
+          <Text style={styles.textDistance}>{`${secondsToMinutes(duration)} min ${t('translations:away')}`}</Text>
         </View>
       </View>
     </View>

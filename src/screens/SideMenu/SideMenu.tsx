@@ -75,13 +75,12 @@ export const SideMenu = ({ navigation }: Props) => {
       case SideMenuItem.Location:
         if (value) {
           !locationPermission && requestLocationPermission();
-          console.log("Beginning location tracking")
+          console.log("Location Tracking Enabled")
           const newWatchId = track((currentLocation: Point) => dispatch(updateUser({ id: user!.id, data: { currentLocation } })));
           setWatchId!(newWatchId);
           setRealTimeLocation(value);
         }  else {
-          console.log("Stopping location tracking")
-          dispatch(updateUser({ id: user!.id, data: { currentLocation: null } }))
+          console.log("Location Tracking Disabled");
           watchId && Geolocation.clearWatch(watchId);
           setWatchId!(undefined);
           setRealTimeLocation(value);

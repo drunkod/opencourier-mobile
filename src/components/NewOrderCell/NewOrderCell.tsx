@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   StyleProp,
   ViewStyle,
@@ -17,6 +17,10 @@ import { RootState } from '@app/redux/store';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { selectUser } from '@app/redux/user/user';
+import { metersToMiles } from '@app/utilities/geo';
+import { secondsToMinutes } from '@app/utilities/dates';
+import { getDistance } from '@app/utilities/geo';
+import { currencyFormatter } from '@app/utilities/currency';
 
 type Props = {
   style?: StyleProp<ViewStyle>;
@@ -41,10 +45,24 @@ export const NewOrderCell = ({
 }: Props) => {
   const { t } = useTranslation();
   const { user } = useSelector(selectUser);
+  const [distance, setDistance] = useState<number>(0); // meters
+  const [duration, setDuration] = useState<number>(0); // seconds
+
+  useEffect(() => {
+    if (user!.location && order.pickup && order.dropoff) {
+      const coordinates = [[user!.location.coordinates[0], user!.location.coordinates[1]], [order.pickup.longitude, order.pickup.latitude], [order.dropoff.longitude, order.dropoff.latitude]
+      ]
+      getDistance(coordinates).then(({ duration, distance }) => {
+
+      setDuration(duration);
+      setDistance(distance);
+      })
+    }
+  }, []);
 
   return (
     <View style={[styles.container, style]}>
-      <Text style={styles.textPrice}>{'$' + order.income?.pay}</Text>
+      <Text style={styles.textPrice}>{currencyFormatter(order.income?.pay)}</Text>
       <View style={styles.separator} />
       <View style={styles.content}>
         <View style={styles.containerLeft}>
@@ -57,7 +75,7 @@ export const NewOrderCell = ({
             <View style={styles.containerText}>
               <Text style={styles.textName}>{order.merchant_name}</Text>
               <Text style={styles.textAddress}>
-                {order.pickup?.location?.addressLine1}
+                {order.pickup.formattedAddress}
               </Text>
             </View>
             <TouchableOpacity onPress={() => onCopyRestaurant(order)}>
@@ -71,11 +89,11 @@ export const NewOrderCell = ({
             <View style={styles.containerAway}>
               <View style={styles.containerTextAway}>
                 <Image source={Images.Distance} />
-                <Text style={styles.textDistance}>3.5 mi away</Text>
+                <Text style={styles.textDistance}> {`${metersToMiles(distance)} mi ${t('translations:away')}`}</Text>
               </View>
               <View style={styles.containerTextAway}>
                 <Image source={Images.Clock} />
-                <Text style={styles.textDistance}>2 min away</Text>
+                <Text style={styles.textDistance}>{`${secondsToMinutes(duration)} min ${t('translations:away')}`}</Text>
               </View>
             </View>
           </View>
@@ -83,7 +101,7 @@ export const NewOrderCell = ({
             <View style={styles.containerText}>
               <Text style={styles.textName}>{order.customer_name}</Text>
               <Text style={styles.textAddress}>
-                {order.dropoff?.location?.addressLine1}
+                {order.dropoff.formattedAddress}
               </Text>
             </View>
             <TouchableOpacity onPress={() => onCopyCustomer(order)}>

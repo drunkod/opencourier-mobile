@@ -20,8 +20,8 @@ const Map = ({ user, order }: Props) => {
       zoomTapEnabled={false}
       style={styles.map}
       initialRegion={{
-        latitude: user?.location?.lat ?? 51.506048309318764, // TODO: hardcoded London coordinates
-        longitude: user?.location?.lon ?? -0.1584647405195857,
+        latitude: user.location?.coordinates[1] ?? 51.506048309318764, // TODO: hardcoded London coordinates
+        longitude: user.location?.coordinates[0] ?? -0.1584647405195857,
         latitudeDelta: 0.0922,
         longitudeDelta: 0.0421,
         // latitudeDelta: 0.7,
@@ -33,31 +33,31 @@ const Map = ({ user, order }: Props) => {
         strokeColor={Colors.blue1}
         coordinates={[
           {
-            latitude: user?.location?.lat ?? 51.506048309318764, // TODO: hardcoded London coordinates
-            longitude: user?.location?.lon ?? -0.1584647405195857,
+            latitude: user.location?.coordinates[1] ?? 51.506048309318764, // TODO: hardcoded London coordinates
+            longitude: user.location?.coordinates[0] ?? -0.1584647405195857,
           },
           {
-            latitude: order.pickup.coordinates.latitude ?? 0,
-            longitude: order.pickup.coordinates.longitude ?? 0,
+            latitude: order.pickup.latitude ?? 0,
+            longitude: order.pickup.longitude ?? 0,
           },
           {
-            latitude: order.dropoff.coordinates.latitude ?? 0,
-            longitude: order.dropoff.coordinates.longitude ?? 0,
+            latitude: order.dropoff.latitude ?? 0,
+            longitude: order.dropoff.longitude ?? 0,
           },
         ]}
       />
       <Marker
         key={1}
         coordinate={{
-          latitude: order.dropoff.coordinates.latitude ?? 0,
-          longitude: order.dropoff.coordinates.longitude ?? 0,
+          latitude: order.dropoff.latitude ?? 0,
+          longitude: order.dropoff.longitude ?? 0,
         }}
         image={Images.Buildings}
       />
       <Marker
         coordinate={{
-          latitude: order.pickup.coordinates.latitude ?? 0,
-          longitude: order.pickup.coordinates.longitude ?? 0,
+          latitude: order.pickup.latitude ?? 0,
+          longitude: order.pickup.longitude ?? 0,
         }}
         image={Images.Storefront}
       />

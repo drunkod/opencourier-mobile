@@ -17,8 +17,6 @@ import {
   MapDestination,
   MapLinkingOptions,
   Order,
-  OrderState,
-  PickupInstruction,
   UserStatus,
 } from '@app/types/types';
 import { HomeEmptyStateComponent } from '@app/components/HomeEmptyState/HomeEmptyState';
@@ -43,9 +41,6 @@ import { OrderSetting } from '@app/types/enums';
 type Props = DrawerScreenProp<DrawerScreens.Home>;
 
 export const HomeScreen = ({ navigation }: Props) => {
-  const [orderState, setOrderState] = useState<OrderState>(
-    OrderState.orderPickup,
-  );
   const [reportIncidentDismissed, setReportIncidentDismissed] =
     useState<boolean>(false);
   const { t } = useTranslation();
@@ -120,15 +115,15 @@ export const HomeScreen = ({ navigation }: Props) => {
   //   dispatch(declineOrder(order));
   // };
 
-  const getRemainingSecondsForNewOrder = (order: Order) => {
-    const timer = offerExpirationTimers.get(order.id);
-    if (timer) {
-      console.log(Math.round(timer.getTimeLeftMilli() / 1000))
-      return Math.round(timer.getTimeLeftMilli()/1000);
-    } else {
-      return 0;
-    }
-  };
+  // const getRemainingSecondsForNewOrder = (order: Order) => {
+  //   const timer = offerExpirationTimers.get(order.id);
+  //   if (timer) {
+  //     console.log(Math.round(timer.getTimeLeftMilli() / 1000))
+  //     return Math.round(timer.getTimeLeftMilli()/1000);
+  //   } else {
+  //     return 0;
+  //   }
+  // };
 
   const onNoteEdited = (note: string, oldNote: CourierTip, order: Order) => {
     // if (note && note !== oldNote.tip_text) {
@@ -192,10 +187,10 @@ export const HomeScreen = ({ navigation }: Props) => {
             onAccept={(order) => acceptOrderFn(order.id)}
             onDecline={(order) => declineOrderFn(order.id)}
             onCopyCustomer={order =>
-              Clipboard.setString(order.dropoff.location.formatted)
+              Clipboard.setString(order.dropoff.formattedAddress)
             }
             onCopyRestaurant={order =>
-              Clipboard.setString(order.pickup.location.formatted)
+              Clipboard.setString(order.pickup.formattedAddress)
             }
           />
         );
@@ -214,10 +209,10 @@ export const HomeScreen = ({ navigation }: Props) => {
               //Clipboard.setString(order.pickup?.location?.addressLine1)
             }
             onConfirmItems={() => {
-              setOrderState(OrderState.orderDeliveryInProgress);
+              // setOrderState(OrderState.orderDeliveryInProgress);
             }}
-            onCallCustomer={() => Linking.openURL(`tel://${12341251511}`)}
-            onCallRestaurant={() => Linking.openURL(`tel://${12341251511}`)}
+            onCallCustomer={() => Linking.openURL(`tel://${item.customerPhoneNumber}`)}
+            onCallRestaurant={() => Linking.openURL(`tel://${item.merchant_phone_number}`)}
             onMarkAsDelivered={order => {}
               // navigation.navigate(MainScreens.MarkAsDelivered, { order: order })
             }
@@ -248,7 +243,6 @@ export const HomeScreen = ({ navigation }: Props) => {
             onReportIssue={order => {}
               // navigation.navigate(MainScreens.ReportIssue, { order: order })
             }
-            orderState={orderState}
           />
         );
       case HomeTabItem.History:
@@ -293,8 +287,8 @@ export const HomeScreen = ({ navigation }: Props) => {
           ? labelCustomer
           : labelRestauran;
 
-      const latLngCustomer = `${order.dropoff.point.coordinates[1]}, ${order.dropoff.point.coordinates[0]}.`;
-      const latLngRestaurant = `${order.pickup.point.coordinates[1]}, ${order.pickup.point.coordinates[0]}.`;
+      const latLngCustomer = `${order.dropoff.latitude}, ${order.dropoff.longitude}.`;
+      const latLngRestaurant = `${order.pickup.latitude}, ${order.pickup.longitude}.`;
       const latLng = MapDestination.customer
         ? latLngCustomer
         : latLngRestaurant;
