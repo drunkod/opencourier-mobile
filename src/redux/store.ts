@@ -1,6 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import userReducer from './user/user';
 import orderReducer from './order/order';
+import commentReducer from "./comment/comment";
 import createSagaMiddleware from 'redux-saga';
 import Services from '../services/Services';
 import rootSaga from './rootSaga';
@@ -11,6 +12,7 @@ const store = configureStore({
   reducer: {
     user: userReducer,
     order: orderReducer,
+    comment: commentReducer,
   },
   middleware: [sagaMiddleware],
 });

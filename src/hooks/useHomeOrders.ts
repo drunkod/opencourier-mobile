@@ -7,12 +7,16 @@ import {
   getInProgressOrders,
   getNewOrders,
   getOrderHistory,
+  selectOrder,
 } from '@app/redux/order/order';
 import { useEffect, useState } from 'react';
 import { AUTO_ACCEPT_DECLINE_TIMER } from '@app/utilities/constants';
 import { getAutoAcceptOrdersStorage } from '@app/utilities/storage';
 import { selectUser } from '@app/redux/user/user';
 import { OrderSetting } from '@app/types/enums';
+import {
+  selectComment,
+} from '@app/redux/comment/comment';
 
 type NewOrderTimer = {
   secondsRemaining: number;
@@ -51,7 +55,7 @@ export const useHomeOrders = () => {
 
   const [offerExpirationTimers, setOfferExpirationTimers] = useState<
     Map<string, Timer>
-    >(new Map());
+  >(new Map());
   const { user } = useSelector(selectUser);
   const dispatch = useDispatch();
   const {
@@ -71,7 +75,13 @@ export const useHomeOrders = () => {
     confirmItemsFinished,
     confirmItemsError,
     confirmedItemsForOrder,
-  } = useSelector((state: RootState) => state.order);
+  } = useSelector(selectOrder);
+
+  const {
+    createCommentFinished,
+    updateCommentFinished,
+    deleteCommentFinished,
+  } = useSelector(selectComment);
 
   const itemsConfirmedForOrder = (order: Order) => {
     const temp = confirmedItems.filter(obj => obj.orderId === order.id);
@@ -128,9 +138,9 @@ export const useHomeOrders = () => {
     );
     setDataSourceNew(updateNewOrders);
   };
-      //dispatch(acceptOrder({ id, data: { courierId: user!.id } }));
+  //dispatch(acceptOrder({ id, data: { courierId: user!.id } }));
 
-  const declineOrderFn = (orderId: string) => { 
+  const declineOrderFn = (orderId: string) => {
     console.log('Dispatching decline order', orderId);
     offerExpirationTimers.get(orderId)?.stop();
     offerExpirationTimers.delete(orderId);
@@ -139,7 +149,7 @@ export const useHomeOrders = () => {
       newOrder => newOrder.id != orderId,
     );
     setDataSourceNew(updateNewOrders);
-  }
+  };
 
   useEffect(() => {
     if (getNewOrdersFinished) {
@@ -207,13 +217,11 @@ export const useHomeOrders = () => {
   };
 
   const fetchInProgressOrders = () => {
-    dispatch(
-      getInProgressOrders({ data: { courierId: user!.id } }),
-    );
+    dispatch(getInProgressOrders({ data: { courierId: user!.id } }));
   };
 
   const fetchHistory = () => {
-    console.log("dispatching fetch history")
+    console.log('dispatching fetch history');
     dispatch(getOrderHistory({ data: { courierId: user!.id } }));
   };
 
@@ -245,6 +253,10 @@ export const useHomeOrders = () => {
     // })();
   }, []);
 
+  useEffect(() => {
+    fetchInProgressOrders();
+  }, [createCommentFinished, updateCommentFinished, deleteCommentFinished]);
+
   return {
     dataSourceNew,
     dataSourceHistory,
@@ -260,7 +272,7 @@ export const useHomeOrders = () => {
     offerExpirationTimers,
     setOfferExpirationTimers,
     confirmedItems,
-    acceptOrderFn, 
+    acceptOrderFn,
     declineOrderFn,
   };
 };

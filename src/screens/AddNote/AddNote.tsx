@@ -13,12 +13,13 @@ import { useTranslation } from 'react-i18next';
 import { Button, ButtonType } from '@app/components/Button/Button';
 import { Images } from '@app/utilities/images';
 import { Colors } from '@app/styles/colors';
+import { Comment } from '@app/types/types';
 
 type Props = RootScreenProp<RootScreen.AddNoteModal>;
 
 export const AddNote = ({ navigation, route }: Props) => {
   const { t } = useTranslation();
-  const { onNoteAdded, order, onNoteEdited, noteToEdit } = route.params;
+  const { type, onNoteAdded, order, onNoteEdited, noteToEdit } = route.params;
   const [note, setNote] = useState<string>('');
 
   const onChangeText = (newNote: string) => {
@@ -27,16 +28,16 @@ export const AddNote = ({ navigation, route }: Props) => {
 
   const onSave = () => {
     if (noteToEdit !== undefined) {
-      onNoteEdited && onNoteEdited(note, noteToEdit, order);
+      onNoteEdited && onNoteEdited(note, noteToEdit);
     } else {
-      onNoteAdded && onNoteAdded(note, order);
+      onNoteAdded && onNoteAdded(note, type!, order!);
     }
     navigation.goBack();
   };
 
   useEffect(() => {
     if (noteToEdit !== undefined) {
-      setNote(noteToEdit.tip_text);
+      setNote(noteToEdit.text);
     }
   }, []);
 

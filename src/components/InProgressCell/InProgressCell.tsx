@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { StyleProp, ViewStyle, View } from 'react-native';
 import { styles } from './InProgressCell.styles';
-import { CourierTip, Order, User } from '@app/types/types';
+import { Comment, CourierTip, Order, User } from '@app/types/types';
 import { Images } from '@app/utilities/images';
 import UserContext from '@app/context/userContext';
 import { useTranslation } from 'react-i18next';
@@ -21,10 +21,10 @@ type Props = {
   itemsConfirmed: boolean;
   onConfirmItems: (order: Order) => void;
   onMarkAsDelivered: (order: Order) => void;
-  onAddNote: (order: Order) => void;
-  onPickupInstructionPress: (order: Order, note: CourierTip) => void;
-  onNoteEdit: (order: Order, note: CourierTip) => void;
-  onNoteDelete: (order: Order, note: CourierTip) => void;
+  onAddNote: (order: Order, type: "merchant" | "location") => void;
+  onNotePress: (note: Comment ) => void;
+  onNoteEdit: (note: Comment) => void;
+  onNoteDelete: (note: Comment) => void;
   onCustomerAddressPress: (order: Order) => void;
   onRestaurantAddressPress: (order: Order) => void;
   onMessageRestaurant: (order: Order) => void;
@@ -42,7 +42,7 @@ export const InProgressCell = ({
   onConfirmItems,
   onMarkAsDelivered,
   onAddNote,
-  onPickupInstructionPress,
+  onNotePress,
   onCustomerAddressPress,
   onRestaurantAddressPress,
   onNoteDelete,
@@ -109,25 +109,23 @@ export const InProgressCell = ({
 
               <InProgressNotes
                 order={order}
-                notes={[]}
-                //notes={order.courier_tips_for_merchant}
+                notes={order.merchant_notes_for_courier ?? []}
                 headerTitle={t('translations:restaurant_notes')}
-                onNotePress={note => onPickupInstructionPress(order, note)}
+                onNotePress={() => {}}
                 expanded={topExpanded}
-                noteEditingDisabled={true}
+                noteCreationDisabled={true}
               />
 
               <InProgressNotes
                 order={order}
-                notes={[]}
-                //notes={order.courier_tips_for_merchant}
+                notes={order.community_notes_for_merchant ?? []}
                 headerTitle={t('translations:location_courier_notes')}
-                onNotePress={note => onPickupInstructionPress(order, note)}
-                onNoteDelete={(ord, note) => onNoteDelete(ord, note)}
-                onNoteEdit={(ord, note) => onNoteEdit(ord, note)}
-                onNoteAdd={() => onAddNote(order)}
+                onNotePress={(note) => onNotePress(note)}
+                onNoteDelete={(note) => onNoteDelete(note)}
+                onNoteEdit={(note) => onNoteEdit(note)}
+                onNoteAdd={() => onAddNote(order, "merchant")}
                 expanded={topExpanded}
-                noteEditingDisabled={false}
+                noteCreationDisabled={false}
               />
             </View>
           </View>
@@ -156,25 +154,24 @@ export const InProgressCell = ({
 
               <InProgressNotes
                 order={order}
-                notes={[]}
-                //notes={order.courier_tips_for_merchant}
+                notes={order.customer_notes_for_courier ?? []}
                 headerTitle={t('translations:customer_notes')}
-                onNotePress={note => onPickupInstructionPress(order, note)}
+                onNotePress={() => {}}
                 expanded={bottomExpanded}
-                noteEditingDisabled={true}
+                noteCreationDisabled={true}
               />
 
               <InProgressNotes
                 order={order}
-                notes={[]}
+                notes={order.community_notes_for_dropoff_location ?? []}
                 //notes={order.courier_tips_for_merchant}
                 headerTitle={t('translations:location_courier_notes')}
-                onNotePress={note => onPickupInstructionPress(order, note)}
-                // onNoteDelete={note => onNoteDelete(order, note)}
-                // onNoteEdit={note => onNoteEdit(order, note)}
-                onNoteAdd={() => onAddNote(order)}
+                onNotePress={note => onNotePress(note)}
+                onNoteDelete={note => onNoteDelete(note)}
+                onNoteEdit={note => onNoteEdit(note)}
+                onNoteAdd={() => onAddNote(order, "location")}
                 expanded={bottomExpanded}
-                noteEditingDisabled={false}
+                noteCreationDisabled={false}
               />
             </View>
           </View>

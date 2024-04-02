@@ -8,19 +8,19 @@ import {
   ViewStyle,
 } from 'react-native';
 import { styles } from './PickupInstructionCell.styles';
-import { CourierTip } from '@app/types/types';
+import { Comment, CourierTip } from '@app/types/types';
 import { Images } from '@app/utilities/images';
 import { Colors } from '@app/styles/colors';
 import { SCREEN_WIDTH } from '@app/utilities/constants';
 
 type Props = {
   style?: StyleProp<ViewStyle>;
-  instruction: CourierTip;
+  note: Comment | string;
   endorsed: boolean;
   editDisabled: boolean;
-  onPress: (instruction: CourierTip) => void;
-  onEdit?: (instruction: CourierTip) => void;
-  onDelete?: (instruction: CourierTip) => void;
+  onPress: (note: Comment) => void;
+  onEdit?: (note: Comment ) => void;
+  onDelete?: (note: Comment ) => void;
 };
 
 enum EditComponentLayout {
@@ -30,7 +30,7 @@ enum EditComponentLayout {
 
 export const PickupInstructionCell = ({
   style,
-  instruction,
+  note,
   onPress,
   endorsed = false,
   editDisabled = false,
@@ -49,7 +49,7 @@ export const PickupInstructionCell = ({
 
   return (
     <View style={[styles.parent, style]}>
-      <TouchableOpacity onPress={() => onPress(instruction)}>
+      <TouchableOpacity onPress={() => typeof note !== "string" && onPress(note)}>
         <View
           style={[
             styles.container,
@@ -61,14 +61,14 @@ export const PickupInstructionCell = ({
           onLayout={event => {
             setBubbleWidth(event.nativeEvent.layout.width);
           }}>
-          <Text style={[styles.textContent]}>{instruction.tip_text}</Text>
-          {instruction.upvotes !== undefined && instruction.upvotes > 0 && (
+          <Text style={[styles.textContent]}>{typeof note !== "string" ? note.text: note}</Text>
+          {typeof note !== "string" && note.likes > 0 && (
             <View
               style={[
                 styles.containerIncrement,
                 endorsed && { backgroundColor: Colors.yellow1 },
               ]}>
-              <Text style={styles.textBold}>{instruction.upvotes}</Text>
+              <Text style={styles.textBold}>{note.likes}</Text>
             </View>
           )}
         </View>
@@ -86,7 +86,7 @@ export const PickupInstructionCell = ({
           ]}>
           <TouchableOpacity
             style={styles.buttonEdit}
-            onPress={() => onDelete && onDelete(instruction)}>
+            onPress={() => typeof note !== "string" && onDelete && onDelete(note)}>
             <Image source={Images.Trash} style={styles.iconDelete} />
           </TouchableOpacity>
           <View
@@ -104,7 +104,7 @@ export const PickupInstructionCell = ({
           />
           <TouchableOpacity
             style={styles.buttonEdit}
-            onPress={() => onEdit && onEdit(instruction)}>
+            onPress={() => typeof note !== "string" && onEdit && onEdit(note)}>
             <Image source={Images.Edit} />
           </TouchableOpacity>
         </View>

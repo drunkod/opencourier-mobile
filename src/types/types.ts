@@ -135,6 +135,16 @@ export type Restaurant = {
   location?: { lat: number; lon: number };
 };
 
+export type Comment = {
+  id: string;
+  text: string;
+  likes: number;
+  commentableType: "merchant" | "location";
+  commentableId: string;
+  commentor: string;
+
+}
+
 export type Order = {
   date: string;
   id: string;
@@ -152,10 +162,12 @@ export type Order = {
   merchant_notes_for_courier: string[];
   customer_notes_for_courier: string[];
   courier_notes_for_customer: string[];
+  community_notes_for_dropoff_location: Comment[];
+  community_notes_for_merchant: Comment[];
   // courier_tips_for_merchant: CourierTip[];
   pickup: Location;
   dropoff: Location;
-  return: Location;
+  return?: Location;
   undeliverable_action: string;
   undeliverable_reason: string;
   income: Income;

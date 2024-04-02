@@ -11,6 +11,7 @@ import {
 import { styles } from './Home.styles';
 import { HomeHeader } from '@app/components/HomeHeader/HomeHeader';
 import {
+  Comment,
   CourierTip,
   HomeEmptyState,
   HomeTabItem,
@@ -29,7 +30,7 @@ import ActionSheet from 'react-native-action-sheet';
 import { MainScreens } from '@app/navigation/main/types';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { useDispatch, useSelector } from 'react-redux';
-import { acceptOrder, declineOrder } from '@app/redux/order/order';
+import order, { acceptOrder, declineOrder } from '@app/redux/order/order';
 import { useHomeOrders } from '@app/hooks/useHomeOrders';
 import { RootState } from '@app/redux/store';
 import { useTranslation } from 'react-i18next';
@@ -37,6 +38,7 @@ import { RootScreen } from '@app/navigation/types';
 import { ReportAnIncident } from '@app/components/ReportAnIncident/ReportAnIncident';
 import { selectUser } from '@app/redux/user/user';
 import { OrderSetting } from '@app/types/enums';
+import { updateComment, updateCommentFinished, deleteCommentFinished, deleteComment, createComment } from '@app/redux/comment/comment';
 
 type Props = DrawerScreenProp<DrawerScreens.Home>;
 
@@ -107,73 +109,38 @@ export const HomeScreen = ({ navigation }: Props) => {
     }
   }, [selectedTab, dataSourceHistory, dataSourceNew, dataSourceInProgress]);
 
-  // const onAcceptNewOrder = (order: Order) => {
-  //   dispatch(acceptOrder(order));
-  // };
 
-  // const onDeclineNewOrder = (order: Order) => {
-  //   dispatch(declineOrder(order));
-  // };
-
-  // const getRemainingSecondsForNewOrder = (order: Order) => {
-  //   const timer = offerExpirationTimers.get(order.id);
-  //   if (timer) {
-  //     console.log(Math.round(timer.getTimeLeftMilli() / 1000))
-  //     return Math.round(timer.getTimeLeftMilli()/1000);
-  //   } else {
-  //     return 0;
-  //   }
-  // };
-
-  const onNoteEdited = (note: string, oldNote: CourierTip, order: Order) => {
-    // if (note && note !== oldNote.tip_text) {
-    //   var temp = dataSource.filter(obj => obj.order_id === order.order_id);
-    //   if (temp.length > 0 && temp[0].courier_tips_for_merchant) {
-    //     const newNotes = temp[0].courier_tips_for_merchant.map(obj => {
-    //       if (
-    //         obj.courier_id === oldNote.courier_id &&
-    //         obj.tip_text === oldNote.tip_text
-    //       ) {
-    //         return {
-    //           courier_id: obj.courier_id,
-    //           tip_text: note,
-    //           upvotes: obj.upvotes,
-    //         };
-    //       }
-    //       return obj;
-    //     });
-
-    //     temp[0].courier_tips_for_merchant = [...newNotes];
-    //     setDataSource(temp);
-    //   }
-    // }
+  const onNoteEdited = (editedText: string, note: Comment) => {
+    dispatch(updateComment({ id: note.id, data: { text: editedText, commentor: user!.id} }));
+  };
+  const onNoteDeleted = (note: Comment) => {
+    dispatch(deleteComment({ id: note.id, data: { [note.commentableType == "merchant" ? 'MerchantId' : 'LocationId']: note.commentableId } }));
+  };
+  const onNoteAdded = (text: string, type: "merchant" | "location", order: Order) => {
+    dispatch(createComment({ data: { text, commentor: user!.id, [type == "merchant" ? 'MerchantId' : 'LocationId']: type == "merchant" ? order.merchant_id : order.dropoff.id } }));
   };
 
-  const onNoteDeleted = (note: CourierTip, order: Order) => {
-    // var temp = dataSource.filter(obj => obj.order_id === order.order_id);
-    // if (temp.length > 0 && temp[0].courier_tips_for_merchant) {
-    //   temp[0].courier_tips_for_merchant =
-    //     temp[0].courier_tips_for_merchant.filter(
-    //       obj => obj.tip_text !== note.tip_text,
-    //     );
-    //   setDataSource(temp);
-    // }
+  const onEditNote = (note: Comment) => {
+    navigation.navigate(RootScreen.AddNoteModal, {
+      noteToEdit: note,
+      onNoteEdited: onNoteEdited,
+    });
   };
-
-  const onEditNote = (order: Order, note: CourierTip) => {
-    // navigation.navigate(RootScreen.AddNoteModal, {
-    //   order: order,
-    //   noteToEdit: note,
-    //   onNoteEdited: onNoteEdited,
-    // });
+  const onDeleteNote = (note: Comment) => {
+    navigation.navigate(RootScreen.DeleteNoteModal, {
+      onNoteDeleted: onNoteDeleted,
+      note: note,
+    });
   };
-
-  const onDeleteNote = (order: Order, note: CourierTip) => {
-    // navigation.navigate(RootScreen.DeleteNoteModal, {
-    //   onDelete: onNoteDeleted,
-    //   order: order,
-    //   note: note,
-    // });
+  const onAddNote = (order: Order, type: "merchant" | "location") => {
+    navigation.navigate(RootScreen.AddNoteModal, {
+      onNoteAdded: onNoteAdded,
+      order: order,
+      type: type,
+    });
+  };
+  const onPressNote = (note: Comment) => {
+    dispatch(updateComment({ id: note.id, data: { likes: note.likes + 1 } }));
   };
 
   const renderItem = ({ item }: { item: Order }) => {
@@ -202,18 +169,17 @@ export const HomeScreen = ({ navigation }: Props) => {
         return (
           <InProgressCell
             itemsConfirmed={itemsConfirmedForOrder(item)}
-            onMessageCustomer={order => {}
-              //Clipboard.setString(order.dropoff?.location?.addressLine1)
+            onMessageCustomer={order =>
+              Clipboard.setString(order.dropoff.formattedAddress)
             }
-            onMessageRestaurant={order => {}
-              //Clipboard.setString(order.pickup?.location?.addressLine1)
+            onMessageRestaurant={order => Clipboard.setString(order.pickup.formattedAddress)
             }
             onConfirmItems={() => {
               // setOrderState(OrderState.orderDeliveryInProgress);
             }}
             onCallCustomer={() => Linking.openURL(`tel://${item.customerPhoneNumber}`)}
             onCallRestaurant={() => Linking.openURL(`tel://${item.merchant_phone_number}`)}
-            onMarkAsDelivered={order => {}
+            onMarkAsDelivered={order => { }
               // navigation.navigate(MainScreens.MarkAsDelivered, { order: order })
             }
             order={item}
@@ -230,7 +196,7 @@ export const HomeScreen = ({ navigation }: Props) => {
               })
             }
             onAddNote={onAddNote}
-            onPickupInstructionPress={onPickupInstructionPress}
+            onNotePress={onPressNote}
             onNoteDelete={onDeleteNote}
             onNoteEdit={onEditNote}
             onOrderItemsListForCustomer={() => {
@@ -240,7 +206,7 @@ export const HomeScreen = ({ navigation }: Props) => {
               // });
               // setOrderState(OrderState.confirmingOrderItems);
             }}
-            onReportIssue={order => {}
+            onReportIssue={order => { }
               // navigation.navigate(MainScreens.ReportIssue, { order: order })
             }
           />
@@ -250,25 +216,7 @@ export const HomeScreen = ({ navigation }: Props) => {
     }
   };
 
-  const onPickupInstructionPress = (order: Order, instruction: CourierTip) => {
-    // var temp = dataSource.filter(obj => obj.id === order.id);
-    // if (temp.length > 0 && temp[0].courier_tips_for_merchant) {
-    //   var newInstructions: CourierTip[] = temp[0].courier_tips_for_merchant.map(
-    //     ins => {
-    //       if (ins.tip_text === instruction.tip_text) {
-    //         return {
-    //           courier_id: instruction.courier_id,
-    //           tip_text: instruction.tip_text,
-    //           upvotes: instruction.upvotes ? instruction.upvotes + 1 : 2,
-    //         };
-    //       }
-    //       return ins;
-    //     },
-    //   );
-    //   temp[0].courier_tips_for_merchant = [...newInstructions];
-    //   setDataSource(temp);
-    // }
-  };
+
 
   const onSelect = (buttonIndex: number) => {
     const { order, destination } = showMapActionSheet ?? { order: undefined, destination: undefined };
@@ -317,6 +265,7 @@ export const HomeScreen = ({ navigation }: Props) => {
           }
         });
       }
+      // TODO: Change to addresses
       if (
         availableMapApps[buttonIndex] ===
         t(`translations:${MapLinkingOptions.waze}`)
@@ -344,25 +293,6 @@ export const HomeScreen = ({ navigation }: Props) => {
     );
   };
 
-  const onNoteAdded = (note: string, order: Order) => {
-    // if (note) {
-    //   var temp = dataSource.filter(obj => obj.order_id === order.order_id);
-    //   if (temp.length > 0 && temp[0].courier_tips_for_merchant) {
-    //     temp[0].courier_tips_for_merchant = [
-    //       ...temp[0].courier_tips_for_merchant,
-    //       { courier_id: order.courier_id, tip_text: note, upvotes: 0 },
-    //     ];
-    //     setDataSource(temp);
-    //   }
-    // }
-  };
-
-  const onAddNote = (order: Order) => {
-    // navigation.navigate(RootScreen.AddNoteModal, {
-    //   onNoteAdded: onNoteAdded,
-    //   order: order,
-    // });
-  };
 
   const onRefresh = () => {
     switch (selectedTab) {

@@ -1,6 +1,6 @@
 import { NavigationProp, RouteProp } from '@react-navigation/native';
 import { MainStackParamList } from './main/types';
-import { CourierTip, Order, Organization, UserStatus } from '@app/types/types';
+import { Comment, CourierTip, Order, Organization, UserStatus } from '@app/types/types';
 
 export enum RootScreen {
   Loading = 'Loading',
@@ -31,15 +31,15 @@ export type RootStackParamList = {
     onCancel: () => void;
   };
   AddNoteModal: {
-    order: Order;
-    noteToEdit?: string;
-    onNoteAdded?: (note: string, order: Order) => void;
-    onNoteEdited?: (note: string, oldNote: string, order: Order) => void;
+    type?: 'merchant' | 'location';
+    order?: Order;
+    noteToEdit?: Comment;
+    onNoteAdded?: (text: string, type: "merchant" | "location", order: Order) => void;
+    onNoteEdited?: (editedText: string, note: Comment) => void;
   };
   DeleteNoteModal: {
-    order: Order;
-    note: string;
-    onDelete: (note: CourierTip, order: Order) => void;
+    note: Comment;
+    onNoteDeleted: (note: Comment) => void;
   };
   DatePickerScreen: {
     startOrEndShift: 'start' | 'end';

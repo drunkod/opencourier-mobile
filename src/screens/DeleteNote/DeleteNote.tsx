@@ -16,10 +16,10 @@ type Props = RootScreenProp<RootScreen.DeleteNoteModal>;
 
 export const DeleteNote = ({ navigation, route }: Props) => {
   const { t } = useTranslation();
-  const { onDelete, order, note } = route.params;
+  const { note, onNoteDeleted } = route.params;
 
   const onDeletePress = () => {
-    onDelete && onDelete(note, order);
+    onNoteDeleted && onNoteDeleted(note);
     navigation.goBack();
   };
 

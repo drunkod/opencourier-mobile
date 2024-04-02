@@ -8,21 +8,23 @@ import {
   Image,
 } from 'react-native';
 import { styles } from './InProgressNotes.styles';
-import { CourierTip, Order } from '@app/types/types';
+import { Comment, CourierTip, Order } from '@app/types/types';
 import { PickupInstructionCell } from '../PickupInstructionsCell/PickupInstructionCell';
 import { Images } from '@app/utilities/images';
+import { selectUser } from '@app/redux/user/user';
+import { useSelector } from 'react-redux';
 
 type Props = {
   style?: StyleProp<ViewStyle>;
   order: Order;
-  notes: CourierTip[];
+  notes: Comment[] | string[];
   headerTitle: string;
-  onNotePress: (note: CourierTip) => void;
-  onNoteEdit?: (order: Order, note: CourierTip) => void;
-  onNoteDelete?: (order: Order, note: CourierTip) => void;
+  onNotePress: (note: Comment) => void;
+  onNoteEdit?: (note: Comment) => void;
+  onNoteDelete?: (note: Comment) => void;
   onNoteAdd?: () => void;
   expanded: boolean;
-  noteEditingDisabled: boolean;
+  noteCreationDisabled: boolean;
 };
 
 export const InProgressNotes = ({
@@ -35,8 +37,10 @@ export const InProgressNotes = ({
   onNoteDelete,
   onNoteAdd,
   expanded,
-  noteEditingDisabled = true,
+  noteCreationDisabled = true,
 }: Props) => {
+
+  const { user } = useSelector(selectUser)
   return (
     <View
       style={[
@@ -48,7 +52,7 @@ export const InProgressNotes = ({
       <View style={[styles.noteHeader]}>
         <Text style={styles.textNotesHeader}>{headerTitle}</Text>
         <View style={styles.notesDash} />
-        {!noteEditingDisabled && (
+        {!noteCreationDisabled && (
           <TouchableOpacity
             style={styles.addNote}
             onPress={() => onNoteAdd && onNoteAdd()}>
@@ -57,15 +61,15 @@ export const InProgressNotes = ({
         )}
       </View>
       <View style={[styles.containerInstructions]}>
-        {notes.map(item => {
+        {notes.map(note => {
           return (
             <PickupInstructionCell
-              editDisabled={noteEditingDisabled}
+              editDisabled={typeof note == "string" || note.commentor != user?.id}
               endorsed={Math.floor(Math.random() * 10) % 2 === 0}
-              instruction={item}
-              onPress={note => onNotePress(note)}
-              onDelete={note => onNoteDelete && onNoteDelete(order, note)}
-              onEdit={note => onNoteEdit && onNoteEdit(order, note)}
+              note={note}
+              onPress={note => typeof note !== "string" && onNotePress(note)}
+              onDelete={note => typeof note !== "string" && onNoteDelete && onNoteDelete(note)}
+              onEdit={note => typeof note !== "string" && onNoteEdit && onNoteEdit(note)}
             />
           );
         })}

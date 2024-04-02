@@ -179,7 +179,7 @@ export const userSlice = createSlice({
   },
 });
 
-export const selectUser = (state: { user: UserState; order: UserState }) =>
+export const selectUser = (state: { user: UserState }) =>
   state.user;
 
 export const {
