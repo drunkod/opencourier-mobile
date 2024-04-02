@@ -26,7 +26,7 @@ export const WeightOrderScreen = ({ navigation }: Props) => {
   const { user, settings } = useSelector(selectUser);
   const dispatch = useDispatch();
   const [selectedOrder, setSelectedOrder] = useState<string | null>(
-    settings!.orderPreferences ? settings!.orderPreferences[0].toString() : null
+    settings?.orderPreferences && settings.orderPreferences.length > 0 ? settings.orderPreferences[0]: null
   );
   const orders = Object.keys(OrderPreferences).filter((item) => {
     return isNaN(Number(item));

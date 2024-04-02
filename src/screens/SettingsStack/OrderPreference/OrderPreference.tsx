@@ -22,7 +22,7 @@ export const OrderPreferenceScreen = ({ navigation }: Props) => {
   const dispatch = useDispatch();
   const [selectedPreference, setSelectedPreference] = useState<string
     | null>(
-      user.settings!.foodPreferences ? user.settings!.foodPreferences[0].toString() : null,
+      user.settings?.foodPreferences && user.settings.foodPreferences.length > 0 ? user.settings.foodPreferences![0] : null,
     );
   const preferences = Object.keys(FoodPreferences).filter((item) => {
     return isNaN(Number(item));

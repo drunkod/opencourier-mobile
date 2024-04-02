@@ -21,7 +21,7 @@ export const VehicleTypeScreen = ({ navigation }: Props) => {
   const dispatch = useDispatch()
   const user = useSelector(selectUser);
   const [selectedVehicle, setSelectedVehicle] = useState<string | null>(
-    user.settings!.vehicleType ? user.settings!.vehicleType.toString() : null, 
+    user.settings!.vehicleType ? user.settings!.vehicleType : null, 
   );
   const vehicles = Object.keys(VehicleType).filter((item) => {
     return isNaN(Number(item));

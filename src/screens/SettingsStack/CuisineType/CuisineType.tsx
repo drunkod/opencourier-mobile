@@ -19,7 +19,7 @@ export const CuisineTypeScreen = ({ navigation }: Props) => {
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
   const [selectedCuisine, setSelectedCuisine] = useState<string | null>(
-    user.settings!.cuisineTypes ? user.settings!.cuisineTypes[0].toString() : null
+    user.settings?.cuisineTypes && user.settings.cuisineTypes.length > 0 ? user.settings.cuisineTypes[0] : null
   );
   const cuisines = Object.keys(CuisineTypes).filter((item) => {
     return isNaN(Number(item));
