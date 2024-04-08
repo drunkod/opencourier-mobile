@@ -18,7 +18,6 @@ import { OrderStatus } from '@app/types/enums';
 type Props = {
   style?: StyleProp<ViewStyle>;
   order: Order;
-  itemsConfirmed: boolean;
   onConfirmItems: (order: Order) => void;
   onMarkAsDelivered: (order: Order) => void;
   onAddNote: (order: Order, type: "merchant" | "location") => void;
@@ -31,14 +30,13 @@ type Props = {
   onCallRestaurant: (order: Order) => void;
   onMessageCustomer: (order: Order) => void;
   onCallCustomer: (order: Order) => void;
-  onOrderItemsListForCustomer: (order: Order, customer: User) => void;
+  onOrderItemsListForCustomer: () => void;
   onReportIssue: (order: Order) => void;
 };
 
 export const InProgressCell = ({
   style,
   order,
-  itemsConfirmed,
   onConfirmItems,
   onMarkAsDelivered,
   onAddNote,
@@ -186,8 +184,7 @@ export const InProgressCell = ({
           setBottomExpanded(true);
         }}
         onMarkAsDelivered={() => onMarkAsDelivered(order)}
-        onOrderItemsListForCustomer={() => {}
-         // onOrderItemsListForCustomer(order, {})
+        onOrderItemsListForCustomer={() => onOrderItemsListForCustomer()
         }
         onReportIssue={() => onReportIssue(order)}
       />

@@ -43,6 +43,8 @@ export const QuickNote = ({
     }
   }, [text]);
 
+  const customerNotes = Object.values(CustomerNotes);
+
   return (
     <TouchableOpacity
       onPress={() => onPress(text)}
@@ -70,7 +72,7 @@ export const QuickNote = ({
           selected && { color: Colors.white },
           icon && { marginLeft: 8 },
         ]}>
-        {t(`translations:${text}`)}
+        {customerNotes.find(note => note == text) ? t(`translations:${text}`) : text}
       </Text>
     </TouchableOpacity>
   );

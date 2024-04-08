@@ -21,7 +21,7 @@ type Props = {
   onReportIssue?: (order: Order) => void;
   onConfirmOrderItems: (order: Order) => void;
   onMarkAsDelivered: (order: Order) => void;
-  onOrderItemsListForCustomer: (customer: User) => void;
+  onOrderItemsListForCustomer: () => void;
 };
 
 export const NextStep = ({
@@ -38,14 +38,14 @@ export const NextStep = ({
     return (
       <TouchableOpacity
         style={styles.cell}
-        onPress={() => onOrderItemsListForCustomer({})}>
+        onPress={() => onOrderItemsListForCustomer()}>
         <Image
           source={Images.CheckmarkGreen}
           style={{ width: 20, height: 20 }}
         />
         <View style={styles.cellText}>
-          <Text style={styles.cellName}>Test User</Text>
-          <Text style={styles.cellItems}>3 items</Text>
+          <Text style={styles.cellName}>{order.customer_name}</Text>
+          <Text style={styles.cellItems}>{`${order.items.length} ` + (order.items.length > 1 ? "items" : "item")}</Text>
         </View>
         <Image source={Images.ArrowRightBlack} />
       </TouchableOpacity>

@@ -9,10 +9,11 @@ import {
 } from 'react-native';
 import { styles } from './PhotoCell.styles';
 import { Images } from '@app/utilities/images';
+import { Photo } from '@app/types/types';
 
 type Props = {
   style?: StyleProp<ViewStyle>;
-  image: string;
+  image: Photo;
   onDelete: () => void;
   onRetake: () => void;
 };
@@ -20,7 +21,7 @@ type Props = {
 export const PhotoCell = ({ style, image, onDelete, onRetake }: Props) => {
   return (
     <View style={[styles.container, style]}>
-      <Image source={{ uri: image }} style={styles.image} />
+      <Image source={{ uri: image.uri }} style={styles.image} />
       <View style={styles.containerRight}>
         <TouchableOpacity style={styles.containerHorizontal} onPress={onRetake}>
           <Image source={Images.ArrowCounterClockwise} style={styles.arrow} />

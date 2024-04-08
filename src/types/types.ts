@@ -139,11 +139,10 @@ export type Comment = {
   id: string;
   text: string;
   likes: number;
-  commentableType: "merchant" | "location";
+  commentableType: 'merchant' | 'location';
   commentableId: string;
   commentor: string;
-
-}
+};
 
 export type Order = {
   date: string;
@@ -406,6 +405,13 @@ export type Item = {
   height?: number;
   weight?: number;
   keepUpright?: boolean;
+};
+
+export type Photo = {
+  uri: string;
+  data: Blob;
+  name: string;
+  type: string;
 };
 
 // export type OrderItem = {

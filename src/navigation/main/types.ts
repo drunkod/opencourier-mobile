@@ -1,9 +1,9 @@
-import { Order, OrderItem } from '@app/types/types';
+import { Order, Item, Photo } from '@app/types/types';
 import { NavigationProp, RouteProp } from '@react-navigation/native';
 
 export enum MainScreens {
   Drawer = 'Drawer',
-  ItemsCollected = 'Items Collected',
+  ItemsCollected = 'ItemsCollected',
   MarkAsDelivered = 'MarkAsDelivered',
   PhotoAttachment = 'PhotoAttachment',
   PayoutActivity = 'PayoutActivity',
@@ -31,16 +31,25 @@ export type MainStackParamList = {
   Drawer: undefined;
   ItemsCollected: {
     customerName: string;
-    items: OrderItem[];
+    items: Item[];
   };
   MarkAsDelivered: {
     order: Order;
   };
   PhotoAttachment: {
-    onAttach: (photo: string) => void;
+    onAttach: (photo: Photo) => void;
   };
   PayoutActivity: undefined;
   Licences: undefined;
+  LanguageScreen: undefined;
+  ThemeScreen: undefined;
+  OperatingArea: undefined;
+  Accessibility: undefined;
+  DefaultSound: undefined;
+  MyLanguages: undefined;
+  VolumeScreen: undefined;
+  EmergencyContact: undefined;
+  NavigationScreen: undefined;
   VehicleTypeScreen: undefined;
   RestaurantTypeScreen: undefined;
   CuisineTypeScreen: undefined;

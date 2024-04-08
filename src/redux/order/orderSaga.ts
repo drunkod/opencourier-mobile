@@ -66,7 +66,7 @@ function* getOrderHistorySaga(
     const { payload } = yield take(getOrderHistory);
     try {
       const res = yield call(service.getOrdersHistory, payload);
-      if (res.data){
+      if (res.data) {
         yield put(getOrderHistoryOrdersFinished(res.data));
       } else {
         yield put(getOrderHistoryError(res.error));
@@ -115,7 +115,11 @@ function* confirmItemsSaga(service: OrderService): Generator<any, void, any> {
     const { payload } = yield take(confirmItems);
     try {
       const res = yield call(service.confirmItems, payload);
-      yield put(confirmItemsFinished(res));
+      if (res.data) {
+        yield put(confirmItemsFinished(res.data));
+      } else {
+        yield put(confirmItemsError(res.error));
+      }
     } catch (error) {
       yield put(confirmItemsError(error as string));
     }
@@ -126,17 +130,19 @@ function* markAsDeliveredSaga(
   service: OrderService,
 ): Generator<any, void, any> {
   while (true) {
-    const { order, photos, tags } = yield take(markAsDelivered);
+    const { payload } = yield take(markAsDelivered);
     try {
-      const res = yield call(service.markAsDelivered, order, photos, tags);
-      yield put(markAsDeliveredFinished(res));
+      const res = yield call(service.markAsDelivered, payload);
+      if (res.data){
+        yield put(markAsDeliveredFinished(res.data));
+      } else {
+        yield put(markAsDeliveredError(res.error));
+      }
     } catch (error) {
       yield put(markAsDeliveredError(error as string));
     }
   }
 }
-
-
 
 export function* orderSagas(service: OrderService): Generator {
   yield all([

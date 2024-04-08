@@ -30,7 +30,7 @@ import ActionSheet from 'react-native-action-sheet';
 import { MainScreens } from '@app/navigation/main/types';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { useDispatch, useSelector } from 'react-redux';
-import order, { acceptOrder, declineOrder } from '@app/redux/order/order';
+import order, { acceptOrder, confirmItems, declineOrder } from '@app/redux/order/order';
 import { useHomeOrders } from '@app/hooks/useHomeOrders';
 import { RootState } from '@app/redux/store';
 import { useTranslation } from 'react-i18next';
@@ -75,8 +75,8 @@ export const HomeScreen = ({ navigation }: Props) => {
     fetchHistory,
     fetchInProgressOrders,
     fetchNewOrders,
-    itemsConfirmedForOrder,
-    confirmedItems,
+   // itemsConfirmedForOrder,
+    //confirmedItems,
     declineOrderFn,
     acceptOrderFn,
   } = useHomeOrders();
@@ -168,19 +168,18 @@ export const HomeScreen = ({ navigation }: Props) => {
         // }
         return (
           <InProgressCell
-            itemsConfirmed={itemsConfirmedForOrder(item)}
             onMessageCustomer={order =>
               Clipboard.setString(order.dropoff.formattedAddress)
             }
             onMessageRestaurant={order => Clipboard.setString(order.pickup.formattedAddress)
             }
             onConfirmItems={() => {
+              dispatch(confirmItems({id: item.id}))
               // setOrderState(OrderState.orderDeliveryInProgress);
             }}
             onCallCustomer={() => Linking.openURL(`tel://${item.customerPhoneNumber}`)}
             onCallRestaurant={() => Linking.openURL(`tel://${item.merchant_phone_number}`)}
-            onMarkAsDelivered={order => { }
-              // navigation.navigate(MainScreens.MarkAsDelivered, { order: order })
+            onMarkAsDelivered={order => navigation.navigate(MainScreens.MarkAsDelivered, { order: order })
             }
             order={item}
             onRestaurantAddressPress={order =>
@@ -200,14 +199,12 @@ export const HomeScreen = ({ navigation }: Props) => {
             onNoteDelete={onDeleteNote}
             onNoteEdit={onEditNote}
             onOrderItemsListForCustomer={() => {
-              // navigation.navigate(MainScreens.ItemsCollected, {
-              //   customerName: item.customer_name,
-              //   items: item.items,
-              // });
-              // setOrderState(OrderState.confirmingOrderItems);
+              navigation.navigate(MainScreens.ItemsCollected, {
+                customerName: item.customer_name,
+                items: item.items,
+              });
             }}
-            onReportIssue={order => { }
-              // navigation.navigate(MainScreens.ReportIssue, { order: order })
+            onReportIssue={order => navigation.navigate(MainScreens.ReportIssue, { order: order })
             }
           />
         );

@@ -8,11 +8,11 @@ import {
   ViewStyle,
 } from 'react-native';
 import { styles } from './OrderItemCell.styles';
-import { OrderItem } from '@app/types/types';
+import { Item } from '@app/types/types';
 
 type Props = {
   style?: StyleProp<ViewStyle>;
-  item: OrderItem;
+  item: Item;
   onPress: () => undefined;
 };
 

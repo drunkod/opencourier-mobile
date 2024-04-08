@@ -13,13 +13,13 @@ import { styles } from './MarkAsDelivered.styles';
 import { MainScreenProp, MainScreens } from '@app/navigation/main/types';
 import { BackNavButton } from '@app/components/BackNavButton/BackNavButton';
 import { QuickNote } from '@app/components/QuickNote/QuickNote';
-import { CustomerNotes } from '@app/types/types';
+import { CustomerNotes, Photo } from '@app/types/types';
 import { Images } from '@app/utilities/images';
 import { Button, ButtonType } from '@app/components/Button/Button';
 import { PhotoCell } from '@app/components/PhotoCell/PhotoCell';
 import { RootState } from '@app/redux/store';
 import { useDispatch, useSelector } from 'react-redux';
-import { markAsDelivered } from '@app/redux/order/order';
+import { markAsDelivered, selectOrder } from '@app/redux/order/order';
 import { useTranslation } from 'react-i18next';
 import { RootScreen } from '@app/navigation/types';
 
@@ -32,7 +32,7 @@ type SectionListItem = {
 export const MarkAsDelivered = ({ navigation, route }: Props) => {
   const { t } = useTranslation();
   const { order } = route.params;
-  const [selectedPhoto, setSelectedPhoto] = useState<string | undefined>(
+  const [selectedPhoto, setSelectedPhoto] = useState<Photo | undefined>(
     undefined,
   );
   const [data, setData] = useState<SectionListData<SectionListItem>[]>([
@@ -54,9 +54,7 @@ export const MarkAsDelivered = ({ navigation, route }: Props) => {
   const [selectedNotes, setSelectedNotes] = useState<string[]>([]);
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const { markAsDeliveredFinished, markAsDeliveredError } = useSelector(
-    (state: RootState) => state.order,
-  );
+  const { markAsDeliveredFinished, markAsDeliveredError } = useSelector(selectOrder);
 
   const handleNotePress = (note: string) => {
     const found = selectedNotes.filter(obj => obj === note);
@@ -88,19 +86,18 @@ export const MarkAsDelivered = ({ navigation, route }: Props) => {
     });
   };
 
-  const onDeletePhoto = (photo: string) => {
+  const onDeletePhoto = (photo: Photo) => {
     setSelectedPhoto(undefined);
   };
 
   const renderItem = ({
-    item,
-    index,
     section,
+
   }: {
-    item: SectionListItem;
     index: number;
-    section: number;
+    section: SectionListData<SectionListItem>,
   }) => {
+    const item = section.data[0]
     return (
       <View style={styles.contentContainerStyle}>
         {item.notes &&
@@ -119,7 +116,7 @@ export const MarkAsDelivered = ({ navigation, route }: Props) => {
   };
 
   const renderSectionHeader = ({
-    section: { title, data },
+    section: { title },
   }: {
     section: SectionListData<SectionListItem>;
   }): ReactElement => {
@@ -142,15 +139,14 @@ export const MarkAsDelivered = ({ navigation, route }: Props) => {
     );
   };
 
-  const onAttachPhoto = (photo: string) => {
+  const onAttachPhoto = (photo: Photo) => {
     setSelectedPhoto(photo);
   };
 
   const handleConfirm = () => {
-    navigation.goBack();
-    return;
     setIsLoading(true);
-    dispatch(markAsDelivered({ order: {}, tags: [], photos: [] }));
+    dispatch(markAsDelivered({ id: order.id, data: { notes: selectedNotes.map(note => t(`translations:${note}`)).concat(data[1].data[0].notes), photo: selectedPhoto } }));
+    return;
   };
 
   useEffect(() => {
@@ -214,7 +210,7 @@ export const MarkAsDelivered = ({ navigation, route }: Props) => {
         )}
 
         <Button
-          loading={isLoading}
+          isLoading={isLoading}
           style={styles.buttonConfirm}
           textStyle={styles.buttonTextStyle}
           icon={Images.CheckWhite}

@@ -21,12 +21,8 @@ export interface OrderService {
   ) => Promise<OrderServiceReponse>;
   acceptOrder: (params: OrderServiceParams) => Promise<OrderServiceReponse>;
   declineOrder: (params: OrderServiceParams) => Promise<OrderServiceReponse>;
-  confirmItems: (order: Order) => Promise<Order | undefined>;
-  markAsDelivered: (
-    order: Order,
-    photos: string[],
-    tags: string[],
-  ) => Promise<Order | undefined>;
+  confirmItems: (params: OrderServiceParams) => Promise<OrderServiceReponse>;
+  markAsDelivered: (params: OrderServiceParams) => Promise<OrderServiceReponse>;
 }
 
 const orderService = (client: UClient): OrderService => {
@@ -213,22 +209,73 @@ const orderService = (client: UClient): OrderService => {
       });
   };
 
-  const confirmItems = async (order: Order): Promise<Order> => {
-    //TODO: API
-    return new Promise(function (resolve) {
-      setTimeout(resolve, 500, order);
-    });
+  const confirmItems = async (
+    params: OrderServiceParams,
+  ): Promise<OrderServiceReponse> => {
+    console.log('Confirm items params', params);
+    return client
+      .patch(`/deliveries/status/${params.id}`, {
+        status: OrderStatus.picked_up,
+      })
+      .then(res => {
+        const delivery: any = res.data.delivery;
+        console.log('Items confirmed successfully', delivery);
+        return { data: parseOrder(delivery), error: null };
+      })
+      .catch(function (error) {
+        if (error.response) {
+          // The request was made and the server responded with a status code
+          // that falls out of the range of 2xx
+          console.log(error.response.data);
+          console.log(error.response.status);
+          console.log(error.response.headers);
+        } else if (error.request) {
+          // The request was made but no response was received
+          // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+          // http.ClientRequest in node.js
+          console.log(error.request);
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          console.log('Error', error.message);
+        }
+        console.log(error.config);
+        return { data: null, error };
+      });
   };
 
   const markAsDelivered = async (
-    order: Order,
-    photos: string[],
-    tags: string[],
-  ): Promise<Order> => {
-    //TODO: API
-    return new Promise(function (resolve) {
-      setTimeout(resolve, 500, TEST_NEW_ORDERS[0]);
-    });
+    params: OrderServiceParams
+  ): Promise<OrderServiceReponse> => {
+    console.log('Mark as delivered params', params);
+    return client
+      .patch(`/deliveries/mark-as-delivered/${params.id}`, {
+        notes: params.data.notes, 
+        photo: params.data.photo,
+      })
+      .then(res => {
+        const delivery: any = res.data.delivery;
+        console.log('Order marked as delivered successfully', delivery);
+        return { data: parseOrder(delivery), error: null };
+      })
+      .catch(function (error) {
+        if (error.response) {
+          // The request was made and the server responded with a status code
+          // that falls out of the range of 2xx
+          console.log(error.response.data);
+          console.log(error.response.status);
+          console.log(error.response.headers);
+        } else if (error.request) {
+          // The request was made but no response was received
+          // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+          // http.ClientRequest in node.js
+          console.log(error.request);
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          console.log('Error', error.message);
+        }
+        console.log(error.config);
+        return { data: null, error };
+      });
   };
 
   return {

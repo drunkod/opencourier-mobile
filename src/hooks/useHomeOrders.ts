@@ -46,7 +46,7 @@ class Timer {
 }
 
 export const useHomeOrders = () => {
-  const [confirmedItems, setConfirmedItems] = useState<ConfirmItemsCheck[]>([]);
+ // const [confirmedItems, setConfirmedItems] = useState<ConfirmItemsCheck[]>([]);
   const [autoAcceptOrders, setAutoAcceptOrders] = useState<boolean>(false);
   const [newOrdersTimers, setNewOrdersTimers] = useState<NewOrderTimer[]>([]);
   const [dataSourceHistory, setDataSourceHistory] = useState<Order[]>([]);
@@ -74,7 +74,7 @@ export const useHomeOrders = () => {
     declineOrderError,
     confirmItemsFinished,
     confirmItemsError,
-    confirmedItemsForOrder,
+    //confirmedItemsForOrder,
   } = useSelector(selectOrder);
 
   const {
@@ -83,14 +83,14 @@ export const useHomeOrders = () => {
     deleteCommentFinished,
   } = useSelector(selectComment);
 
-  const itemsConfirmedForOrder = (order: Order) => {
-    const temp = confirmedItems.filter(obj => obj.orderId === order.id);
-    if (temp.length > 0) {
-      return temp[0].confirmedItems;
-    } else {
-      return false;
-    }
-  };
+  // const itemsConfirmedForOrder = (order: Order) => {
+  //   const temp = confirmedItems.filter(obj => obj.orderId === order.id);
+  //   if (temp.length > 0) {
+  //     return temp[0].confirmedItems;
+  //   } else {
+  //     return false;
+  //   }
+  // };
 
   // useEffect(() => {
   //   const id = setInterval(() => {
@@ -225,23 +225,23 @@ export const useHomeOrders = () => {
     dispatch(getOrderHistory({ data: { courierId: user!.id } }));
   };
 
-  useEffect(() => {
-    if (confirmItemsFinished) {
-      if (!confirmItemsError) {
-        if (confirmedItemsForOrder !== undefined) {
-          var rest = confirmedItems.filter(
-            obj => obj.orderId !== confirmedItemsForOrder.id,
-          );
-          rest.push({
-            orderId: confirmedItemsForOrder.id,
-            confirmedItems: true,
-          });
-          // console.warn('HERE!!!: ', confirmedItemsForOrder);
-          setConfirmedItems(rest);
-        }
-      }
-    }
-  }, [confirmItemsError, confirmItemsFinished, confirmedItemsForOrder]);
+  // useEffect(() => {
+  //   if (confirmItemsFinished) {
+  //     if (!confirmItemsError) {
+  //       if (confirmedItemsForOrder !== undefined) {
+  //         var rest = confirmedItems.filter(
+  //           obj => obj.orderId !== confirmedItemsForOrder.id,
+  //         );
+  //         rest.push({
+  //           orderId: confirmedItemsForOrder.id,
+  //           confirmedItems: true,
+  //         });
+  //         // console.warn('HERE!!!: ', confirmedItemsForOrder);
+  //         setConfirmedItems(rest);
+  //       }
+  //     }
+  //   }
+  // }, [confirmItemsError, confirmItemsFinished, confirmedItemsForOrder]);
 
   useEffect(() => {
     fetchNewOrders();
@@ -268,10 +268,10 @@ export const useHomeOrders = () => {
     fetchNewOrders,
     fetchInProgressOrders,
     fetchHistory,
-    itemsConfirmedForOrder,
+    //itemsConfirmedForOrder,
     offerExpirationTimers,
     setOfferExpirationTimers,
-    confirmedItems,
+    //confirmedItems,
     acceptOrderFn,
     declineOrderFn,
   };

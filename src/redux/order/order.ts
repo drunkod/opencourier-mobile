@@ -33,9 +33,6 @@ interface OrderState {
   confirmItemsError?: string;
   markAsDeliveredFinished: boolean;
   markAsDeliveredError?: string;
-  acceptedOrder?: Order;
-  declinedOrder?: Order;
-  confirmedItemsForOrder?: Order;
 }
 
 const initialState: OrderState = {
@@ -101,11 +98,6 @@ export const orderSlice = createSlice({
     acceptOrder: (state, action: PayloadAction<OrderServiceParams>) => {
       state.acceptOrderFinished = false;
       state.acceptOrderError = undefined;
-      //DEMO
-      // state.acceptedOrder = action.payload;
-      // state.newOrders = state.newOrders?.filter(
-      //   temp => temp.id !== action.payload.id,
-      // );
     },
     acceptOrderFinished: state => {
       state.acceptOrderFinished = true;
@@ -117,8 +109,6 @@ export const orderSlice = createSlice({
     declineOrder: (state, _action: PayloadAction<OrderServiceParams>) => {
       state.declineOrderFinished = false;
       state.declineOrderError = undefined;
-      //DEMO
-      //state.declinedOrder = action.payload;
     },
     declineOrderFinished: state => {
       state.declineOrderFinished = true;
@@ -145,25 +135,30 @@ export const orderSlice = createSlice({
       state.createCommentFinished = false;
       state.createCommentError = undefined;
     },
-    confirmItems: (state, _action: PayloadAction<Order>) => {
+    confirmItems: (state, _action: PayloadAction<OrderServiceParams>) => {
       state.confirmItemsFinished = false;
       state.confirmItemsError = undefined;
-      state.confirmedItemsForOrder = undefined;
     },
     confirmItemsFinished: (state, action: PayloadAction<Order>) => {
       state.confirmItemsFinished = true;
-      state.confirmedItemsForOrder = action.payload;
+      const updatedOrders = state.inProgressOrders?.filter(order => order.id != action.payload.id)
+      updatedOrders?.push(action.payload)
+      state.inProgressOrders = updatedOrders
     },
     confirmItemsError: (state, action: PayloadAction<string>) => {
       state.confirmItemsFinished = true;
       state.confirmItemsError = action.payload;
     },
-    markAsDelivered: (state, _action: PayloadAction<MarkAsDeliveredParams>) => {
+    markAsDelivered: (state, _action: PayloadAction<OrderServiceParams>) => {
       state.markAsDeliveredFinished = false;
       state.markAsDeliveredError = undefined;
     },
-    markAsDeliveredFinished: state => {
+    markAsDeliveredFinished: (state, action: PayloadAction<Order>) => {
       state.markAsDeliveredFinished = true;
+      state.inProgressOrders = state.inProgressOrders?.filter(
+        order => order.id != action.payload.id,
+      );
+      state.orderHistory?.push(action.payload);
     },
     markAsDeliveredError: (state, action: PayloadAction<string>) => {
       state.markAsDeliveredFinished = true;

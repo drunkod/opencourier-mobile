@@ -37,9 +37,20 @@ export const PhotoAttachment = ({ navigation, route }: Props) => {
   const { onAttach } = route.params;
   const camera = useRef<RNCamera>(null);
 
-  const handleAttach = () => {
+  const handleAttach = async () => {
     if (photoPath) {
-      onAttach(photoPath);
+      const response = await fetch(photoPath);
+      const data = await response.blob();
+      const filename = photoPath.split('/').pop();
+      const ext = photoPath.split('.').pop();
+      const metadata = `image/${ext}`;
+      const file = {
+        uri: photoPath,
+        data: data,
+        name: filename!,
+        type: metadata,
+      }
+      onAttach(file);
       navigation.goBack();
     }
   };
@@ -92,9 +103,9 @@ export const PhotoAttachment = ({ navigation, route }: Props) => {
 
   const takePhoto = async () => {
     const options = { base64: false };
-    const { uri } = await camera.current?.takePictureAsync(options);
-    if (uri) {
-      setPhotoPath(uri);
+    const data = await camera.current?.takePictureAsync(options);
+    if (data?.uri) {
+      setPhotoPath(data?.uri);
       setScreenState(ScreenState.photoTaken);
     }
   };
