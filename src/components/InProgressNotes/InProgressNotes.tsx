@@ -65,7 +65,7 @@ export const InProgressNotes = ({
           return (
             <PickupInstructionCell
               editDisabled={typeof note == "string" || note.commentor != user?.id}
-              endorsed={Math.floor(Math.random() * 10) % 2 === 0}
+              endorsed={typeof note != "string" && note.likers.find(liker => liker == user!.id) != undefined}
               note={note}
               onPress={note => typeof note !== "string" && onNotePress(note)}
               onDelete={note => typeof note !== "string" && onNoteDelete && onNoteDelete(note)}

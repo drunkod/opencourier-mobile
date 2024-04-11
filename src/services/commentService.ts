@@ -50,7 +50,7 @@ const commentService = (client: UClient): CommentService => {
       .patch(`/comments/${params.id}`, {
         text: params.data.text,
         likes: params.data.likes,
-        CouriedId: params.data.commentor,
+        CourierId: params.data.commentor ? params.data.commentor != null: params.data.liker,
       })
       .then(() => {
         console.log('Comment updated successfully');
@@ -81,10 +81,7 @@ const commentService = (client: UClient): CommentService => {
   ): Promise<OrderServiceReponse> => {
     console.log('Delete comment params', params);
     return client
-      .post(`/comments/${params.id}`, {
-        MerchantId: params.data.MerchantId,
-        LocationId: params.data.LocationId,
-      })
+      .delete(`comments/${params.id}`)
       .then(() => {
         console.log('Comment deleted successfully');
         return { data: null, error: null };

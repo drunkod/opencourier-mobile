@@ -61,6 +61,7 @@ function parseComment(comment: any): Comment {
     id: comment.id,
     text: comment.text,
     likes: comment.likes,
+    likers: comment.likers,
     commentableId: comment.commentableId,
     commentableType: comment.commentableType,
     commentor: comment.CourierId,

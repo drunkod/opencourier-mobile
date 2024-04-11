@@ -49,7 +49,7 @@ export const PickupInstructionCell = ({
 
   return (
     <View style={[styles.parent, style]}>
-      <TouchableOpacity onPress={() => typeof note !== "string" && onPress(note)}>
+      <TouchableOpacity onPress={() => typeof note !== "string" && !endorsed && onPress(note) }>
         <View
           style={[
             styles.container,

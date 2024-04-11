@@ -75,7 +75,7 @@ export const HomeScreen = ({ navigation }: Props) => {
     fetchHistory,
     fetchInProgressOrders,
     fetchNewOrders,
-   // itemsConfirmedForOrder,
+    // itemsConfirmedForOrder,
     //confirmedItems,
     declineOrderFn,
     acceptOrderFn,
@@ -111,10 +111,10 @@ export const HomeScreen = ({ navigation }: Props) => {
 
 
   const onNoteEdited = (editedText: string, note: Comment) => {
-    dispatch(updateComment({ id: note.id, data: { text: editedText, commentor: user!.id} }));
+    dispatch(updateComment({ id: note.id, data: { text: editedText, commentor: user!.id } }));
   };
   const onNoteDeleted = (note: Comment) => {
-    dispatch(deleteComment({ id: note.id, data: { [note.commentableType == "merchant" ? 'MerchantId' : 'LocationId']: note.commentableId } }));
+    dispatch(deleteComment({ id: note.id }));
   };
   const onNoteAdded = (text: string, type: "merchant" | "location", order: Order) => {
     dispatch(createComment({ data: { text, commentor: user!.id, [type == "merchant" ? 'MerchantId' : 'LocationId']: type == "merchant" ? order.merchant_id : order.dropoff.id } }));
@@ -140,7 +140,7 @@ export const HomeScreen = ({ navigation }: Props) => {
     });
   };
   const onPressNote = (note: Comment) => {
-    dispatch(updateComment({ id: note.id, data: { likes: note.likes + 1 } }));
+    dispatch(updateComment({ id: note.id, data: { likes: note.likes + 1, liker: user!.id } }));
   };
 
   const renderItem = ({ item }: { item: Order }) => {
@@ -174,7 +174,7 @@ export const HomeScreen = ({ navigation }: Props) => {
             onMessageRestaurant={order => Clipboard.setString(order.pickup.formattedAddress)
             }
             onConfirmItems={() => {
-              dispatch(confirmItems({id: item.id}))
+              dispatch(confirmItems({ id: item.id }))
               // setOrderState(OrderState.orderDeliveryInProgress);
             }}
             onCallCustomer={() => Linking.openURL(`tel://${item.customerPhoneNumber}`)}

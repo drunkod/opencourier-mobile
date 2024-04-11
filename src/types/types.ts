@@ -139,6 +139,7 @@ export type Comment = {
   id: string;
   text: string;
   likes: number;
+  likers: string[];
   commentableType: 'merchant' | 'location';
   commentableId: string;
   commentor: string;
