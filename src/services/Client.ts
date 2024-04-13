@@ -7,7 +7,7 @@ const timeout = 10000;
 
 export const Client = (): UClient => {
   const options: AxiosRequestConfig = {
-    baseURL: 'http://10.0.0.187:3001/',
+    baseURL: 'https://opendeli-ef37c601bbdc.herokuapp.com/',
     timeout: timeout,
     headers: {
       Accept: 'application/json',
