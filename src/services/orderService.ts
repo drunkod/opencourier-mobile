@@ -1,14 +1,11 @@
 import { Order, User } from '@app/types/types';
 import { UClient } from './Client';
-import { TEST_NEW_ORDERS, TEST_ORDERS_HISTORY } from '@app/utilities/testData';
 import {
-  GetOrdersParams,
-  GetOrdersReponse,
   NewOrdersParams,
   OrderServiceParams,
   OrderServiceReponse,
 } from './types';
-import { OrderSetting, OrderStatus } from '@app/types/enums';
+import {  OrderStatus } from '@app/types/enums';
 import { parseUser, parseOrder } from './utils';
 
 export interface OrderService {

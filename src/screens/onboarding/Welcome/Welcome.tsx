@@ -13,6 +13,7 @@ import { PopularNearbyInstances } from '@app/components/PopularNearbyInstances/P
 import { TEST_INSTANCES } from '@app/utilities/testData';
 import { InstanceCell } from '@app/components/InstanceCell/InstanceCell';
 import { Instance } from '@app/types/types';
+import { client } from '@app/services/Client';
 
 type Props = OnboardingScreenProp<OnboardingScreen.Welcome>;
 
@@ -22,6 +23,8 @@ export const WelcomeScreen = ({ navigation }: Props) => {
   const [text, setText] = useState<string>('');
 
   const onInstancePress = (instance: Instance) => {
+    console.log("Setting base url:", instance.link);
+    client.defaults.baseURL = instance.link;
     navigation.navigate(OnboardingScreen.InstanceDetails, {
       instance: instance,
     });

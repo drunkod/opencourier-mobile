@@ -5,9 +5,8 @@ export interface UClient extends AxiosInstance {}
 
 const timeout = 10000;
 
-export const Client = (): UClient => {
+const Client = (): UClient => {
   const options: AxiosRequestConfig = {
-    baseURL: 'https://opendeli-ef37c601bbdc.herokuapp.com/',
     timeout: timeout,
     headers: {
       Accept: 'application/json',
@@ -75,3 +74,5 @@ export const Client = (): UClient => {
 
   return Axios;
 };
+
+export const client = Client();
