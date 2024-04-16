@@ -1,4 +1,4 @@
-import { ConfirmItemsCheck, Order } from '@app/types/types';
+import { ConfirmItemsCheck, Order, UserStatus } from '@app/types/types';
 import { RootState } from '@app/redux/store';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -244,7 +244,8 @@ export const useHomeOrders = () => {
   // }, [confirmItemsError, confirmItemsFinished, confirmedItemsForOrder]);
 
   useEffect(() => {
-    fetchNewOrders();
+    if (user?.status == UserStatus.Online)
+      fetchNewOrders();
     fetchInProgressOrders();
     fetchHistory();
     // (async () => {
@@ -252,7 +253,11 @@ export const useHomeOrders = () => {
     //   setAutoAcceptOrders(accept);
     // })();
   }, []);
-
+  useEffect(() => {
+    if (user?.status == UserStatus.Online)
+      fetchNewOrders();
+  }, [user?.status])
+  
   useEffect(() => {
     fetchInProgressOrders();
   }, [createCommentFinished, updateCommentFinished, deleteCommentFinished]);

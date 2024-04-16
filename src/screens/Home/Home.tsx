@@ -294,7 +294,7 @@ export const HomeScreen = ({ navigation }: Props) => {
   const onRefresh = () => {
     switch (selectedTab) {
       case HomeTabItem.New:
-        fetchNewOrders();
+        user?.status == UserStatus.Online && fetchNewOrders();
         break;
       case HomeTabItem.InProgress:
         fetchInProgressOrders();
