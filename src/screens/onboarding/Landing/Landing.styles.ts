@@ -1,5 +1,8 @@
 import { Colors } from '@app/styles/colors';
+import { isSmallDevice } from '@app/utilities/constants';
 import { StyleSheet } from 'react-native';
+
+const IMAGE_SIZE = isSmallDevice ? 140 : 280;
 
 export const styles = StyleSheet.create({
   container: {
@@ -13,8 +16,8 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   imageOpenDeli: {
-    position: 'absolute',
-    left: 32,
+    margin: 32,
+    marginBottom: 10,
   },
   pageIndicator: {
     marginBottom: 24,
@@ -24,8 +27,8 @@ export const styles = StyleSheet.create({
     height: 48,
   },
   ilustration: {
-    width: 280,
-    height: 280,
+    width: IMAGE_SIZE,
+    height: IMAGE_SIZE,
     marginTop: 20,
     position: 'absolute',
     bottom: 0,
@@ -42,13 +45,11 @@ export const styles = StyleSheet.create({
   textSubtitle: {
     fontSize: 16,
     marginLeft: 32,
-    marginBottom: 260,
     marginRight: 120,
     color: Colors.black,
   },
   pageContent: {
     flex: 1,
-    justifyContent: 'center',
     overflow: 'hidden',
   },
   background: {
@@ -59,10 +60,5 @@ export const styles = StyleSheet.create({
     right: 0,
     backgroundColor: Colors.white,
   },
-  containerBottom: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-  },
+  containerBottom: {},
 });

@@ -16,6 +16,8 @@ export const SCREEN_HEIGHT = Dimensions.get('window').height;
 export const SCREEN_WIDTH = Dimensions.get('window').width;
 export const SCREEN_HORIZONTAL_MARGIN = 32;
 
+export const isSmallDevice = SCREEN_WIDTH < 330;
+
 export const AUTO_ACCEPT_DECLINE_TIMER = 60000;
 export const MAP_ACTION_SHEET_OPTIONS_IOS = [
   MapLinkingOptions.apple,

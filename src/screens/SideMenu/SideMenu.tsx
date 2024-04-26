@@ -11,13 +11,10 @@ import { SideMenuItemPlain } from '@app/components/SideMenuItemPlain/SideMenuIte
 import { OrganizationSelect } from '@app/components/OrganizationSelect/OrganizationSelect';
 import { TEST_ORG_ARRAY } from '@app/utilities/testData';
 import {
-  getAutoAcceptOrdersStorage,
   getSelectedOrganizationStorage,
-  setAutoAcceptOrdersStorage,
   setSelectedOrganizationStorage,
 } from '@app/utilities/storage';
 import { DrawerScreens } from '@app/navigation/drawer/types';
-import { RootState } from '@app/redux/store';
 import { useSelector, useDispatch } from 'react-redux';
 import { updateUser } from '@app/redux/user/user';
 import { useTranslation } from 'react-i18next';
@@ -45,13 +42,17 @@ const section2 = [
 export const SideMenu = ({ navigation }: Props) => {
   const { t } = useTranslation();
   const { user } = useSelector(selectUser);
-  const { requestLocationPermission, locationPermission } = useLocationPermission();
-  const [realTimeLocation, setRealTimeLocation] = useState<boolean>(locationPermission);
-  const [autoAcceptOrders, setAutoAcceptOrders] = useState<boolean>(user?.orderSetting == 'auto_accept' as unknown as OrderSetting);
+  const { requestLocationPermission, locationPermission } =
+    useLocationPermission();
+  const [realTimeLocation, setRealTimeLocation] =
+    useState<boolean>(locationPermission);
+  const [autoAcceptOrders, setAutoAcceptOrders] = useState<boolean>(
+    user?.orderSetting == ('auto_accept' as unknown as OrderSetting),
+  );
   const [selectedOrg, setSelectedOrg] = useState<Organization>(
     TEST_ORG_ARRAY[0],
   );
-  const [ status, setStatus ] = useState<UserStatus>(user!.status);
+  const [status, setStatus] = useState<UserStatus>(user!.status);
   const { watchId, setWatchId } = useContext(UserContext);
   const dispatch = useDispatch();
 
@@ -69,18 +70,29 @@ export const SideMenu = ({ navigation }: Props) => {
     switch (item) {
       case SideMenuItem.AutoOrders:
         //setAutoAcceptOrdersStorage(value);
-        dispatch(updateUser({ id: user!.id, data: { orderSetting: (value ? 'auto_accept' : 'manual') as unknown as OrderSetting } }));
+        dispatch(
+          updateUser({
+            id: user!.id,
+            data: {
+              orderSetting: (value
+                ? 'auto_accept'
+                : 'manual') as unknown as OrderSetting,
+            },
+          }),
+        );
         setAutoAcceptOrders(value);
         break;
       case SideMenuItem.Location:
         if (value) {
           !locationPermission && requestLocationPermission();
-          console.log("Location Tracking Enabled")
-          const newWatchId = track((currentLocation: Point) => dispatch(updateUser({ id: user!.id, data: { currentLocation } })));
+          console.log('Location Tracking Enabled');
+          const newWatchId = track((currentLocation: Point) =>
+            dispatch(updateUser({ id: user!.id, data: { currentLocation } })),
+          );
           setWatchId!(newWatchId);
           setRealTimeLocation(value);
-        }  else {
-          console.log("Location Tracking Disabled");
+        } else {
+          console.log('Location Tracking Disabled');
           watchId && Geolocation.clearWatch(watchId);
           setWatchId!(undefined);
           setRealTimeLocation(value);
@@ -108,7 +120,7 @@ export const SideMenu = ({ navigation }: Props) => {
 
   useEffect(() => {
     setStatus(user!.status);
-  }, [user!.status])
+  }, [user!.status]);
 
   useEffect(() => {
     setRealTimeLocation(locationPermission);
@@ -145,7 +157,7 @@ export const SideMenu = ({ navigation }: Props) => {
     navigation.navigate(RootScreen.UserStatusModal, {
       status: newStatus,
       onAccept: newStatus => {
-        console.log("dispatching update user");
+        console.log('dispatching update user');
         dispatch(updateUser({ id: user!.id, data: { status: newStatus } }));
       },
       onCancel: () => undefined,

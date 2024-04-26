@@ -104,11 +104,9 @@ export const LandingScreen = ({ navigation }: Props) => {
   const PageItem = useCallback(
     ({ title, image, description }: Page) => (
       <View style={styles.pageContent} key={title}>
-        <View>
-          <Text style={styles.textTitle}>{title}</Text>
-          <Text style={styles.textSubtitle}>{description}</Text>
-          <Image source={image} style={styles.ilustration} />
-        </View>
+        <Text style={styles.textTitle}>{title}</Text>
+        <Text style={styles.textSubtitle}>{description}</Text>
+        <Image source={image} style={styles.ilustration} />
       </View>
     ),
     [],
@@ -122,10 +120,7 @@ export const LandingScreen = ({ navigation }: Props) => {
     <View style={styles.container}>
       <Image source={Images.NoiseBG} style={styles.background} />
       <SafeAreaView style={styles.safeArea}>
-        <Image
-          source={Images.OpenDeli}
-          style={[styles.imageOpenDeli, { top: top + 10 }]}
-        />
+        <Image source={Images.OpenDeli} style={[styles.imageOpenDeli]} />
         <PagerView
           ref={ref}
           style={styles.pagerView}
