@@ -1,3 +1,4 @@
+import { Colors } from '@app/styles/colors';
 import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
@@ -13,6 +14,7 @@ export const styles = StyleSheet.create({
     marginHorizontal: 15,
     fontSize: 14,
     flex: 1,
+    color: Colors.black,
   },
   iconArrow: {
     width: 24,

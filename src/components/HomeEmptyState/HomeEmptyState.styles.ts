@@ -1,3 +1,4 @@
+import { Colors } from '@app/styles/colors';
 import { SCREEN_WIDTH } from '@app/utilities/constants';
 import { StyleSheet } from 'react-native';
 
@@ -17,8 +18,12 @@ export const styles = StyleSheet.create({
   title: {
     fontSize: 16,
     fontWeight: '700',
+    color: Colors.black,
   },
   subtitle: {
+    margin: 24,
     fontSize: 16,
+    color: Colors.black,
+    textAlign: 'center',
   },
 });

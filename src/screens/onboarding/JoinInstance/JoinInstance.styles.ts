@@ -31,6 +31,7 @@ export const styles = StyleSheet.create({
   },
   textField: {
     marginBottom: 22,
+    color: Colors.black
   },
   separator: {
     height: 1,

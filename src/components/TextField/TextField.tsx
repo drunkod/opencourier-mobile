@@ -78,6 +78,7 @@ export const TextField = forwardRef((props: TextFieldProps, ref) => {
             secureTextEntry={inputTextHidden}
             autoCapitalize={'none'}
             placeholder={isFocused ? '' : placeholder}
+            placeholderTextColor={Colors.gray16}
             maxLength={maxLength}
             onFocus={() => setIsFocused(true)}
             onBlur={obj => {

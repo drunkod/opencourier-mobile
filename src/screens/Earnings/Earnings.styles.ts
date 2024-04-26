@@ -41,6 +41,7 @@ export const styles = StyleSheet.create({
   },
   textCount: {
     fontSize: 20,
+    color: Colors.black1,
   },
   earningsText: {
     flex: 1,

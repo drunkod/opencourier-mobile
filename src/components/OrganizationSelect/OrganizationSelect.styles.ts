@@ -1,3 +1,4 @@
+import { Colors } from '@app/styles/colors';
 import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
@@ -13,6 +14,7 @@ export const styles = StyleSheet.create({
   text: {
     fontSize: 16,
     fontWeight: '700',
+    color: Colors.black,
   },
   containerDropdown: {
     flexDirection: 'row',

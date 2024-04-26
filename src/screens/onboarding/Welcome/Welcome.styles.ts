@@ -23,10 +23,12 @@ export const styles = StyleSheet.create({
     fontSize: 56,
     fontWeight: '700',
     marginBottom: 22,
+    color: Colors.black,
   },
   textSubtitle: {
     fontSize: 18,
     marginBottom: 22,
+    color: Colors.black,
   },
   buttonSignup: {
     marginTop: 80,

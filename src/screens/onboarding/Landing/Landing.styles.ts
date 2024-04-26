@@ -1,6 +1,5 @@
-import { SCREEN_WIDTH } from '@app/utilities/constants';
+import { Colors } from '@app/styles/colors';
 import { StyleSheet } from 'react-native';
-import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 export const styles = StyleSheet.create({
   container: {
@@ -38,16 +37,19 @@ export const styles = StyleSheet.create({
     fontWeight: '700',
     marginBottom: 22,
     lineHeight: 52,
+    color: Colors.black,
   },
   textSubtitle: {
     fontSize: 16,
     marginLeft: 32,
     marginBottom: 260,
     marginRight: 120,
+    color: Colors.black,
   },
   pageContent: {
     flex: 1,
     justifyContent: 'center',
+    overflow: 'hidden',
   },
   background: {
     position: 'absolute',

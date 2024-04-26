@@ -16,6 +16,7 @@ export const styles = StyleSheet.create({
     fontSize: 32,
     fontWeight: '700',
     marginLeft: 8,
+    color: Colors.black,
   },
   separator: {
     height: 2,
