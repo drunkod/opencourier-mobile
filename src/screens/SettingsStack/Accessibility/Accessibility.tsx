@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useState } from 'react';
 import {
   View,
   SafeAreaView,
@@ -25,6 +25,16 @@ type SectionListItem = {
 
 export const AccessibilityScreen = ({ navigation }: Props) => {
   const { t } = useTranslation();
+
+  const [form, setForm] = useState({
+    [AccessibilitySettingsOptions.differentSounds]: false,
+    [AccessibilitySettingsOptions.screenFlash]: false,
+    [AccessibilitySettingsOptions.vibration]: false,
+    [AccessibilitySettingsOptions.readingNotes]: false,
+    [AccessibilitySettingsOptions.seatbeltReminder]: false,
+    [AccessibilitySettingsOptions.deaf]: false,
+  });
+
   const dataSource: SectionListData<SectionListItem>[] = [
     {
       data: [
@@ -130,6 +140,10 @@ export const AccessibilityScreen = ({ navigation }: Props) => {
         subtitle={cellSubtitleForSetting(item.cellData)}
         style={{ marginBottom: 16 }}
         onPress={onPress}
+        switchValue={form[item.cellData]}
+        onSwitchValueChange={isOn =>
+          setForm({ ...form, [item.cellData]: isOn })
+        }
       />
     );
   };

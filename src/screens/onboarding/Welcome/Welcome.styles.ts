@@ -11,13 +11,12 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   content: {
-    flex: 1,
-    justifyContent: 'center',
     paddingHorizontal: 32,
+    paddingBottom: 32,
   },
   imageOpenDeli: {
-    position: 'absolute',
-    left: 32,
+    marginVertical: 32,
+    marginBottom: 10,
   },
   textTitle: {
     fontSize: 56,

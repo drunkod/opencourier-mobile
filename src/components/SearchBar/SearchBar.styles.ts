@@ -26,5 +26,8 @@ export const styles = StyleSheet.create({
     flex: 1,
     height: 40,
     fontSize: 14,
+    paddingVertical: 0,
+    paddingTop: 0,
+    paddingBottom: 0,
   },
 });

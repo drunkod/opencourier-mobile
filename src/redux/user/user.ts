@@ -90,6 +90,13 @@ export const userSlice = createSlice({
         loginError: action.payload,
       };
     },
+    logout: state => {
+      state.user = undefined;
+      state.login = {
+        loginFinished: false,
+        loginError: undefined,
+      };
+    },
     signup: (state, _action: PayloadAction<SignupParams>) => {
       state.isLoading = true;
       state.signup = {
@@ -164,7 +171,7 @@ export const userSlice = createSlice({
     },
     updateUserFinished: (state, action: PayloadAction<User>) => {
       state.isLoading = false;
-      state.user= action.payload;
+      state.user = action.payload;
       state.updateUser = {
         updateUserFinished: true,
       };
@@ -179,13 +186,13 @@ export const userSlice = createSlice({
   },
 });
 
-export const selectUser = (state: { user: UserState }) =>
-  state.user;
+export const selectUser = (state: { user: UserState }) => state.user;
 
 export const {
   login,
   loginFinished,
   loginError,
+  logout,
   signup,
   signupError,
   signupFinished,

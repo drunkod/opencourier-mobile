@@ -66,7 +66,10 @@ export const HomeTabs = ({
             tab === selectedTab &&
               generateBoxShadowStyle(0, 1, 0.1, 2, 1, Colors.black),
           ]}>
-          <Text style={[styles.textTab, { color: tabSelectedColor(tab) }]}>
+          <Text
+            style={[styles.textTab, { color: tabSelectedColor(tab) }]}
+            adjustsFontSizeToFit
+            numberOfLines={1}>
             {t(`translations:${tab}`)}
           </Text>
           {tab === HomeTabItem.New && newCount > 0 && (

@@ -16,8 +16,9 @@ import { DrawerScreens } from '@app/navigation/drawer/types';
 import { RootScreen } from '@app/navigation/types';
 import { generateBoxShadowStyle } from '@app/utilities/styles';
 import { login } from '@app/redux/user/user';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { LoginParams } from '@app/services/types';
+import { RootState } from '@app/redux/store';
 
 type Props = OnboardingScreenProp<OnboardingScreen.LoginInstance>;
 
@@ -34,6 +35,8 @@ enum ScreenState {
 export const LoginInstance = ({ navigation, route }: Props) => {
   const { instance } = route.params;
   const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const { login: loginRedux } = useSelector((state: RootState) => state.user);
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [screenState, setScreenState] = useState<ScreenState>(
@@ -71,7 +74,14 @@ export const LoginInstance = ({ navigation, route }: Props) => {
     validateFields();
   }, [email, password]);
 
-  const dispatch = useDispatch()
+  useEffect(() => {
+    if (loginRedux?.loginError) {
+      setErrors({
+        email: 'Wrong email or password',
+        password: undefined,
+      });
+    }
+  }, [loginRedux]);
 
   return (
     <View style={styles.container}>
@@ -106,8 +116,8 @@ export const LoginInstance = ({ navigation, route }: Props) => {
               type={ButtonType.green}
               title={t('translations:log_in')}
               onPress={() => {
-                console.log("Dispatching login")
-                dispatch(login({ email, password } as LoginParams))
+                console.log('Dispatching login');
+                dispatch(login({ email, password } as LoginParams));
               }}
               style={{ marginBottom: 22 }}
             />

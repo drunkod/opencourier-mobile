@@ -104,7 +104,9 @@ export const LandingScreen = ({ navigation }: Props) => {
   const PageItem = useCallback(
     ({ title, image, description }: Page) => (
       <View style={styles.pageContent} key={title}>
-        <Text style={styles.textTitle}>{title}</Text>
+        <Text style={styles.textTitle} numberOfLines={2} adjustsFontSizeToFit>
+          {title}
+        </Text>
         <Text style={styles.textSubtitle}>{description}</Text>
         <Image source={image} style={styles.ilustration} />
       </View>
@@ -124,7 +126,7 @@ export const LandingScreen = ({ navigation }: Props) => {
         <PagerView
           ref={ref}
           style={styles.pagerView}
-          scrollEnabled={false}
+          scrollEnabled={true}
           initialPage={page}
           onPageSelected={onScroll}>
           {data.map(item => (

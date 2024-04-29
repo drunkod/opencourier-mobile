@@ -6,7 +6,6 @@ export const styles = StyleSheet.create({
     flex: 1,
   },
   content: {
-    flex: 1,
     paddingHorizontal: 32,
   },
   textContent: {
@@ -31,7 +30,7 @@ export const styles = StyleSheet.create({
   },
   textField: {
     marginBottom: 22,
-    color: Colors.black
+    color: Colors.black,
   },
   separator: {
     height: 1,

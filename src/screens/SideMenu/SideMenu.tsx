@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Alert } from 'react-native';
 import { RootScreen, RootScreenProp } from '@app/navigation/types';
 import { styles } from './SideMenu.styles';
 import { DrawerContentScrollView } from '@react-navigation/drawer';
@@ -16,7 +16,7 @@ import {
 } from '@app/utilities/storage';
 import { DrawerScreens } from '@app/navigation/drawer/types';
 import { useSelector, useDispatch } from 'react-redux';
-import { updateUser } from '@app/redux/user/user';
+import { logout, updateUser } from '@app/redux/user/user';
 import { useTranslation } from 'react-i18next';
 import RNRestart from 'react-native-restart';
 import { selectUser } from '@app/redux/user/user';
@@ -143,6 +143,11 @@ export const SideMenu = ({ navigation }: Props) => {
         navigation.navigate(DrawerScreens.Settings);
         break;
       case SideMenuItem.Logout:
+        Alert.alert('Notice', 'Are you sure you want to log out?', [
+          { text: 'Yes', onPress: () => dispatch(logout()) },
+          { text: 'Cancel', style: 'cancel' },
+        ]);
+
         break;
     }
   };

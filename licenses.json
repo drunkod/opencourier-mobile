@@ -59,6 +59,12 @@
         "licenseUrl": "https://github.com/axios/axios/raw/master/LICENSE",
         "parents": "opendeli"
     },
+    "geojson@0.5.0": {
+        "licenses": "MIT",
+        "repository": "http://github.com/caseycesari/geojson.js",
+        "licenseUrl": "http://github.com/caseycesari/geojson.js/raw/master/LICENSE",
+        "parents": "opendeli"
+    },
     "i18next@23.7.7": {
         "licenses": "MIT",
         "repository": "https://github.com/i18next/i18next",
