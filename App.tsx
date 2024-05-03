@@ -10,7 +10,13 @@ const App = () => {
   const [locationPermission, setLocationPermission] = useState<boolean>(false);
 
   return (
-    <UserContext.Provider value={{ watchId, setWatchId, locationPermission, setLocationPermission }}>
+    <UserContext.Provider
+      value={{
+        watchId,
+        setWatchId,
+        locationPermission,
+        setLocationPermission,
+      }}>
       <Provider store={store}>
         <NavigationContainer>
           <Router />
