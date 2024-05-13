@@ -32,6 +32,7 @@ function* loginUserSaga(service: UserService): Generator<any, void, any> {
       }
       // console.warn('login res ', res);
     } catch (error) {
+      console.warn(error);
       yield put(loginError(error as string));
     }
   }
@@ -93,16 +94,11 @@ function* updateUserSettingsSaga(
     }
   }
 }
-function* updateUserSaga(
-  service: UserService,
-): Generator<any, void, any> {
+function* updateUserSaga(service: UserService): Generator<any, void, any> {
   while (true) {
     const { payload } = yield take(updateUser);
     try {
-      const res: UserServiceResponse = yield call(
-        service.updateUser,
-        payload,
-      );
+      const res: UserServiceResponse = yield call(service.updateUser, payload);
       if (res.data) {
         yield put(updateUserFinished(res.data));
       }

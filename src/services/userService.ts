@@ -57,8 +57,7 @@ const userService = (client: UClient): UserService => {
           console.log('Error', error.message);
         }
         console.log(error.config);
-        console.log(error);
-        return { data: null, error };
+        throw { data: error?.response?.data, error };
       });
   };
 

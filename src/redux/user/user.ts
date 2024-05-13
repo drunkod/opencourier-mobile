@@ -83,11 +83,12 @@ export const userSlice = createSlice({
       };
       // console.warn('login finished');
     },
-    loginError: (state, action: PayloadAction<string>) => {
+    loginError: (state, action: PayloadAction<any>) => {
       state.isLoading = false;
       state.login = {
         loginFinished: true,
-        loginError: action.payload,
+        loginError:
+          action?.payload?.data?.error ?? action?.payload?.error ?? 'API error',
       };
     },
     logout: state => {

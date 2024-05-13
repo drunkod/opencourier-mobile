@@ -36,7 +36,9 @@ export const LoginInstance = ({ navigation, route }: Props) => {
   const { instance } = route.params;
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { login: loginRedux } = useSelector((state: RootState) => state.user);
+  const { login: loginRedux, isLoading } = useSelector(
+    (state: RootState) => state.user,
+  );
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [screenState, setScreenState] = useState<ScreenState>(
@@ -75,9 +77,10 @@ export const LoginInstance = ({ navigation, route }: Props) => {
   }, [email, password]);
 
   useEffect(() => {
+    console.warn(loginRedux?.loginError);
     if (loginRedux?.loginError) {
       setErrors({
-        email: 'Wrong email or password',
+        email: loginRedux?.loginError ?? 'Wrong email or password',
         password: undefined,
       });
     }
@@ -116,10 +119,14 @@ export const LoginInstance = ({ navigation, route }: Props) => {
               type={ButtonType.green}
               title={t('translations:log_in')}
               onPress={() => {
+                if (isLoading) {
+                  return;
+                }
                 console.log('Dispatching login');
                 dispatch(login({ email, password } as LoginParams));
               }}
               style={{ marginBottom: 22 }}
+              isLoading={isLoading}
             />
           </>
         )}
