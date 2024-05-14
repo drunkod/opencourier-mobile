@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import {
   OnboardingScreen,
@@ -51,25 +51,23 @@ export const LoginInstance = ({ navigation, route }: Props) => {
   });
 
   const validateFields = () => {
-    var oldState = errors;
+    let emailError;
+    let passwordError;
 
-    if (email.length > 0) {
-      if (validateEmail(email)) {
-        oldState.email = undefined;
-      } else {
-        oldState.email = 'Email invalid!';
-      }
+    console.warn(email);
+
+    if (email.length === 0 || !validateEmail(email)) {
+      emailError = 'Email invalid!';
     }
 
-    if (password.length > 0) {
-      if (password.length < 5) {
-        oldState.password = 'Password too short!';
-      } else {
-        oldState.password = undefined;
-      }
+    if (password.length < 5) {
+      passwordError = 'Password too short!';
     }
 
-    setErrors(oldState);
+    setErrors({
+      email: emailError,
+      password: passwordError,
+    });
   };
 
   useEffect(() => {
@@ -77,7 +75,6 @@ export const LoginInstance = ({ navigation, route }: Props) => {
   }, [email, password]);
 
   useEffect(() => {
-    console.warn(loginRedux?.loginError);
     if (loginRedux?.loginError) {
       setErrors({
         email: loginRedux?.loginError ?? 'Wrong email or password',

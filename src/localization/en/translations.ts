@@ -257,7 +257,7 @@ export default {
   preferred_nav: 'Preferred Navigation App',
   apple: 'Apple',
   google: 'Google',
-  enable_notifications: 'Enable Notifications',
+  enable_notifications: 'Enable\nNotifications',
   items_bagged: 'Some Items May Be Bagged',
   enable_location_services: 'Enable Location Services',
   enable: 'ENABLE',
