@@ -54,13 +54,11 @@ export const LoginInstance = ({ navigation, route }: Props) => {
     let emailError;
     let passwordError;
 
-    console.warn(email);
-
-    if (email.length === 0 || !validateEmail(email)) {
+    if (email.length > 0 && !validateEmail(email)) {
       emailError = 'Email invalid!';
     }
 
-    if (password.length < 5) {
+    if (password.length > 0 && password.length < 5) {
       passwordError = 'Password too short!';
     }
 
