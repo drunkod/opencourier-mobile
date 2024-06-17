@@ -8,6 +8,7 @@ import {
   TextStyle,
   View,
   Animated,
+  Image,
 } from 'react-native';
 import { styles } from './ButtonOrder.styles';
 import { Paralelogram } from '../Paralelogram/Paralelogram';
@@ -16,6 +17,7 @@ import {
   SCREEN_WIDTH,
 } from '@app/utilities/constants';
 import { useTranslation } from 'react-i18next';
+import { Images } from '@app/utilities/images';
 
 export enum ButtonOrderType {
   accept = 'accept',
@@ -35,6 +37,7 @@ type Props = {
   textStyle?: StyleProp<TextStyle>;
   type?: ButtonOrderType;
   millisRemaining?: number;
+  autoAcceptOrders: boolean;
   onPress: () => void;
 };
 
@@ -45,9 +48,14 @@ export const ButtonOrder = ({
   type = ButtonOrderType.accept,
   onPress,
   millisRemaining = 0,
+  autoAcceptOrders = false,
 }: Props) => {
   const { t } = useTranslation();
-  const widthAnimation = useRef(new Animated.Value((millisRemaining/AUTO_ACCEPT_DECLINE_TIMER)*PROGRESS_BAR_WIDTH)).current;
+  const widthAnimation = useRef(
+    new Animated.Value(
+      (millisRemaining / AUTO_ACCEPT_DECLINE_TIMER) * PROGRESS_BAR_WIDTH,
+    ),
+  ).current;
   const numberOfParalelograms = Math.floor(SCREEN_WIDTH / PARALELOGRAM_WIDTH);
 
   const animateElement = () => {
@@ -67,10 +75,22 @@ export const ButtonOrder = ({
       case ButtonOrderType.accept:
         return Colors.green1;
       case ButtonOrderType.decline:
-        return Colors.red1;
+        return Colors.gray8;
       case ButtonOrderType.acceptNow:
       case ButtonOrderType.declineNow:
         return Colors.black1;
+    }
+  }, [type]);
+
+  const textColor = useMemo(() => {
+    switch (type) {
+      case ButtonOrderType.accept:
+        return Colors.white3;
+      case ButtonOrderType.decline:
+        return Colors.black7;
+      case ButtonOrderType.acceptNow:
+      case ButtonOrderType.declineNow:
+        return Colors.white3;
     }
   }, [type]);
 
@@ -97,12 +117,23 @@ export const ButtonOrder = ({
         {
           backgroundColor: backgroundColor,
         },
+        (type === ButtonOrderType.accept ||
+          type === ButtonOrderType.decline) && { height: 100 },
       ]}>
-      <Text style={[styles.textTitle, textStyle]}>
-        {t(`translations:${type}`)}
-      </Text>
       {(type === ButtonOrderType.accept ||
         type === ButtonOrderType.decline) && (
+        <Image
+          source={
+            type === ButtonOrderType.accept
+              ? Images.CheckHollow
+              : Images.XHollow
+          }
+        />
+      )}
+      <Text style={[styles.textTitle, textStyle, { color: textColor }]}>
+        {t(`translations:${type}`)}
+      </Text>
+      {type === ButtonOrderType.accept && autoAcceptOrders && (
         <View style={[styles.containerLoader, { height: PARALELOGRAM_HEIGHT }]}>
           {[...Array(numberOfParalelograms).keys()]
             .map(i => i)

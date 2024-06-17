@@ -12,7 +12,9 @@ export const styles = StyleSheet.create({
   },
   textTitle: {
     fontSize: 16,
+    fontWeight: '800',
     color: Colors.white,
+    marginTop: 4,
   },
   containerLoader: {
     flexDirection: 'row',
@@ -30,5 +32,12 @@ export const styles = StyleSheet.create({
     top: 0,
     right: 0,
     bottom: 0,
+  },
+  containerIcon: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });

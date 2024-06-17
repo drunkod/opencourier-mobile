@@ -1,6 +1,13 @@
 import { Colors } from '@app/styles/colors';
 import React, { FunctionComponent, useEffect } from 'react';
-import { ActivityIndicator, Image, StyleSheet, View } from 'react-native';
+import {
+  ActivityIndicator,
+  Image,
+  StyleProp,
+  StyleSheet,
+  View,
+  ViewStyle,
+} from 'react-native';
 import { PanGestureHandler } from 'react-native-gesture-handler';
 import Animated, {
   Extrapolate,
@@ -28,6 +35,7 @@ interface Props {
   title: string;
   subtitle?: string;
   isLoading: boolean;
+  style?: StyleProp<ViewStyle>;
 }
 
 const ButtonSwipe: FunctionComponent<Props> = ({
@@ -37,6 +45,7 @@ const ButtonSwipe: FunctionComponent<Props> = ({
   isLoading,
   title = `Slide to Complete`,
   subtitle = '',
+  style = {},
 }: Props) => {
   const X = useSharedValue(0);
 
@@ -102,7 +111,7 @@ const ButtonSwipe: FunctionComponent<Props> = ({
   };
 
   return (
-    <View style={[styles.swipeContainer]}>
+    <View style={[styles.swipeContainer, style]}>
       {isLoading ? (
         <View style={styles.activityIndicator}>
           <ActivityIndicator size="small" color={Colors.white} />

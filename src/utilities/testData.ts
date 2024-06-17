@@ -103,7 +103,7 @@ export const TEST_INSTANCES: Instance[] = [
   },
   {
     name: 'Black Courier Alliance',
-    link: 'http://ec2-3-90-203-184.compute-1.amazonaws.com/',
+    link: 'https://princeton.social/',
     imageUrl: TEST_IMAGE_URL,
     userCount: 25,
     rules: TEST_RULES,

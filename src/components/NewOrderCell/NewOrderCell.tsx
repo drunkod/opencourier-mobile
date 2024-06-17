@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import {
   StyleProp,
   ViewStyle,
@@ -6,6 +6,7 @@ import {
   Text,
   Image,
   TouchableOpacity,
+  Animated,
 } from 'react-native';
 import { styles } from './NewOrderCell.styles';
 import { Order } from '@app/types/types';
@@ -21,6 +22,17 @@ import { metersToMiles } from '@app/utilities/geo';
 import { secondsToMinutes } from '@app/utilities/dates';
 import { getDistance } from '@app/utilities/geo';
 import { currencyFormatter } from '@app/utilities/currency';
+import {
+  AUTO_ACCEPT_DECLINE_TIMER,
+  SCREEN_WIDTH,
+} from '@app/utilities/constants';
+import { Paralelogram } from '../Paralelogram/Paralelogram';
+import { Colors } from '@app/styles/colors';
+
+const PARALELOGRAM_WIDTH = 16;
+const PARALELOGRAM_HEIGHT = 8;
+
+const PROGRESS_BAR_WIDTH = SCREEN_WIDTH - 54;
 
 type Props = {
   style?: StyleProp<ViewStyle>;
@@ -47,22 +59,39 @@ export const NewOrderCell = ({
   const { user } = useSelector(selectUser);
   const [distance, setDistance] = useState<number>(0); // meters
   const [duration, setDuration] = useState<number>(0); // seconds
+  const numberOfParalelograms = Math.floor(SCREEN_WIDTH / PARALELOGRAM_WIDTH);
+
+  const widthAnimation = useRef(
+    new Animated.Value(
+      (millisRemaining ? millisRemaining : 0 / AUTO_ACCEPT_DECLINE_TIMER) *
+        PROGRESS_BAR_WIDTH,
+    ),
+  ).current;
+
+  const paralelogramColor = (index: number) => {
+    const even = index % 2 === 0;
+    return even ? Colors.gray8 : Colors.gray23;
+  };
 
   useEffect(() => {
     if (user!.location && order.pickup && order.dropoff) {
-      const coordinates = [[user!.location.coordinates[0], user!.location.coordinates[1]], [order.pickup.longitude, order.pickup.latitude], [order.dropoff.longitude, order.dropoff.latitude]
-      ]
+      const coordinates = [
+        [user!.location.coordinates[0], user!.location.coordinates[1]],
+        [order.pickup.longitude, order.pickup.latitude],
+        [order.dropoff.longitude, order.dropoff.latitude],
+      ];
       getDistance(coordinates).then(({ duration, distance }) => {
-
-      setDuration(duration);
-      setDistance(distance);
-      })
+        setDuration(duration);
+        setDistance(distance);
+      });
     }
   }, []);
 
   return (
     <View style={[styles.container, style]}>
-      <Text style={styles.textPrice}>{currencyFormatter(order.income?.pay)}</Text>
+      <Text style={styles.textPrice}>
+        {currencyFormatter(order.income?.pay)}
+      </Text>
       <View style={styles.separator} />
       <View style={styles.content}>
         <View style={styles.containerLeft}>
@@ -89,11 +118,16 @@ export const NewOrderCell = ({
             <View style={styles.containerAway}>
               <View style={styles.containerTextAway}>
                 <Image source={Images.Distance} />
-                <Text style={styles.textDistance}> {`${metersToMiles(distance)} mi ${t('translations:away')}`}</Text>
+                <Text style={styles.textDistance}>
+                  {' '}
+                  {`${metersToMiles(distance)} mi ${t('translations:away')}`}
+                </Text>
               </View>
               <View style={styles.containerTextAway}>
                 <Image source={Images.Clock} />
-                <Text style={styles.textDistance}>{`${secondsToMinutes(duration)} min ${t('translations:away')}`}</Text>
+                <Text style={styles.textDistance}>{`${secondsToMinutes(
+                  duration,
+                )} min ${t('translations:away')}`}</Text>
               </View>
             </View>
           </View>
@@ -112,32 +146,35 @@ export const NewOrderCell = ({
           </View>
         </View>
       </View>
-      {autoAcceptOrders ? (
-        <>
-          <ButtonOrder
-            millisRemaining={millisRemaining}
-            style={styles.buttonTop}
-            type={ButtonOrderType.declineNow}
-            onPress={() => onDecline(order)}
-          />
-          <ButtonOrder
-            type={ButtonOrderType.accept}
-            onPress={() => onAccept(order)}
-          />
-        </>
-      ) : (
-        <>
-          <ButtonOrder
-            millisRemaining={millisRemaining}
-            style={styles.buttonTop}
-            type={ButtonOrderType.acceptNow}
-            onPress={() => onAccept(order)}
-          />
-          <ButtonOrder
-            type={ButtonOrderType.decline}
-            onPress={() => onDecline(order)}
-          />
-        </>
+      <>
+        <ButtonOrder
+          millisRemaining={millisRemaining}
+          style={styles.buttonTop}
+          type={ButtonOrderType.accept}
+          onPress={() => onAccept(order)}
+          autoAcceptOrders={autoAcceptOrders}
+        />
+        <ButtonOrder
+          type={ButtonOrderType.decline}
+          onPress={() => onDecline(order)}
+          autoAcceptOrders={autoAcceptOrders}
+        />
+      </>
+      {!autoAcceptOrders && (
+        <View style={[styles.containerLoader, { height: PARALELOGRAM_HEIGHT }]}>
+          {[...Array(numberOfParalelograms).keys()]
+            .map(i => i)
+            .map(index => {
+              return (
+                <Paralelogram
+                  backgroundColor={paralelogramColor(index)}
+                  width={PARALELOGRAM_WIDTH}
+                  height={PARALELOGRAM_HEIGHT}
+                />
+              );
+            })}
+          <Animated.View style={[styles.progress, { width: widthAnimation }]} />
+        </View>
       )}
     </View>
   );

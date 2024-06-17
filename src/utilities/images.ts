@@ -95,8 +95,12 @@ import Flag from '@app/assets/icons/flag.png';
 import CheckmarkHollow from '@app/assets/icons/CheckHollow.png';
 import ArrowUpGray from '@app/assets/icons/arrow_up_gray.png';
 import ArrowDownGray from '@app/assets/icons/arrow_down_gray.png';
+import checkHollow from '@app/assets/icons/checkmarkCarved.png';
+import xhollow from '@app/assets/icons/xHollow.png';
 
 export const Images = {
+  CheckHollow: checkHollow,
+  XHollow: xhollow,
   ArrowUpGray: ArrowUpGray,
   ArrowDownGray: ArrowDownGray,
   CheckmarkHollow: CheckmarkHollow,

@@ -92,4 +92,21 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
+  containerLoader: {
+    flexDirection: 'row',
+    overflow: 'hidden',
+    position: 'absolute',
+    left: 0,
+    bottom: 0,
+    right: 0,
+    borderBottomLeftRadius: 12,
+    borderBottomRightRadius: 12,
+  },
+  progress: {
+    backgroundColor: Colors.gray6,
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    bottom: 0,
+  },
 });

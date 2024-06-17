@@ -51,10 +51,13 @@ import {
 } from '@app/redux/comment/comment';
 import ButtonSwipe from '@app/components/ButtonSwipe/ButtonSwipe';
 import { SkeletonOrderHistoryCell } from '@app/components/SkeletonOrderHistoryCell/SkeletonOrderHistoryCell';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 type Props = DrawerScreenProp<DrawerScreens.Home>;
 
 export const HomeScreen = ({ navigation }: Props) => {
+  const { bottom } = useSafeAreaInsets();
+
   const [reportIncidentDismissed, setReportIncidentDismissed] =
     useState<boolean>(false);
   const { t } = useTranslation();
@@ -457,6 +460,7 @@ export const HomeScreen = ({ navigation }: Props) => {
 
       {user?.status !== UserStatus.Online && (
         <ButtonSwipe
+          style={{ position: 'absolute', bottom: bottom + 16 }}
           isSwiped={false}
           onSwiped={onGoOnline}
           enabled={true}
