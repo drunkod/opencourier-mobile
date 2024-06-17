@@ -19,6 +19,7 @@ import {
 import { UserService } from '../../services/userService';
 import { Setting, User } from '@app/types/types';
 import { UserServiceResponse } from '@app/services/types';
+import { handleAPIError } from '@app/utilities/error';
 
 function* loginUserSaga(service: UserService): Generator<any, void, any> {
   while (true) {
@@ -32,8 +33,7 @@ function* loginUserSaga(service: UserService): Generator<any, void, any> {
       }
       // console.warn('login res ', res);
     } catch (error) {
-      console.warn(error);
-      yield put(loginError(error as string));
+      yield put(loginError(handleAPIError(error)));
     }
   }
 }

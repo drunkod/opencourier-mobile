@@ -30,15 +30,26 @@ import ActionSheet from 'react-native-action-sheet';
 import { MainScreens } from '@app/navigation/main/types';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { useDispatch, useSelector } from 'react-redux';
-import order, { acceptOrder, confirmItems, declineOrder } from '@app/redux/order/order';
+import order, {
+  acceptOrder,
+  confirmItems,
+  declineOrder,
+} from '@app/redux/order/order';
 import { useHomeOrders } from '@app/hooks/useHomeOrders';
 import { RootState } from '@app/redux/store';
 import { useTranslation } from 'react-i18next';
 import { RootScreen } from '@app/navigation/types';
 import { ReportAnIncident } from '@app/components/ReportAnIncident/ReportAnIncident';
-import { selectUser } from '@app/redux/user/user';
+import { selectUser, updateUser } from '@app/redux/user/user';
 import { OrderSetting } from '@app/types/enums';
-import { updateComment, updateCommentFinished, deleteCommentFinished, deleteComment, createComment } from '@app/redux/comment/comment';
+import {
+  updateComment,
+  updateCommentFinished,
+  deleteCommentFinished,
+  deleteComment,
+  createComment,
+} from '@app/redux/comment/comment';
+import ButtonSwipe from '@app/components/ButtonSwipe/ButtonSwipe';
 
 type Props = DrawerScreenProp<DrawerScreens.Home>;
 
@@ -46,7 +57,7 @@ export const HomeScreen = ({ navigation }: Props) => {
   const [reportIncidentDismissed, setReportIncidentDismissed] =
     useState<boolean>(false);
   const { t } = useTranslation();
-  const { user } = useSelector(selectUser);
+  const { user, isLoading } = useSelector(selectUser);
   const [availableMapApps, setAvailableMapApps] = useState<string[]>([
     t('translations:cancel'),
   ]);
@@ -54,7 +65,9 @@ export const HomeScreen = ({ navigation }: Props) => {
   const [isSearching, setIsSearching] = useState<boolean>(false);
   const [searchText, setSearchText] = useState<string>('');
   const [dataSource, setDataSource] = useState<Order[]>([]);
-  const [autoAcceptOrders, setAutoAcceptOrders] = useState<boolean>(user!.orderSetting == OrderSetting.auto_accept);
+  const [autoAcceptOrders, setAutoAcceptOrders] = useState<boolean>(
+    user!.orderSetting == OrderSetting.auto_accept,
+  );
   const [showMapActionSheet, setShowMapActionSheet] = useState<
     { order: Order; destination: MapDestination } | undefined
   >(undefined);
@@ -109,15 +122,32 @@ export const HomeScreen = ({ navigation }: Props) => {
     }
   }, [selectedTab, dataSourceHistory, dataSourceNew, dataSourceInProgress]);
 
-
   const onNoteEdited = (editedText: string, note: Comment) => {
-    dispatch(updateComment({ id: note.id, data: { text: editedText, commentor: user!.id } }));
+    dispatch(
+      updateComment({
+        id: note.id,
+        data: { text: editedText, commentor: user!.id },
+      }),
+    );
   };
   const onNoteDeleted = (note: Comment) => {
     dispatch(deleteComment({ id: note.id }));
   };
-  const onNoteAdded = (text: string, type: "merchant" | "location", order: Order) => {
-    dispatch(createComment({ data: { text, commentor: user!.id, [type == "merchant" ? 'MerchantId' : 'LocationId']: type == "merchant" ? order.merchant_id : order.dropoff.id } }));
+  const onNoteAdded = (
+    text: string,
+    type: 'merchant' | 'location',
+    order: Order,
+  ) => {
+    dispatch(
+      createComment({
+        data: {
+          text,
+          commentor: user!.id,
+          [type == 'merchant' ? 'MerchantId' : 'LocationId']:
+            type == 'merchant' ? order.merchant_id : order.dropoff.id,
+        },
+      }),
+    );
   };
 
   const onEditNote = (note: Comment) => {
@@ -132,7 +162,7 @@ export const HomeScreen = ({ navigation }: Props) => {
       note: note,
     });
   };
-  const onAddNote = (order: Order, type: "merchant" | "location") => {
+  const onAddNote = (order: Order, type: 'merchant' | 'location') => {
     navigation.navigate(RootScreen.AddNoteModal, {
       onNoteAdded: onNoteAdded,
       order: order,
@@ -140,7 +170,16 @@ export const HomeScreen = ({ navigation }: Props) => {
     });
   };
   const onPressNote = (note: Comment) => {
-    dispatch(updateComment({ id: note.id, data: { likes: note.likes + 1, liker: user!.id } }));
+    dispatch(
+      updateComment({
+        id: note.id,
+        data: { likes: note.likes + 1, liker: user!.id },
+      }),
+    );
+  };
+
+  const onGoOnline = () => {
+    dispatch(updateUser({ id: user!.id, data: { status: UserStatus.Online } }));
   };
 
   const renderItem = ({ item }: { item: Order }) => {
@@ -148,11 +187,13 @@ export const HomeScreen = ({ navigation }: Props) => {
       case HomeTabItem.New:
         return (
           <NewOrderCell
-            millisRemaining={offerExpirationTimers.get(item.id)?.getTimeLeftMilli() ?? 0}
+            millisRemaining={
+              offerExpirationTimers.get(item.id)?.getTimeLeftMilli() ?? 0
+            }
             autoAcceptOrders={autoAcceptOrders}
             order={item}
-            onAccept={(order) => acceptOrderFn(order.id)}
-            onDecline={(order) => declineOrderFn(order.id)}
+            onAccept={order => acceptOrderFn(order.id)}
+            onDecline={order => declineOrderFn(order.id)}
             onCopyCustomer={order =>
               Clipboard.setString(order.dropoff.formattedAddress)
             }
@@ -171,15 +212,21 @@ export const HomeScreen = ({ navigation }: Props) => {
             onMessageCustomer={order =>
               Clipboard.setString(order.dropoff.formattedAddress)
             }
-            onMessageRestaurant={order => Clipboard.setString(order.pickup.formattedAddress)
+            onMessageRestaurant={order =>
+              Clipboard.setString(order.pickup.formattedAddress)
             }
             onConfirmItems={() => {
-              dispatch(confirmItems({ id: item.id }))
+              dispatch(confirmItems({ id: item.id }));
               // setOrderState(OrderState.orderDeliveryInProgress);
             }}
-            onCallCustomer={() => Linking.openURL(`tel://${item.customerPhoneNumber}`)}
-            onCallRestaurant={() => Linking.openURL(`tel://${item.merchant_phone_number}`)}
-            onMarkAsDelivered={order => navigation.navigate(MainScreens.MarkAsDelivered, { order: order })
+            onCallCustomer={() =>
+              Linking.openURL(`tel://${item.customerPhoneNumber}`)
+            }
+            onCallRestaurant={() =>
+              Linking.openURL(`tel://${item.merchant_phone_number}`)
+            }
+            onMarkAsDelivered={order =>
+              navigation.navigate(MainScreens.MarkAsDelivered, { order: order })
             }
             order={item}
             onRestaurantAddressPress={order =>
@@ -204,7 +251,8 @@ export const HomeScreen = ({ navigation }: Props) => {
                 items: item.items,
               });
             }}
-            onReportIssue={order => navigation.navigate(MainScreens.ReportIssue, { order: order })
+            onReportIssue={order =>
+              navigation.navigate(MainScreens.ReportIssue, { order: order })
             }
           />
         );
@@ -213,10 +261,11 @@ export const HomeScreen = ({ navigation }: Props) => {
     }
   };
 
-
-
   const onSelect = (buttonIndex: number) => {
-    const { order, destination } = showMapActionSheet ?? { order: undefined, destination: undefined };
+    const { order, destination } = showMapActionSheet ?? {
+      order: undefined,
+      destination: undefined,
+    };
     if (
       order !== undefined &&
       order.pickup !== undefined &&
@@ -289,7 +338,6 @@ export const HomeScreen = ({ navigation }: Props) => {
       onSelect,
     );
   };
-
 
   const onRefresh = () => {
     switch (selectedTab) {
@@ -381,7 +429,6 @@ export const HomeScreen = ({ navigation }: Props) => {
       {selectedTab === HomeTabItem.History && !reportIncidentDismissed && (
         <ReportAnIncident onDismiss={() => setReportIncidentDismissed(true)} />
       )}
-
       {showEmptyState && <HomeEmptyStateComponent state={emptyState} />}
       {!showEmptyState && (
         <FlatList
@@ -394,7 +441,21 @@ export const HomeScreen = ({ navigation }: Props) => {
         />
       )}
 
-      <>{showMapActionSheet !== undefined && showActionSheeet(showMapActionSheet.order)}</>
+      {user?.status !== UserStatus.Online && (
+        <ButtonSwipe
+          isSwiped={false}
+          onSwiped={onGoOnline}
+          enabled={true}
+          title={t('translations:go_online')}
+          subtitle={t('translations:slide_to_start')}
+          isLoading={isLoading ?? false}
+        />
+      )}
+
+      <>
+        {showMapActionSheet !== undefined &&
+          showActionSheeet(showMapActionSheet.order)}
+      </>
     </View>
   );
 };

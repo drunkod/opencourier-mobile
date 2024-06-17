@@ -10,6 +10,7 @@ export const Colors = {
   black6: '#1F1F1F',
   black7: '#100C20',
   black8: '#110C22',
+  black9: '#919296',
   blackAlpha05: 'rgba(0, 0, 0, 0.5)',
   transparent: 'transparent',
   gray1: '#E9E7E2',
@@ -69,4 +70,8 @@ export const Colors = {
   blackOpacity1: 'rgba(239, 239, 240, 0.5)',
   blackOpacity2: 'rgba(239, 239, 240, 0.7)',
   blackOpacity3: 'rgba(239, 239, 240, 0.9)',
+  swipeButtonGradientArray: [
+    'rgba(255, 255, 255, 1)',
+    'rgba(255, 255, 255, 0.5)',
+  ],
 };

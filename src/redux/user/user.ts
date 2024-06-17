@@ -88,7 +88,10 @@ export const userSlice = createSlice({
       state.login = {
         loginFinished: true,
         loginError:
-          action?.payload?.data?.error ?? action?.payload?.error ?? 'API error',
+          action?.payload?.data?.error ??
+          action?.payload?.error ??
+          action?.payload ??
+          'API error',
       };
     },
     logout: state => {

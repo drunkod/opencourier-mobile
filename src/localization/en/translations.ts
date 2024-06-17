@@ -350,4 +350,5 @@ export default {
     'Some errors prevent couriers to deliver their assigned orders',
   report_and_finalize: 'Report Issue and Finalize Delivery',
   handed_to_customer: 'Handed Over Directly To Customer',
+  slide_to_start: 'Slide to start accepting deliveries',
 };
