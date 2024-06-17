@@ -182,8 +182,12 @@ export const HomeScreen = ({ navigation }: Props) => {
     );
   };
 
-  const onGoOnline = () => {
-    dispatch(updateUser({ id: user!.id, data: { status: UserStatus.Online } }));
+  const onGoOnline = (didSwipe: boolean) => {
+    if (didSwipe) {
+      dispatch(
+        updateUser({ id: user!.id, data: { status: UserStatus.Online } }),
+      );
+    }
   };
 
   const renderItem = ({ item }: { item: Order }) => {
