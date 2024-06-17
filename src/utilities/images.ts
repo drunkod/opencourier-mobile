@@ -93,8 +93,12 @@ import handHeart from '@app/assets/icons/HandHeart.png';
 import Cone from '@app/assets/icons/cone.png';
 import Flag from '@app/assets/icons/flag.png';
 import CheckmarkHollow from '@app/assets/icons/CheckHollow.png';
+import ArrowUpGray from '@app/assets/icons/arrow_up_gray.png';
+import ArrowDownGray from '@app/assets/icons/arrow_down_gray.png';
 
 export const Images = {
+  ArrowUpGray: ArrowUpGray,
+  ArrowDownGray: ArrowDownGray,
   CheckmarkHollow: CheckmarkHollow,
   Flag: Flag,
   Cone: Cone,

@@ -19,8 +19,8 @@ type Props = {
   endorsed: boolean;
   editDisabled: boolean;
   onPress: (note: Comment) => void;
-  onEdit?: (note: Comment ) => void;
-  onDelete?: (note: Comment ) => void;
+  onEdit?: (note: Comment) => void;
+  onDelete?: (note: Comment) => void;
 };
 
 enum EditComponentLayout {
@@ -49,31 +49,6 @@ export const PickupInstructionCell = ({
 
   return (
     <View style={[styles.parent, style]}>
-      <TouchableOpacity onPress={() => typeof note !== "string" && !endorsed && onPress(note) }>
-        <View
-          style={[
-            styles.container,
-            {
-              backgroundColor: endorsed ? Colors.yellow4 : Colors.gray20,
-              borderColor: endorsed ? Colors.yellow3 : Colors.gray21,
-            },
-          ]}
-          onLayout={event => {
-            setBubbleWidth(event.nativeEvent.layout.width);
-          }}>
-          <Text style={[styles.textContent]}>{typeof note !== "string" ? note.text: note}</Text>
-          {typeof note !== "string" && note.likes > 0 && (
-            <View
-              style={[
-                styles.containerIncrement,
-                endorsed && { backgroundColor: Colors.yellow1 },
-              ]}>
-              <Text style={styles.textBold}>{note.likes}</Text>
-            </View>
-          )}
-        </View>
-      </TouchableOpacity>
-
       {!editDisabled && (
         <View
           style={[
@@ -86,7 +61,9 @@ export const PickupInstructionCell = ({
           ]}>
           <TouchableOpacity
             style={styles.buttonEdit}
-            onPress={() => typeof note !== "string" && onDelete && onDelete(note)}>
+            onPress={() =>
+              typeof note !== 'string' && onDelete && onDelete(note)
+            }>
             <Image source={Images.Trash} style={styles.iconDelete} />
           </TouchableOpacity>
           <View
@@ -104,11 +81,48 @@ export const PickupInstructionCell = ({
           />
           <TouchableOpacity
             style={styles.buttonEdit}
-            onPress={() => typeof note !== "string" && onEdit && onEdit(note)}>
+            onPress={() => typeof note !== 'string' && onEdit && onEdit(note)}>
             <Image source={Images.Edit} />
           </TouchableOpacity>
         </View>
       )}
+      <View
+        style={[
+          styles.container,
+          // TODO: green and red colors for up/down vote
+          // {
+          //   backgroundColor: endorsed ? Colors.yellow4 : Colors.gray20,
+          // },
+        ]}
+        onLayout={event => {
+          setBubbleWidth(event.nativeEvent.layout.width);
+        }}>
+        <Text style={[styles.textContent]}>
+          {typeof note !== 'string' ? note.text : note}
+        </Text>
+        {typeof note !== 'string' && note.likes > 0 && (
+          //TODO: API for up and down vote
+          <View style={styles.containerVoteButtons}>
+            <TouchableOpacity
+              style={styles.containerVoteButton}
+              onPress={() =>
+                typeof note !== 'string' && !endorsed && onPress(note)
+              }>
+              <Image source={Images.ArrowUpGray} />
+            </TouchableOpacity>
+            <Text style={[styles.textCount, { color: Colors.green8 }]}>
+              {note.likes}
+            </Text>
+            <TouchableOpacity
+              style={styles.containerVoteButton}
+              onPress={() =>
+                typeof note !== 'string' && !endorsed && onPress(note)
+              }>
+              <Image source={Images.ArrowDownGray} />
+            </TouchableOpacity>
+          </View>
+        )}
+      </View>
     </View>
   );
 };

@@ -39,8 +39,7 @@ export const InProgressNotes = ({
   expanded,
   noteCreationDisabled = true,
 }: Props) => {
-
-  const { user } = useSelector(selectUser)
+  const { user } = useSelector(selectUser);
   return (
     <View
       style={[
@@ -64,12 +63,21 @@ export const InProgressNotes = ({
         {notes.map(note => {
           return (
             <PickupInstructionCell
-              editDisabled={typeof note == "string" || note.commentor != user?.id}
-              endorsed={typeof note != "string" && note.likers.find(liker => liker == user!.id) != undefined}
+              editDisabled={
+                typeof note == 'string' || note.commentor != user?.id
+              }
+              endorsed={
+                typeof note != 'string' &&
+                note.likers.find(liker => liker == user!.id) != undefined
+              }
               note={note}
-              onPress={note => typeof note !== "string" && onNotePress(note)}
-              onDelete={note => typeof note !== "string" && onNoteDelete && onNoteDelete(note)}
-              onEdit={note => typeof note !== "string" && onNoteEdit && onNoteEdit(note)}
+              onPress={note => typeof note !== 'string' && onNotePress(note)}
+              onDelete={note =>
+                typeof note !== 'string' && onNoteDelete && onNoteDelete(note)
+              }
+              onEdit={note =>
+                typeof note !== 'string' && onNoteEdit && onNoteEdit(note)
+              }
             />
           );
         })}
