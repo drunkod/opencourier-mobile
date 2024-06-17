@@ -21,6 +21,7 @@
     "@react-navigation/native": "^6.1.8",
     "@react-navigation/native-stack": "^6.9.14",
     "@reduxjs/toolkit": "^1.9.7",
+    "@thevsstech/react-native-skeleton": "^2.0.11",
     "axios": "^1.6.0",
     "geojson": "^0.5.0",
     "i18next": "^23.7.7",

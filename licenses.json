@@ -53,6 +53,12 @@
         "licenseUrl": "https://github.com/reduxjs/redux-toolkit/raw/master/LICENSE",
         "parents": "opendeli"
     },
+    "@thevsstech/react-native-skeleton@2.0.11": {
+        "licenses": "ISC",
+        "repository": "https://github.com/thevsstech/react-native-skeleton",
+        "licenseUrl": "https://github.com/thevsstech/react-native-skeleton",
+        "parents": "opendeli"
+    },
     "axios@1.6.8": {
         "licenses": "MIT",
         "repository": "https://github.com/axios/axios",

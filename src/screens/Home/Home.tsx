@@ -50,6 +50,7 @@ import {
   createComment,
 } from '@app/redux/comment/comment';
 import ButtonSwipe from '@app/components/ButtonSwipe/ButtonSwipe';
+import { SkeletonOrderHistoryCell } from '@app/components/SkeletonOrderHistoryCell/SkeletonOrderHistoryCell';
 
 type Props = DrawerScreenProp<DrawerScreens.Home>;
 
@@ -405,6 +406,18 @@ export const HomeScreen = ({ navigation }: Props) => {
     getOrderHistoryFinished,
   ]);
 
+  const historyCellSkeleton = () => {
+    if (
+      selectedTab === HomeTabItem.History &&
+      dataSource.length === 0 &&
+      !getOrderHistoryFinished
+    ) {
+      return <SkeletonOrderHistoryCell />;
+    } else {
+      return null;
+    }
+  };
+
   return (
     <View style={styles.container}>
       <HomeHeader
@@ -435,6 +448,7 @@ export const HomeScreen = ({ navigation }: Props) => {
           keyExtractor={(item, index) => index.toString()}
           data={dataSource}
           renderItem={renderItem}
+          ListEmptyComponent={historyCellSkeleton}
           refreshControl={
             <RefreshControl refreshing={showLoader} onRefresh={onRefresh} />
           }
