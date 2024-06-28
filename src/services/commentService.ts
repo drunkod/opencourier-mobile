@@ -50,7 +50,9 @@ const commentService = (client: UClient): CommentService => {
       .patch(`/comments/${params.id}`, {
         text: params.data.text,
         likes: params.data.likes,
-        CourierId: params.data.commentor ? params.data.commentor: params.data.liker,
+        CourierId: params.data.commentor
+          ? params.data.commentor
+          : params.data.liker,
       })
       .then(() => {
         console.log('Comment updated successfully');
@@ -106,6 +108,7 @@ const commentService = (client: UClient): CommentService => {
         return { data: null, error };
       });
   };
+
   return {
     createComment,
     updateComment,

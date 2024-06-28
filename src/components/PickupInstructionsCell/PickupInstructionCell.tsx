@@ -21,6 +21,10 @@ type Props = {
   onPress: (note: Comment) => void;
   onEdit?: (note: Comment) => void;
   onDelete?: (note: Comment) => void;
+  onUpvote?: (note: Comment) => void;
+  onDownvote?: (note: Comment) => void;
+  upvoted?: boolean;
+  downvoted?: boolean;
 };
 
 enum EditComponentLayout {
@@ -36,6 +40,10 @@ export const PickupInstructionCell = ({
   editDisabled = false,
   onDelete,
   onEdit,
+  onUpvote,
+  onDownvote,
+  upvoted = false,
+  downvoted = false,
 }: Props) => {
   const [bubbleWidth, setBubbleWidth] = useState<number>(0);
 
@@ -106,19 +114,36 @@ export const PickupInstructionCell = ({
             <TouchableOpacity
               style={styles.containerVoteButton}
               onPress={() =>
-                typeof note !== 'string' && !endorsed && onPress(note)
+                typeof note !== 'string' &&
+                !upvoted &&
+                onUpvote &&
+                onUpvote(note)
               }>
-              <Image source={Images.ArrowUpGray} />
+              <Image
+                source={Images.ArrowUpGray}
+                style={upvoted && { tintColor: Colors.green8 }}
+              />
             </TouchableOpacity>
-            <Text style={[styles.textCount, { color: Colors.green8 }]}>
+            <Text
+              style={[
+                styles.textCount,
+                upvoted && { color: Colors.green8 },
+                downvoted && { color: Colors.red7 },
+              ]}>
               {note.likes}
             </Text>
             <TouchableOpacity
               style={styles.containerVoteButton}
               onPress={() =>
-                typeof note !== 'string' && !endorsed && onPress(note)
+                typeof note !== 'string' &&
+                !downvoted &&
+                onDownvote &&
+                onDownvote(note)
               }>
-              <Image source={Images.ArrowDownGray} />
+              <Image
+                source={Images.ArrowDownGray}
+                style={downvoted && { tintColor: Colors.red7 }}
+              />
             </TouchableOpacity>
           </View>
         )}

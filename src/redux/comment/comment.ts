@@ -1,21 +1,27 @@
-import { OrderServiceParams } from "@app/services/types";
-import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { orderSlice } from "../order/order";
+import { OrderServiceParams } from '@app/services/types';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { orderSlice } from '../order/order';
 
 interface CommentState {
-    createCommentFinished?: boolean;
-    createCommentError?: string;
-    updateCommentFinished?: boolean;
-    updateCommentError?: string;
-    deleteCommentFinished?: boolean;
-    deleteCommentError?: string;
+  createCommentFinished?: boolean;
+  createCommentError?: string;
+  updateCommentFinished?: boolean;
+  updateCommentError?: string;
+  deleteCommentFinished?: boolean;
+  deleteCommentError?: string;
+  upvoteCommentFinished?: boolean;
+  upvoteCommentError?: string;
+  downvoteCommentFinished?: boolean;
+  downvoteCommentError?: string;
 }
 
 const initialState: CommentState = {
-    createCommentFinished: false,
-    updateCommentFinished: false,
-    deleteCommentFinished: false,
-}
+  createCommentFinished: false,
+  updateCommentFinished: false,
+  deleteCommentFinished: false,
+  upvoteCommentFinished: false,
+  downvoteCommentFinished: false,
+};
 
 export const commentSlice = createSlice({
   name: 'comment',
@@ -54,21 +60,50 @@ export const commentSlice = createSlice({
       state.deleteCommentFinished = true;
       state.deleteCommentError = action.payload;
     },
+    upvoteComment: (state, _action: PayloadAction<OrderServiceParams>) => {
+      state.upvoteCommentFinished = false;
+      state.upvoteCommentError = undefined;
+    },
+    upvoteCommentFinished: state => {
+      state.upvoteCommentFinished = true;
+    },
+    upvoteCommentError: (state, action: PayloadAction<string>) => {
+      state.upvoteCommentFinished = true;
+      state.upvoteCommentError = action.payload;
+    },
+    downvoteComment: (state, _action: PayloadAction<OrderServiceParams>) => {
+      state.downvoteCommentFinished = false;
+      state.downvoteCommentError = undefined;
+    },
+    downvoteCommentFinished: state => {
+      state.downvoteCommentFinished = true;
+    },
+    downvoteCommentError: (state, action: PayloadAction<string>) => {
+      state.downvoteCommentFinished = true;
+      state.downvoteCommentError = action.payload;
+    },
   },
 });
 
-export const selectComment = (state: { comment: CommentState }) => state.comment;
+export const selectComment = (state: { comment: CommentState }) =>
+  state.comment;
 
 export const {
-    createComment,
-    createCommentFinished,
-    createCommentError,
-    updateComment,
-    updateCommentFinished,
-    updateCommentError,
-    deleteComment,
-    deleteCommentFinished,
-    deleteCommentError,
+  createComment,
+  createCommentFinished,
+  createCommentError,
+  updateComment,
+  updateCommentFinished,
+  updateCommentError,
+  deleteComment,
+  deleteCommentFinished,
+  deleteCommentError,
+  upvoteComment,
+  upvoteCommentError,
+  upvoteCommentFinished,
+  downvoteComment,
+  downvoteCommentError,
+  downvoteCommentFinished,
 } = commentSlice.actions;
 
 export default commentSlice.reducer;

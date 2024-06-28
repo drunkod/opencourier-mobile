@@ -25,6 +25,8 @@ type Props = {
   onNoteAdd?: () => void;
   expanded: boolean;
   noteCreationDisabled: boolean;
+  onUpvote?: (note: Comment) => void;
+  onDownvote?: (note: Comment) => void;
 };
 
 export const InProgressNotes = ({
@@ -38,8 +40,11 @@ export const InProgressNotes = ({
   onNoteAdd,
   expanded,
   noteCreationDisabled = true,
+  onUpvote,
+  onDownvote,
 }: Props) => {
-  const { user } = useSelector(selectUser);
+  const { user, upvotedNoteIds, downvotedNoteIds } = useSelector(selectUser);
+
   return (
     <View
       style={[
@@ -66,9 +71,15 @@ export const InProgressNotes = ({
               editDisabled={
                 typeof note == 'string' || note.commentor != user?.id
               }
+              upvoted={
+                typeof note != 'string' && upvotedNoteIds?.includes(note.id)
+              }
+              downvoted={
+                typeof note != 'string' && downvotedNoteIds?.includes(note.id)
+              }
               endorsed={
                 typeof note != 'string' &&
-                note.likers.find(liker => liker == user!.id) != undefined
+                note?.likers?.find(liker => liker == user!.id) != undefined
               }
               note={note}
               onPress={note => typeof note !== 'string' && onNotePress(note)}
@@ -78,6 +89,8 @@ export const InProgressNotes = ({
               onEdit={note =>
                 typeof note !== 'string' && onNoteEdit && onNoteEdit(note)
               }
+              onUpvote={onUpvote}
+              onDownvote={onDownvote}
             />
           );
         })}

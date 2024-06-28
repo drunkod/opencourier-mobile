@@ -9,6 +9,12 @@ import {
   deleteComment,
   deleteCommentFinished,
   deleteCommentError,
+  upvoteComment,
+  upvoteCommentError,
+  upvoteCommentFinished,
+  downvoteComment,
+  downvoteCommentError,
+  downvoteCommentFinished,
 } from './comment';
 import { CommentService } from '@app/services/commentService';
 
@@ -66,10 +72,48 @@ function* updateCommentSaga(
   }
 }
 
+function* upvoteCommentSaga(
+  service: CommentService,
+): Generator<any, void, any> {
+  while (true) {
+    const { payload } = yield take(upvoteComment);
+    try {
+      const res = yield call(service.upvoteComment, payload);
+      if (res.error) {
+        put(upvoteCommentError(res.error));
+      } else {
+        yield put(upvoteCommentFinished());
+      }
+    } catch (error) {
+      yield put(upvoteCommentError(error as string));
+    }
+  }
+}
+
+function* downvoteCommentSaga(
+  service: CommentService,
+): Generator<any, void, any> {
+  while (true) {
+    const { payload } = yield take(downvoteComment);
+    try {
+      const res = yield call(service.downvoteComment, payload);
+      if (res.error) {
+        put(downvoteCommentError(res.error));
+      } else {
+        yield put(downvoteCommentFinished());
+      }
+    } catch (error) {
+      yield put(downvoteCommentError(error as string));
+    }
+  }
+}
+
 export function* commentSagas(service: CommentService): Generator {
   yield all([
     fork(createCommentSaga, service),
     fork(updateCommentSaga, service),
     fork(deleteCommentSaga, service),
+    fork(upvoteCommentSaga, service),
+    fork(downvoteCommentSaga, service),
   ]);
 }

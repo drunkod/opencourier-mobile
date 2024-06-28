@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   ActivityIndicator,
   Alert,
@@ -40,7 +40,12 @@ import { RootState } from '@app/redux/store';
 import { useTranslation } from 'react-i18next';
 import { RootScreen } from '@app/navigation/types';
 import { ReportAnIncident } from '@app/components/ReportAnIncident/ReportAnIncident';
-import { selectUser, updateUser } from '@app/redux/user/user';
+import {
+  selectUser,
+  setNoteDownvoted,
+  setNoteUpvoted,
+  updateUser,
+} from '@app/redux/user/user';
 import { OrderSetting } from '@app/types/enums';
 import {
   updateComment,
@@ -48,6 +53,8 @@ import {
   deleteCommentFinished,
   deleteComment,
   createComment,
+  upvoteComment,
+  downvoteComment,
 } from '@app/redux/comment/comment';
 import ButtonSwipe from '@app/components/ButtonSwipe/ButtonSwipe';
 import { SkeletonOrderHistoryCell } from '@app/components/SkeletonOrderHistoryCell/SkeletonOrderHistoryCell';
@@ -173,6 +180,7 @@ export const HomeScreen = ({ navigation }: Props) => {
       type: type,
     });
   };
+
   const onPressNote = (note: Comment) => {
     dispatch(
       updateComment({
@@ -182,12 +190,36 @@ export const HomeScreen = ({ navigation }: Props) => {
     );
   };
 
+  const onNoteUpvote = (note: Comment) => {
+    //Note up/downvote propagation temp fix with user slice
+    setNoteUpvoted(note.id);
+
+    dispatch(
+      updateComment({
+        id: note.id,
+        data: { likes: note.likes + 1, liker: user!.id },
+      }),
+    );
+  };
+
+  const onNoteDownvote = (note: Comment) => {
+    //Note up/downvote propagation temp fix with user slice
+    setNoteDownvoted(note.id);
+
+    dispatch(
+      updateComment({
+        id: note.id,
+        data: { likes: note.likes - 1, liker: user!.id },
+      }),
+    );
+  };
+
   const onGoOnline = (didSwipe: boolean) => {
-    if (didSwipe) {
-      dispatch(
-        updateUser({ id: user!.id, data: { status: UserStatus.Online } }),
-      );
+    if (!didSwipe) {
+      return;
     }
+
+    dispatch(updateUser({ id: user!.id, data: { status: UserStatus.Online } }));
   };
 
   const renderItem = ({ item }: { item: Order }) => {
@@ -251,6 +283,8 @@ export const HomeScreen = ({ navigation }: Props) => {
             }
             onAddNote={onAddNote}
             onNotePress={onPressNote}
+            onUpvote={onNoteUpvote}
+            onDownvote={onNoteDownvote}
             onNoteDelete={onDeleteNote}
             onNoteEdit={onEditNote}
             onOrderItemsListForCustomer={() => {
@@ -413,17 +447,31 @@ export const HomeScreen = ({ navigation }: Props) => {
     getOrderHistoryFinished,
   ]);
 
-  const historyCellSkeleton = () => {
+  const ListEmptyComponent = useCallback(() => {
+    if (isLoading) {
+      return <HistorySkeleton />;
+    } else {
+      return <HomeEmptyStateComponent state={emptyState} />;
+    }
+  }, [HistorySkeleton, emptyState, isLoading]);
+
+  const HistorySkeleton = useCallback(() => {
     if (
       selectedTab === HomeTabItem.History &&
       dataSource.length === 0 &&
       !getOrderHistoryFinished
     ) {
-      return <SkeletonOrderHistoryCell />;
+      return (
+        <>
+          <SkeletonOrderHistoryCell />
+          <SkeletonOrderHistoryCell />
+          <SkeletonOrderHistoryCell />
+        </>
+      );
     } else {
       return null;
     }
-  };
+  }, [dataSource.length, getOrderHistoryFinished, selectedTab]);
 
   return (
     <View style={styles.container}>
@@ -449,18 +497,16 @@ export const HomeScreen = ({ navigation }: Props) => {
       {selectedTab === HomeTabItem.History && !reportIncidentDismissed && (
         <ReportAnIncident onDismiss={() => setReportIncidentDismissed(true)} />
       )}
-      {showEmptyState && <HomeEmptyStateComponent state={emptyState} />}
-      {!showEmptyState && (
-        <FlatList
-          keyExtractor={(item, index) => index.toString()}
-          data={dataSource}
-          renderItem={renderItem}
-          ListEmptyComponent={historyCellSkeleton}
-          refreshControl={
-            <RefreshControl refreshing={showLoader} onRefresh={onRefresh} />
-          }
-        />
-      )}
+
+      <FlatList
+        keyExtractor={(item, index) => index.toString()}
+        data={dataSource}
+        renderItem={renderItem}
+        ListEmptyComponent={ListEmptyComponent}
+        refreshControl={
+          <RefreshControl refreshing={showLoader} onRefresh={onRefresh} />
+        }
+      />
 
       {user?.status !== UserStatus.Online && (
         <ButtonSwipe

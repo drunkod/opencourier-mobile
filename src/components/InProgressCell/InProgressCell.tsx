@@ -20,8 +20,8 @@ type Props = {
   order: Order;
   onConfirmItems: (order: Order) => void;
   onMarkAsDelivered: (order: Order) => void;
-  onAddNote: (order: Order, type: "merchant" | "location") => void;
-  onNotePress: (note: Comment ) => void;
+  onAddNote: (order: Order, type: 'merchant' | 'location') => void;
+  onNotePress: (note: Comment) => void;
   onNoteEdit: (note: Comment) => void;
   onNoteDelete: (note: Comment) => void;
   onCustomerAddressPress: (order: Order) => void;
@@ -32,6 +32,8 @@ type Props = {
   onCallCustomer: (order: Order) => void;
   onOrderItemsListForCustomer: () => void;
   onReportIssue: (order: Order) => void;
+  onUpvote?: (note: Comment) => void;
+  onDownvote?: (note: Comment) => void;
 };
 
 export const InProgressCell = ({
@@ -51,22 +53,27 @@ export const InProgressCell = ({
   onCallRestaurant,
   onOrderItemsListForCustomer,
   onReportIssue,
+  onUpvote,
+  onDownvote,
 }: Props) => {
   const { t } = useTranslation();
   const [topExpanded, setTopExpanded] = useState<boolean>(true);
   const [bottomExpanded, setBottomExpanded] = useState<boolean>(false);
-  const { user } = useSelector(selectUser)
+  const { user } = useSelector(selectUser);
   const [distance, setDistance] = useState<number>(0); // meters
   const [duration, setDuration] = useState<number>(0); // seconds
 
   useEffect(() => {
     if (user!.location && order.pickup && order.dropoff) {
-      const coordinates = [[user!.location.coordinates[0], user!.location.coordinates[1]], [order.pickup.longitude, order.pickup.latitude], [order.dropoff.longitude, order.dropoff.latitude]
-      ]
+      const coordinates = [
+        [user!.location.coordinates[0], user!.location.coordinates[1]],
+        [order.pickup.longitude, order.pickup.latitude],
+        [order.dropoff.longitude, order.dropoff.latitude],
+      ];
       getDistance(coordinates).then(({ duration, distance }) => {
         setDuration(duration);
         setDistance(distance);
-      })
+      });
     }
   }, []);
 
@@ -97,13 +104,13 @@ export const InProgressCell = ({
                 expanded={topExpanded}
               />
               {order.status === OrderStatus.dispatched && (
-                  <InProgressMap
-                    order={order}
-                    user={user!}
-                    distance={distance}
-                    duration={duration}
-                  />
-                )}
+                <InProgressMap
+                  order={order}
+                  user={user!}
+                  distance={distance}
+                  duration={duration}
+                />
+              )}
 
               <InProgressNotes
                 order={order}
@@ -112,18 +119,22 @@ export const InProgressCell = ({
                 onNotePress={() => {}}
                 expanded={topExpanded}
                 noteCreationDisabled={true}
+                onUpvote={onUpvote}
+                onDownvote={onDownvote}
               />
 
               <InProgressNotes
                 order={order}
                 notes={order.community_notes_for_merchant ?? []}
                 headerTitle={t('translations:location_courier_notes')}
-                onNotePress={(note) => onNotePress(note)}
-                onNoteDelete={(note) => onNoteDelete(note)}
-                onNoteEdit={(note) => onNoteEdit(note)}
-                onNoteAdd={() => onAddNote(order, "merchant")}
+                onNotePress={note => onNotePress(note)}
+                onNoteDelete={note => onNoteDelete(note)}
+                onNoteEdit={note => onNoteEdit(note)}
+                onNoteAdd={() => onAddNote(order, 'merchant')}
                 expanded={topExpanded}
                 noteCreationDisabled={false}
+                onUpvote={onUpvote}
+                onDownvote={onDownvote}
               />
             </View>
           </View>
@@ -157,6 +168,8 @@ export const InProgressCell = ({
                 onNotePress={() => {}}
                 expanded={bottomExpanded}
                 noteCreationDisabled={true}
+                onUpvote={onUpvote}
+                onDownvote={onDownvote}
               />
 
               <InProgressNotes
@@ -167,9 +180,11 @@ export const InProgressCell = ({
                 onNotePress={note => onNotePress(note)}
                 onNoteDelete={note => onNoteDelete(note)}
                 onNoteEdit={note => onNoteEdit(note)}
-                onNoteAdd={() => onAddNote(order, "location")}
+                onNoteAdd={() => onAddNote(order, 'location')}
                 expanded={bottomExpanded}
                 noteCreationDisabled={false}
+                onUpvote={onUpvote}
+                onDownvote={onDownvote}
               />
             </View>
           </View>
@@ -184,8 +199,7 @@ export const InProgressCell = ({
           setBottomExpanded(true);
         }}
         onMarkAsDelivered={() => onMarkAsDelivered(order)}
-        onOrderItemsListForCustomer={() => onOrderItemsListForCustomer()
-        }
+        onOrderItemsListForCustomer={() => onOrderItemsListForCustomer()}
         onReportIssue={() => onReportIssue(order)}
       />
     </View>

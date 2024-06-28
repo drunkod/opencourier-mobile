@@ -3,6 +3,8 @@ import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
   container: {
+    marginTop: 16,
+    marginHorizontal: 16,
     borderWidth: 2,
     borderRadius: 12,
     borderColor: Colors.gray8,
