@@ -37,9 +37,6 @@ interface UserState {
     updateUserSettingsFinished: boolean;
     updateUserSettingsError?: string;
   };
-  //Temp solution for new notes design without API
-  upvotedNoteIds: string[];
-  downvotedNoteIds: string[];
 }
 
 const initialState: UserState = {} as UserState;
@@ -190,18 +187,6 @@ export const userSlice = createSlice({
         updateUserError: action.payload,
       };
     },
-    setNoteUpvoted: (state, action: PayloadAction<string>) => {
-      state.upvotedNoteIds.push(action.payload);
-      state.downvotedNoteIds = state.downvotedNoteIds.filter(
-        e => e != action.payload,
-      );
-    },
-    setNoteDownvoted: (state, action: PayloadAction<string>) => {
-      state.downvotedNoteIds.push(action.payload);
-      state.upvotedNoteIds = state.upvotedNoteIds.filter(
-        e => e != action.payload,
-      );
-    },
   },
 });
 
@@ -227,7 +212,5 @@ export const {
   getFcmToken,
   getFcmTokenError,
   getFcmTokenFinished,
-  setNoteDownvoted,
-  setNoteUpvoted,
 } = userSlice.actions;
 export default userSlice.reducer;

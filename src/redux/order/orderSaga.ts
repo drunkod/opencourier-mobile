@@ -24,6 +24,7 @@ import {
 } from './order';
 import { OrderService } from '@app/services/orderService';
 import { updateUserFinished } from '../user/user';
+import { handleAPIError } from '@app/utilities/error';
 
 function* getNewOrdersSaga(service: OrderService): Generator<any, void, any> {
   while (true) {
@@ -118,10 +119,11 @@ function* confirmItemsSaga(service: OrderService): Generator<any, void, any> {
       if (res.data) {
         yield put(confirmItemsFinished(res.data));
       } else {
-        yield put(confirmItemsError(res.error));
+        console.warn("saga res ", res)
+        yield put(confirmItemsError(handleAPIError(res)));
       }
     } catch (error) {
-      yield put(confirmItemsError(error as string));
+      yield put(confirmItemsError(handleAPIError(error)));
     }
   }
 }

@@ -17,6 +17,7 @@ import { OrderSetting } from '@app/types/enums';
 import {
   selectComment,
 } from '@app/redux/comment/comment';
+import { Alert } from 'react-native';
 
 type NewOrderTimer = {
   secondsRemaining: number;
@@ -53,6 +54,9 @@ export const useHomeOrders = () => {
   const [dataSourceNew, setDataSourceNew] = useState<Order[]>([]);
   const [dataSourceInProgress, setDataSourceInProgress] = useState<Order[]>([]);
 
+  //Temp fix
+  const [upDownVotedNoteIds, setUpDownVotedNoteIds] = useState<string[][]>([[],[]]);
+
   const [offerExpirationTimers, setOfferExpirationTimers] = useState<
     Map<string, Timer>
   >(new Map());
@@ -74,13 +78,16 @@ export const useHomeOrders = () => {
     declineOrderError,
     confirmItemsFinished,
     confirmItemsError,
-    //confirmedItemsForOrder,
+    // confirmedItemsForOrder,
   } = useSelector(selectOrder);
 
   const {
     createCommentFinished,
     updateCommentFinished,
     deleteCommentFinished,
+    createCommentError,
+    updateCommentError,
+    deleteCommentError,
   } = useSelector(selectComment);
 
   // const itemsConfirmedForOrder = (order: Order) => {
@@ -244,6 +251,15 @@ export const useHomeOrders = () => {
   // }, [confirmItemsError, confirmItemsFinished, confirmedItemsForOrder]);
 
   useEffect(() => {
+    if (confirmItemsFinished) {
+      if (confirmItemsError) {
+        console.warn("presenting alert")
+        Alert.alert('API Error', confirmItemsError);
+      }
+    }
+  }, [confirmItemsError, confirmItemsFinished]);
+
+  useEffect(() => {
     if (user?.status == UserStatus.Online)
       fetchNewOrders();
     fetchInProgressOrders();
@@ -259,8 +275,50 @@ export const useHomeOrders = () => {
   }, [user?.status])
   
   useEffect(() => {
-    fetchInProgressOrders();
-  }, [createCommentFinished, updateCommentFinished, deleteCommentFinished]);
+    if(createCommentFinished) {
+      if(createCommentError) {
+        // console.warn('comment error', createCommentError)
+        Alert.alert("API Error", createCommentError)
+      } else {
+        fetchInProgressOrders();
+      }
+    } 
+    if(deleteCommentFinished) {
+      // console.warn('delete comment finished with error', deleteCommentError)
+      if(deleteCommentError) {
+        // console.warn('comment error', deleteCommentError)
+        Alert.alert("API Error", deleteCommentError)
+      } else {
+        fetchInProgressOrders();
+      }
+    } 
+    if(updateCommentFinished) {
+      if(updateCommentError) {
+        // console.warn('comment error', updateCommentError)
+        Alert.alert("API Error", updateCommentError)
+      } else {
+        fetchInProgressOrders();
+      }
+    } 
+  }, [createCommentFinished, updateCommentFinished, deleteCommentFinished, createCommentError, deleteCommentError, updateCommentError]);
+
+  const upvoteCommentTemp = (noteId: string) => {
+    if (!upDownVotedNoteIds[0].includes(noteId)) {
+      setUpDownVotedNoteIds([
+        [...upDownVotedNoteIds[0], noteId], 
+        upDownVotedNoteIds[1].filter(e => e != noteId)
+      ])
+    }
+  };
+
+  const downvoteCommentTemp = (noteId: string) => {
+    if (!upDownVotedNoteIds[1].includes(noteId)) {
+      setUpDownVotedNoteIds([
+        upDownVotedNoteIds[0].filter(e => e != noteId), 
+        [...upDownVotedNoteIds[1], noteId]
+      ])
+    }
+  };
 
   return {
     dataSourceNew,
@@ -279,5 +337,9 @@ export const useHomeOrders = () => {
     //confirmedItems,
     acceptOrderFn,
     declineOrderFn,
+    //Temp fix
+    upDownVotedNoteIds,
+    upvoteCommentTemp,
+    downvoteCommentTemp,
   };
 };

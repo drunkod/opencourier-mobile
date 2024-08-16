@@ -8,6 +8,10 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingHorizontal: 16,
   },
+  scrollContent: {
+    justifyContent: 'center',
+    flex: 1,
+  },
   content: {
     borderRadius: 10,
     backgroundColor: Colors.white,

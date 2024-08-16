@@ -17,6 +17,7 @@ import {
   downvoteCommentFinished,
 } from './comment';
 import { CommentService } from '@app/services/commentService';
+import { handleAPIError } from '@app/utilities/error';
 
 function* createCommentSaga(
   service: CommentService,
@@ -26,7 +27,7 @@ function* createCommentSaga(
     try {
       const res = yield call(service.createComment, payload);
       if (res.error) {
-        put(createCommentError(res.error));
+        put(createCommentError(handleAPIError(res)));
       } else {
         yield put(createCommentFinished());
       }
@@ -43,10 +44,10 @@ function* deleteCommentSaga(
     const { payload } = yield take(deleteComment);
     try {
       const res = yield call(service.deleteComment, payload);
-      if (res.error) {
-        put(deleteCommentError(res.error));
-      } else {
+      if (res.data) {
         yield put(deleteCommentFinished());
+      } else {
+        put(deleteCommentError(handleAPIError(res)));
       }
     } catch (error) {
       yield put(deleteCommentError(error as string));
@@ -62,7 +63,7 @@ function* updateCommentSaga(
     try {
       const res = yield call(service.updateComment, payload);
       if (res.error) {
-        put(updateCommentError(res.error));
+        put(updateCommentError(handleAPIError(res)));
       } else {
         yield put(updateCommentFinished());
       }

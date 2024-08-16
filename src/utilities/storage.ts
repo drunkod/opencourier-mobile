@@ -4,6 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 export const AUTO_ACCEPT_ORDERS_KEY = 'auto_accept_orders';
 export const SELECTED_ORG_KEY = 'selected_org_key';
 export const SEEN_NEW_ORDERS = 'seen_new_orders';
+export const AUTH_TOKEN_KEY = 'auth_token_key';
 
 // QQQ: Shouldn't this just be stored in the backend?
 export const setAutoAcceptOrdersStorage = async (accept: boolean) => {
@@ -47,4 +48,17 @@ export const getSeenNewOrders = async (): Promise<
     return undefined;
   }
   return JSON.parse(orderIds);
+};
+
+
+export const setAuthToken = async (token: string) => {
+  await AsyncStorage.setItem(AUTH_TOKEN_KEY, token);
+};
+
+export const getAuthToken = async (): Promise<string | undefined> => {
+  const token = await AsyncStorage.getItem(AUTH_TOKEN_KEY);
+  if (token === null) {
+    return undefined;
+  }
+  return token;
 };

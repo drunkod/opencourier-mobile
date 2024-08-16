@@ -34,6 +34,9 @@ type Props = {
   onReportIssue: (order: Order) => void;
   onUpvote?: (note: Comment) => void;
   onDownvote?: (note: Comment) => void;
+  //TEMP
+  upvotedNoteIds: string[];
+  downvotedNoteIds: string[];
 };
 
 export const InProgressCell = ({
@@ -55,6 +58,8 @@ export const InProgressCell = ({
   onReportIssue,
   onUpvote,
   onDownvote,
+  upvotedNoteIds,
+  downvotedNoteIds
 }: Props) => {
   const { t } = useTranslation();
   const [topExpanded, setTopExpanded] = useState<boolean>(true);
@@ -113,6 +118,8 @@ export const InProgressCell = ({
               )}
 
               <InProgressNotes
+                upvotedNoteIds={upvotedNoteIds}
+                downvotedNoteIds={downvotedNoteIds}
                 order={order}
                 notes={order.merchant_notes_for_courier ?? []}
                 headerTitle={t('translations:restaurant_notes')}
@@ -124,6 +131,8 @@ export const InProgressCell = ({
               />
 
               <InProgressNotes
+                upvotedNoteIds={upvotedNoteIds}
+                downvotedNoteIds={downvotedNoteIds}
                 order={order}
                 notes={order.community_notes_for_merchant ?? []}
                 headerTitle={t('translations:location_courier_notes')}
@@ -162,6 +171,8 @@ export const InProgressCell = ({
               />
 
               <InProgressNotes
+                upvotedNoteIds={upvotedNoteIds}
+                downvotedNoteIds={downvotedNoteIds}
                 order={order}
                 notes={order.customer_notes_for_courier ?? []}
                 headerTitle={t('translations:customer_notes')}
@@ -173,6 +184,8 @@ export const InProgressCell = ({
               />
 
               <InProgressNotes
+                upvotedNoteIds={upvotedNoteIds}
+                downvotedNoteIds={downvotedNoteIds}
                 order={order}
                 notes={order.community_notes_for_dropoff_location ?? []}
                 //notes={order.courier_tips_for_merchant}

@@ -7,7 +7,9 @@ export const styles = StyleSheet.create({
     marginTop: 16,
     marginBottom: 24,
   },
-  containerAway: {},
+  containerAway: {
+    flex: 1,
+  },
   containerTextAway: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -15,5 +17,7 @@ export const styles = StyleSheet.create({
   textDistance: {
     fontSize: 16,
     marginLeft: 8,
+    flex: 1,
+    flexWrap: 'wrap',
   },
 });

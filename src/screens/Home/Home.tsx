@@ -103,8 +103,12 @@ export const HomeScreen = ({ navigation }: Props) => {
     //confirmedItems,
     declineOrderFn,
     acceptOrderFn,
+    //TEMP upvote/downvote fix
+    upDownVotedNoteIds,
+    upvoteCommentTemp,
+    downvoteCommentTemp,
   } = useHomeOrders();
-
+  
   const onProfilePress = () => {
     navigation.toggleDrawer();
   };
@@ -191,27 +195,27 @@ export const HomeScreen = ({ navigation }: Props) => {
   };
 
   const onNoteUpvote = (note: Comment) => {
-    //Note up/downvote propagation temp fix with user slice
-    setNoteUpvoted(note.id);
+    //Note up/downvote propagation temp fix 
+    upvoteCommentTemp(note.id)
 
-    dispatch(
-      updateComment({
-        id: note.id,
-        data: { likes: note.likes + 1, liker: user!.id },
-      }),
-    );
+    // dispatch(
+    //   updateComment({
+    //     id: note.id,
+    //     data: { likes: note.likes + 1, liker: user!.id },
+    //   }),
+    // );
   };
 
   const onNoteDownvote = (note: Comment) => {
-    //Note up/downvote propagation temp fix with user slice
-    setNoteDownvoted(note.id);
+    //Note up/downvote propagation temp fix 
+    downvoteCommentTemp(note.id)
 
-    dispatch(
-      updateComment({
-        id: note.id,
-        data: { likes: note.likes - 1, liker: user!.id },
-      }),
-    );
+    // dispatch(
+    //   updateComment({
+    //     id: note.id,
+    //     data: { likes: note.likes - 1, liker: user!.id },
+    //   }),
+    // );
   };
 
   const onGoOnline = (didSwipe: boolean) => {
@@ -249,6 +253,8 @@ export const HomeScreen = ({ navigation }: Props) => {
         // }
         return (
           <InProgressCell
+            upvotedNoteIds={upDownVotedNoteIds[0]}
+            downvotedNoteIds={upDownVotedNoteIds[1]}
             onMessageCustomer={order =>
               Clipboard.setString(order.dropoff.formattedAddress)
             }

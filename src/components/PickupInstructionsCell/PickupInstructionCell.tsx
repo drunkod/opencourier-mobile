@@ -108,7 +108,7 @@ export const PickupInstructionCell = ({
         <Text style={[styles.textContent]}>
           {typeof note !== 'string' ? note.text : note}
         </Text>
-        {typeof note !== 'string' && note.likes > 0 && (
+        {typeof note !== 'string' && (
           //TODO: API for up and down vote
           <View style={styles.containerVoteButtons}>
             <TouchableOpacity
@@ -130,7 +130,7 @@ export const PickupInstructionCell = ({
                 upvoted && { color: Colors.green8 },
                 downvoted && { color: Colors.red7 },
               ]}>
-              {note.likes}
+              {upvoted ? note.likes + 1 : downvoted ? note.likes - 1 : note.likes}
             </Text>
             <TouchableOpacity
               style={styles.containerVoteButton}

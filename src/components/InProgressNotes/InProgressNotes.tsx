@@ -27,6 +27,9 @@ type Props = {
   noteCreationDisabled: boolean;
   onUpvote?: (note: Comment) => void;
   onDownvote?: (note: Comment) => void;
+  //TEMP
+  upvotedNoteIds: string[];
+  downvotedNoteIds: string[];
 };
 
 export const InProgressNotes = ({
@@ -42,8 +45,10 @@ export const InProgressNotes = ({
   noteCreationDisabled = true,
   onUpvote,
   onDownvote,
+  upvotedNoteIds,
+  downvotedNoteIds,
 }: Props) => {
-  const { user, upvotedNoteIds, downvotedNoteIds } = useSelector(selectUser);
+  const { user } = useSelector(selectUser);
 
   return (
     <View
