@@ -78,7 +78,7 @@ export const InProgressNotes = ({
         )}
       </View>
       <View style={[styles.containerInstructions]}>
-        {notes.map(note => {
+        {notes?.map(note => {
           return <PickupInstructionCell note={note} />;
         })}
       </View>

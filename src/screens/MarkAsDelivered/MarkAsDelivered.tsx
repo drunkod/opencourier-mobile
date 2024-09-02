@@ -109,8 +109,9 @@ export const MarkAsDelivered = ({ navigation, route }: Props) => {
     const item = section.data[0];
     return (
       <View style={styles.contentContainerStyle}>
-        {item.notes &&
-          item.notes.map(note => {
+        {item &&
+          item.notes &&
+          item?.notes?.map(note => {
             return (
               <QuickNote
                 createdByUser={section.title === t('translations:add_note')}
