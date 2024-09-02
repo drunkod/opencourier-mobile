@@ -13,9 +13,9 @@ import {
 import { Settings } from 'react-native';
 
 export enum UserStatus {
-  Online = 'online',
-  Offline = 'offline',
-  LastCall = 'last_call',
+  Online = 'ONLINE',
+  Offline = 'OFFLINE',
+  LastCall = 'LAST_CALL',
 }
 
 export enum HomeTabItem {
@@ -101,17 +101,36 @@ export type Organization = {
   iconUrl?: string;
 };
 
-export type User = {
+export type Courier = {
   id: string;
-  firstname: string;
-  lastname: string;
+  node_uri: string;
+  firstName: string;
+  lastName: string;
+  phoneNumber?: string;
   status: UserStatus;
-  orderSetting: OrderSetting;
-  profilePictureUrl?: string;
-  address?: string;
-  location?: Point | null;
-  rejectedOrders: string[];
+  deliverySetting: string;
+  userId: string;
+  createdAt: string;
+  currentLocation: {
+    latitude: number;
+    longitude: number;
+  };
 };
+
+export type UserResponse = {
+  error: boolean;
+  result: {
+    id: string;
+    email: string;
+    role: string[];
+    courier: Courier;
+  };
+};
+
+export type User = {
+  email: string;
+  role: string[];
+} & Courier;
 
 export type Setting = {
   deliveryPolygon?: Polygon | null;
@@ -145,41 +164,105 @@ export type Comment = {
   commentor: string;
 };
 
-export type Order = {
-  date: string;
+export type Verification = {
+  signature: boolean;
+  signatureRequirement: {
+    enabled: boolean;
+    collectSignerName: boolean;
+    collectSignerRelationship: boolean;
+  };
+  barcodes: {
+    value: string;
+    type: string;
+  }[];
+  identification: {
+    minAge: number;
+    noSobrietyCheck: boolean;
+  };
+  picture: boolean;
+};
+
+export type Note = {
   id: string;
-  //order_id?: string;
-  courier_id: string;
-  customer_id?: string;
-  customer_name: string;
-  customerPhoneNumber?: string;
-  merchant_id: string;
-  merchant_name: string;
-  merchant_phone_number: string;
-  created_at: string;
-  updated_at: string;
-  // currency: 'USD';
-  merchant_notes_for_courier: string[];
-  customer_notes_for_courier: string[];
-  courier_notes_for_customer: string[];
-  community_notes_for_dropoff_location: Comment[];
-  community_notes_for_merchant: Comment[];
-  // courier_tips_for_merchant: CourierTip[];
-  pickup: Location;
-  dropoff: Location;
-  return?: Location;
-  undeliverable_action: string;
-  undeliverable_reason: string;
-  income: Income;
-  status: OrderStatus;
-  // deliveredTo: User;
-  // restaurant: Restaurant;
-  // price: number;
-  deliveryTypes?: DeliveryType[];
-  pickupTypes?: PickupType[];
-  // restaurantNotes?: string[];
-  // clientNotes?: string[];
-  items: Item[];
+  note: string;
+  courierId: string;
+  actor: string;
+  locationId: string;
+  deliveryId: string;
+  createdAt: string;
+  upvotes: number;
+  downvotes: number;
+  currentCourierReaction: string;
+};
+
+export type OrderItem = {
+  name: string;
+  quantity: number;
+  size: string;
+  dimensions: {
+    length: string;
+    height: string;
+    depth: string;
+  };
+  price: number;
+  weight: number;
+  vatPercentage: number;
+};
+
+export type Order = {
+  id: string;
+  pickupName: string;
+  pickupPhoneNumber: string;
+  pickupBusinessName: string;
+  pickupNotes: string;
+  pickupVerification: Verification;
+  pickupLocationId: string;
+  pickupReadyAt: string;
+  pickupDeadlineAt: string;
+  dropoffName: string;
+  dropoffPhoneNumber: string;
+  dropoffBusinessName: string;
+  dropoffNotes: string;
+  dropoffSellerNotes: string;
+  dropoffVerification: Verification;
+  dropoffReadyAt: string;
+  dropoffEta: string;
+  dropoffDeadlineAt: string;
+  deliverableAction: string;
+  undeliverableAction: string;
+  undeliverableReason?: string;
+  dropoffLocationId: string;
+  deliveryTypes: string[];
+  requiresDropoffSignature: string;
+  requiresId: boolean;
+  orderReference: string;
+  orderTotalValue: number;
+  orderItems: OrderItem[];
+  status: string;
+  customerNotes: string[];
+  currencyCode: string;
+  totalCost: number;
+  fee: number;
+  pay?: any;
+  tips?: number;
+  totalCompensation: number;
+  pickupTypes: string[];
+  imageType?: any;
+  imageName?: any;
+  imageDate?: any;
+  idempotencyKey: string;
+  externalStoreId: string;
+  returnVerification: Verification;
+  externalUserInfo?: any;
+  externalId: string;
+  courierId: string;
+  partnerId: string;
+  deliveryQuoteId: string;
+  createdAt: string;
+  pickupLocationNotes: Note[];
+  dropOffLocationNotes: Note[];
+  pickupLocation: Location;
+  dropoffLocation: Location;
 };
 
 export type PickupruInstruction = {
@@ -258,6 +341,7 @@ export type Instance = {
   name: string;
   imageUrl: string;
   link: string;
+  ws_link: string;
   userCount: number;
   description: string;
   rules: string;
