@@ -80,8 +80,8 @@ android {
         applicationId "com.opendeli"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 13
-        versionName "1.0"
+        versionCode 14
+        versionName "1"
         missingDimensionStrategy 'react-native-camera', 'general'
     }
     signingConfigs {
