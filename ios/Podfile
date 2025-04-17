@@ -34,7 +34,7 @@ if linkage != nil
   use_frameworks! :linkage => linkage.to_sym
 end
 
-target 'OpenDeli' do
+target 'OpenCourier' do
   config = use_native_modules!
   use_frameworks! :linkage => :static
 
@@ -44,7 +44,7 @@ target 'OpenDeli' do
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
-  target 'OpenDeliTests' do
+  target 'OpenCourierTests' do
     inherit! :complete
     # Pods for testing
   end
