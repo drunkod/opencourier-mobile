@@ -17,3 +17,22 @@ or open the OpenDeli.xcworkspace file in the ios/ folder in xcode and click the 
 
 [https://github.com/Princeton-HCI/opendeli-courier-mobile/blob/main/licenses.json] Licences used by all dependencies
 
+
+
+archive with xcode command line:
+
+xcodebuild -workspace ios/OpenCourier.xcworkspace \
+           -scheme OpenCourier \
+           -configuration Release \
+           -sdk iphoneos \
+           -archivePath ios/build/OpenCourier.xcarchive \
+           clean archive
+
+
+create exportOptions.plist and generate .ipa file with the command:
+
+xcodebuild -exportArchive \
+           -archivePath ios/build/OpenCourier.xcarchive \
+           -exportOptionsPlist ios/exportOptions.plist \
+           -exportPath ios/build/OpenCourierExport \
+           -allowProvisioningUpdates

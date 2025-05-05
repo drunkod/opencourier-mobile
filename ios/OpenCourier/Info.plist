@@ -9,7 +9,7 @@
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleGetInfoString</key>
-	<string/>
+	<string></string>
 	<key>CFBundleIdentifier</key>
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
@@ -23,7 +23,7 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>15</string>
+	<string>16</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>waze</string>
@@ -42,7 +42,7 @@
 	<key>NSCameraUsageDescription</key>
 	<string>$(PRODUCT_NAME) needs acces to your Camera.</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>Location is used to detect Driver's possition</string>
+	<string>Location is used to detect Driver&apos;s possition</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>Location</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
