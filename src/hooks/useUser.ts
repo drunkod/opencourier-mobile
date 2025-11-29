@@ -1,52 +1,57 @@
-import { services } from '@app/services/service';
-import { QueryKeys } from '@app/utilities/queryKeys';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { Alert } from 'react-native';
+import { useAccount } from 'jazz-react-native';
+import { CourierAccount } from '../schema';
+import { UserStatus } from '@app/types/types';
 
 const useUser = (enabled: boolean = true) => {
-  const queryClient = useQueryClient();
+  const { me } = useAccount();
 
-  const {
-    data: user,
-    refetch,
-    isLoading,
-  } = useQuery({
-    queryFn: services.userService.getUser,
-    queryKey: [QueryKeys.user],
-    enabled: enabled,
-  });
+  const user = me?.profile ? {
+    id: me.id,
+    email: 'local@user',
+    role: ['COURIER'],
+    // @ts-ignore - Custom profile fields
+    firstName: me.profile.firstName || 'Local',
+    // @ts-ignore - Custom profile fields
+    lastName: me.profile.lastName || 'Courier',
+    // @ts-ignore - Custom profile fields
+    phoneNumber: me.profile.phoneNumber,
+    // @ts-ignore - Custom profile fields
+    status: (me.profile.status as UserStatus) || UserStatus.Offline,
+    // @ts-ignore - Custom profile fields
+    deliverySetting: me.profile.deliverySetting,
+    // @ts-ignore - Custom profile fields
+    currentLocation: me.profile.currentLocation,
+    // Add other fields required by User type if missing
+    createdAt: new Date().toISOString(),
+    node_uri: 'local',
+    userId: me.id,
+  } : undefined;
 
-  const { mutate: updateStatus } = useMutation({
-    mutationFn: services.userService.setUserStatus,
-    onError: error => Alert.alert('Ooops', error.toString()),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [QueryKeys.user] });
-      refetch();
-    },
-  });
+  const updateStatus = (status: string) => {
+    if (me?.profile) {
+      // @ts-ignore - Custom profile fields
+      me.profile.status = status;
+    }
+  };
 
-  const { mutate: updateDeliverySettings } = useMutation({
-    mutationFn: services.userService.setDeliverySettings,
-    onError: error => Alert.alert('Ooops', error.toString()),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [QueryKeys.user] });
-      refetch();
-    },
-  });
+  const updateDeliverySettings = (settings: string) => {
+    if (me?.profile) {
+      // @ts-ignore - Custom profile fields
+      me.profile.deliverySetting = settings;
+    }
+  };
 
-  const { mutate: updateUserLocation } = useMutation({
-    mutationFn: services.userService.setUserLocation,
-    onError: error => Alert.alert('Ooops', error.toString()),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [QueryKeys.user] });
-      refetch();
-    },
-  });
+  const updateUserLocation = (params: { latitude: number; longitude: number }) => {
+    if (me?.profile) {
+      // @ts-ignore - Custom profile fields
+      me.profile.currentLocation = params;
+    }
+  };
 
   return {
     user,
-    isLoading,
-    refetchUser: refetch,
+    isLoading: !me,
+    refetchUser: () => { },
     updateStatus,
     updateDeliverySettings,
     updateUserLocation,

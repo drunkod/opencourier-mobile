@@ -1,36 +1,43 @@
+import './src/polyfills';
 import React, { useState } from 'react';
 import { Router } from '@app/navigation/router';
 import { NavigationContainer } from '@react-navigation/native';
 import UserContext from '@app/context/userContext';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import SocketProvider from '@app/services/socket';
+import { JazzProvider } from 'jazz-react-native';
+import { useJazzInit } from './src/hooks/useJazzInit';
 
 if (__DEV__) {
   require('./ReactotronConfig');
 }
 
-// Create a client
-const queryClient = new QueryClient();
+
 
 const App = () => {
   const [watchId, setWatchId] = useState<number | undefined>(undefined);
   const [locationPermission, setLocationPermission] = useState<boolean>(false);
 
+  // Initialize Jazz account data
+  useJazzInit();
+
   return (
-    <UserContext.Provider
-      value={{
-        watchId,
-        setWatchId,
-        locationPermission,
-        setLocationPermission,
-      }}>
-      <QueryClientProvider client={queryClient}>
+    <JazzProvider
+      sync={{
+        peer: 'wss://cloud.jazz.tools/?key=demo@example.com',
+        when: 'always',
+      }}
+    >
+      <UserContext.Provider
+        value={{
+          watchId,
+          setWatchId,
+          locationPermission,
+          setLocationPermission,
+        }}>
         <NavigationContainer>
           <Router />
-          <SocketProvider />
         </NavigationContainer>
-      </QueryClientProvider>
-    </UserContext.Provider>
+      </UserContext.Provider>
+    </JazzProvider>
   );
 };
 

@@ -1,25 +1,26 @@
-import { services } from '@app/services/service';
-import { QueryKeys } from '@app/utilities/queryKeys';
-import { useMutation, useQuery } from '@tanstack/react-query';
-import { Alert } from 'react-native';
+import { useAccount } from 'jazz-react-native';
+import { UserSettings } from '@app/services/types';
 
 const useUserSettings = () => {
-  const { data, isLoading, refetch } = useQuery({
-    queryFn: services.userService.getUserSettings,
-    queryKey: [QueryKeys.userSettings],
-  });
+  const { me } = useAccount();
 
-  const { mutate, isPaused } = useMutation({
-    mutationFn: services.userService.updateUserSettings,
-    onSuccess: () => refetch(),
-    onError: error => Alert.alert('Api Error', error.message),
-  });
+  // @ts-ignore - Custom root fields
+  const settings = me?.root?.settings;
+
+  const updateSettings = (params: { settings: Partial<UserSettings> }) => {
+    if (settings && params.settings) {
+      Object.entries(params.settings).forEach(([key, value]) => {
+        // @ts-ignore
+        settings[key] = value;
+      });
+    }
+  };
 
   return {
-    settings: data,
-    isLoading,
-    isUpdating: isPaused,
-    updateSettings: mutate,
+    settings: settings as unknown as UserSettings,
+    isLoading: !me,
+    isUpdating: false,
+    updateSettings,
   };
 };
 

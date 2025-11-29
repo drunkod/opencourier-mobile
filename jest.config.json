@@ -1,0 +1,21 @@
+{
+    "preset": "react-native",
+    "setupFilesAfterEnv": [
+        "@testing-library/jest-native/extend-expect"
+    ],
+    "transformIgnorePatterns": [
+        "node_modules/(?!(react-native|@react-native|jazz-react-native|jazz-tools)/)"
+    ],
+    "moduleNameMapper": {
+        "^@app/(.*)$": "<rootDir>/src/$1"
+    },
+    "testMatch": [
+        "**/__tests__/**/*.(test|spec).[jt]s?(x)",
+        "**/?(*.)+(spec|test).[jt]s?(x)"
+    ],
+    "collectCoverageFrom": [
+        "src/**/*.{ts,tsx}",
+        "!src/**/*.d.ts",
+        "!src/**/__tests__/**"
+    ]
+}

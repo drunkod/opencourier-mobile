@@ -1,21 +1,34 @@
-import { services } from '@app/services/service';
-import { QueryKeys } from '@app/utilities/queryKeys';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { Alert } from 'react-native';
+import { useAccount } from 'jazz-react-native';
+import { OrderStatus } from '@app/types/types';
 
 const useOrder = () => {
-  const queryClient = useQueryClient();
+  const { me } = useAccount();
 
-  const { mutate: confirmOrderItems } = useMutation({
-    mutationFn: services.orderService.confirmItems,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [QueryKeys.inProgressOrders] });
-    },
-    onError: error => Alert.alert('Error confirming items', error.message),
-  });
+  const confirmOrderItems = (params: {
+    id: string;
+    isDispatched: boolean;
+  }) => {
+    const { id } = params;
+    // @ts-ignore - Custom root fields
+    const order = me?.root?.orders?.find((o: any) => o?.id === id);
+    if (order) {
+      order.status = OrderStatus.picked_up;
+    }
+  };
+
+  const markAsDelivered = (params: { id: string; note: string }) => {
+    const { id, note } = params;
+    // @ts-ignore - Custom root fields
+    const order = me?.root?.orders?.find((o: any) => o?.id === id);
+    if (order) {
+      order.status = 'delivered';
+      // TODO: Handle note
+    }
+  };
 
   return {
     confirmOrderItems,
+    markAsDelivered,
   };
 };
 
