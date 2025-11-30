@@ -12,7 +12,7 @@ import { BackNavButton } from '@app/components/BackNavButton/BackNavButton';
 import { useTranslation } from 'react-i18next';
 import { Colors } from '@app/styles/colors';
 
-type Props = MainScreenProp<MainScreens.NavigationScreen>;
+type Props = MainScreenProp<'NavigationScreen'>;
 
 export const NavigationScreen = ({ navigation }: Props) => {
   const { t } = useTranslation();

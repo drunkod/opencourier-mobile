@@ -12,7 +12,7 @@ import {
 import { OrderPreferences } from '@app/types/enums';
 import useUserSettings from '@app/hooks/useUserSetttings';
 
-type Props = MainScreenProp<MainScreens.WeightOrderScreen>;
+type Props = MainScreenProp<'WeightOrderScreen'>;
 
 const weightInfo = new Map([
   ['small_orders', 'weight_info_small'],

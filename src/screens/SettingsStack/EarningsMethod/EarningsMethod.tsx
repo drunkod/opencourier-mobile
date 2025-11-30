@@ -11,7 +11,7 @@ import {
 import { EarningMethod } from '@app/types/types';
 import { SUPPORTED_EARNING_METHODS } from '@app/utilities/constants';
 
-type Props = MainScreenProp<MainScreens.EarningsMethodScreen>;
+type Props = MainScreenProp<'EarningsMethodScreen'>;
 
 export const EarningsMethodScreen = ({ navigation }: Props) => {
   const { t } = useTranslation();

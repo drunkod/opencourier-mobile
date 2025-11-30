@@ -25,7 +25,7 @@ import { RootScreen } from '@app/navigation/types';
 import DatePicker from 'react-native-date-picker';
 import useUserSettings from '@app/hooks/useUserSetttings';
 
-type Props = MainScreenProp<MainScreens.ShiftAvailabilityScreen>;
+type Props = MainScreenProp<'ShiftAvailabilityScreen'>;
 function capitalizeFirstLetter(string: string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }

@@ -11,6 +11,7 @@ import {
 export enum RootScreen {
   Loading = 'Loading',
   Onboarding = 'Onboarding',
+  PasskeyLogin = 'PasskeyLogin',
   Main = 'Main',
   SelectOrganizationModal = 'SelectOrganizationModal',
   SearchOrganization = 'SearchOrganization',
@@ -23,6 +24,7 @@ export enum RootScreen {
 export type RootStackParamList = {
   Loading: undefined;
   Onboarding: undefined;
+  PasskeyLogin: undefined;
   Main: undefined;
   SelectOrganizationModal: {
     preselected: Organization;
@@ -54,13 +56,13 @@ export type RootStackParamList = {
   DatePickerScreen: {
     startOrEndShift: 'start' | 'end';
     day:
-      | 'Monday'
-      | 'Tuesday'
-      | 'Wednesday'
-      | 'Thursday'
-      | 'Friday'
-      | 'Saturday'
-      | 'Sunday';
+    | 'Monday'
+    | 'Tuesday'
+    | 'Wednesday'
+    | 'Thursday'
+    | 'Friday'
+    | 'Saturday'
+    | 'Sunday';
     onSelect: (
       date: Date,
       shift: 'start' | 'end',

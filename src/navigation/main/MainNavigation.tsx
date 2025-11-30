@@ -1,5 +1,5 @@
 import React from 'react';
-import { MainScreens } from './types';
+import { MainScreens, MainStackParamList } from './types';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { DrawerStack } from '../drawer/DrawerNavigation';
 import { ItemsCollected } from '@app/screens/ItemsCollected/ItemsCollected';
@@ -25,7 +25,7 @@ import { WeightOrderScreen } from '@app/screens/SettingsStack/WeightOrder/Weight
 import { ShiftAvailabilityScreen } from '@app/screens/SettingsStack/ShiftAvailability/ShiftAvailabilityScreen';
 import { ReportIssue } from '@app/screens/ReportIssue/ReportIssue';
 
-const MainStackNavigator = createNativeStackNavigator();
+const MainStackNavigator = createNativeStackNavigator<MainStackParamList>();
 
 const DEFAULT_OPTIONS = { headerShown: false };
 

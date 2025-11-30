@@ -1,5 +1,6 @@
 import { Point, Polygon } from 'geojson';
-import moment, { Moment } from 'moment';
+import * as moment from 'moment';
+import { Moment } from 'moment';
 import {
   CuisineTypes,
   DeliverySpeed,

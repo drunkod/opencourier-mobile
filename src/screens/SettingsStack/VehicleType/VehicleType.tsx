@@ -11,7 +11,7 @@ import {
 import { VehicleType } from '@app/types/enums';
 import useUserSettings from '@app/hooks/useUserSetttings';
 
-type Props = MainScreenProp<MainScreens.VehicleTypeScreen>;
+type Props = MainScreenProp<'VehicleTypeScreen'>;
 
 export const VehicleTypeScreen = ({ navigation }: Props) => {
   const { t } = useTranslation();

@@ -18,6 +18,8 @@ export const TEST_ORG_ARRAY: Organization[] = [
   },
 ];
 
+// Legacy test data - using old Order structure
+// @ts-ignore - This is test/mock data with simplified structure
 export const TEST_EARNINGS_ORDERS: Order[] = [
   {
     id: '1',
@@ -73,7 +75,7 @@ export const TEST_EARNINGS_ORDERS: Order[] = [
     restaurant: { name: 'Local Catch Café' },
     price: 10.0,
   },
-];
+] as any[];
 
 export const TEST_INSTANCE_DESC = `Welcome Couriers to "Plant-Based Couriers"!\n\nYour Role:\n• Deliver diverse cuisines from various vegan restaurants.\n• Ensure timely, safe food handling.\n• Maintain clear communication with restaurants and customers.\n• Follow each restaurant's specific delivery guidelines.\nWhy "Plant-Based Couriers"?\n• Variety: Experience different plant-based culinary styles.\n• Efficiency: Streamlined pickup and delivery processes.\n• Support: Strong back-end assistance.\n• Flexibility: Work with multiple vegan restaurants.\n• Eco-Friendly: We promote sustainable delivery practices.\nStay Updated:\n• Use our app for multi-restaurant orders, navigation, and support.\n• Regular updates and training for optimal performance.\n\nJoin us in connecting culinary delights with the community!`;
 export const TEST_RULES = `1. Timely Pick-Ups: Arrive on schedule and verify orders for accuracy.

@@ -14,7 +14,7 @@ import { MainScreenProp, MainScreens } from '@app/navigation/main/types';
 import { Images } from '@app/utilities/images';
 import { useTranslation } from 'react-i18next';
 
-type Props = MainScreenProp<MainScreens.Licences>;
+type Props = MainScreenProp<'Licences'>;
 
 export interface ILicense {
   licenses: string;

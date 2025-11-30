@@ -22,7 +22,7 @@ import { Colors } from '@app/styles/colors';
 import { Images } from '@app/utilities/images';
 import { Button, ButtonType } from '@app/components/Button/Button';
 
-type Props = MainScreenProp<MainScreens.MyLanguages>;
+type Props = MainScreenProp<'MyLanguages'>;
 
 export const MyLanguages = ({ navigation }: Props) => {
   const { t } = useTranslation();

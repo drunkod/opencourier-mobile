@@ -1,4 +1,5 @@
-import { UClient } from './Client';
+// Legacy service - Client was removed during Jazz Tools migration
+// import { UClient } from './Client';
 
 export interface NotificationDeviceService {
   addDeviceApi: () => Promise<void>;
@@ -8,7 +9,7 @@ export interface NotificationDeviceService {
 }
 
 const NotificationDeviceService = (
-  client: UClient,
+  client?: any, // Client parameter optional after migration
 ): NotificationDeviceService => {
   const addDeviceApi = async (): Promise<void> => {
     return new Promise(function (resolve) {

@@ -18,7 +18,7 @@ import {
 import { Images } from '@app/utilities/images';
 import useUserSettings from '@app/hooks/useUserSetttings';
 
-type Props = MainScreenProp<MainScreens.OperatingArea>;
+type Props = MainScreenProp<'OperatingArea'>;
 
 export const OperatingArea = ({ navigation }: Props) => {
   const { t } = useTranslation();

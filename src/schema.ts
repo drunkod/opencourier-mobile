@@ -136,19 +136,19 @@ export const UserSettings = co.map({
     shiftAvailability: z.array(z.array(z.string())), // Simplified
     deliveryPreferences: z.array(z.string()),
     foodPreferences: z.array(z.string()),
-    earningGoals: z.optional(z.unknown()),
+    earningGoals: z.optional(z.string()),
     deliverySpeed: z.optional(z.string()),
     restaurantTypes: z.array(z.string()),
     cuisineTypes: z.array(z.string()),
     preferredRestaurantPartners: z.array(z.string()),
     dietaryRestrictions: z.array(z.string()),
-    payRate: z.optional(z.unknown()),
+    payRate: z.optional(z.string()),
     courierId: z.optional(z.string()),
 });
 
 export const CourierAccountRoot = co.map({
     orders: OrderList,
-    settings: z.optional(UserSettings),
+    settings: co.optional(UserSettings),
 });
 
 export const CourierAccount = co.account({

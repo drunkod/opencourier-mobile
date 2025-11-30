@@ -11,7 +11,7 @@ import {
 import { Ringtone } from '@app/types/types';
 import { SUPPORTED_RINGTONES } from '@app/utilities/constants';
 
-type Props = MainScreenProp<MainScreens.DefaultSound>;
+type Props = MainScreenProp<'DefaultSound'>;
 
 export const DefaultSound = ({ navigation }: Props) => {
   const { t } = useTranslation();

@@ -26,7 +26,7 @@ enum ScreenState {
   photoTaken,
 }
 
-type Props = MainScreenProp<MainScreens.PhotoAttachment>;
+type Props = MainScreenProp<'PhotoAttachment'>;
 
 export const PhotoAttachment = ({ navigation, route }: Props) => {
   const [screenState, setScreenState] = useState<ScreenState>(

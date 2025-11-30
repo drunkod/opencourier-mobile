@@ -17,7 +17,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Colors } from '@app/styles/colors';
 import { Button, ButtonType } from '@app/components/Button/Button';
 
-type Props = MainScreenProp<MainScreens.ReportIssue>;
+type Props = MainScreenProp<'ReportIssue'>;
 
 export const ReportIssue = ({ navigation, route }: Props) => {
   const { t } = useTranslation();

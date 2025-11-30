@@ -11,7 +11,7 @@ import {
 import { RestaurantTypes } from '@app/types/enums';
 import useUserSettings from '@app/hooks/useUserSetttings';
 
-type Props = MainScreenProp<MainScreens.RestaurantTypeScreen>;
+type Props = MainScreenProp<'RestaurantTypeScreen'>;
 
 export const RestaurantTypeScreen = ({ navigation }: Props) => {
   const { t } = useTranslation();

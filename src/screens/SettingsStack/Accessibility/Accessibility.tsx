@@ -16,7 +16,7 @@ import {
   SettingsCellType,
 } from '@app/components/SettingsCell/SettingsCell';
 
-type Props = MainScreenProp<MainScreens.Accessibility>;
+type Props = MainScreenProp<'Accessibility'>;
 
 type SectionListItem = {
   cellType: SettingsCellType;

@@ -8,7 +8,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Colors } from '@app/styles/colors';
 import { NoPayoutActivity } from '@app/components/NoPayoutActivity/NoPayoutActivity';
 
-type Props = MainScreenProp<MainScreens.PayoutActivity>;
+type Props = MainScreenProp<'PayoutActivity'>;
 
 export const PayoutActivity = ({ navigation }: Props) => {
   const { top } = useSafeAreaInsets();

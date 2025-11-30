@@ -11,7 +11,7 @@ import {
 import { SUPPORTED_VOLUMES } from '@app/utilities/constants';
 import { Volume } from '@app/types/types';
 
-type Props = MainScreenProp<MainScreens.VolumeScreen>;
+type Props = MainScreenProp<'VolumeScreen'>;
 
 export const VolumeScreen = ({ navigation }: Props) => {
   const { t } = useTranslation();

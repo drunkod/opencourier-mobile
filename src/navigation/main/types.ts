@@ -1,4 +1,4 @@
-import { Order, Photo, OrderItem } from '@app/types/types';
+import { Order, Photo, OrderItem } from '../../types/types';
 import { NavigationProp, RouteProp } from '@react-navigation/native';
 
 export enum MainScreens {
@@ -10,7 +10,7 @@ export enum MainScreens {
   Licences = 'Licences',
   LanguageScreen = 'LanguageScreen',
   ThemeScreen = 'ThemeScreen',
-  OperatingArea = 'operatingArea',
+  OperatingArea = 'OperatingArea',
   Accessibility = 'Accessibility',
   DefaultSound = 'DefaultSound',
   MyLanguages = 'MyLanguages',
@@ -63,11 +63,11 @@ export type MainStackParamList = {
 };
 
 export type MainNavigationProp = NavigationProp<MainStackParamList>;
-export type MainRouteProp<T extends MainScreens> = RouteProp<
+export type MainRouteProp<T extends keyof MainStackParamList> = RouteProp<
   MainStackParamList,
   T
 >;
-export type MainScreenProp<T extends MainScreens> = {
+export type MainScreenProp<T extends keyof MainStackParamList> = {
   navigation: MainNavigationProp;
   route: MainRouteProp<T>;
 };

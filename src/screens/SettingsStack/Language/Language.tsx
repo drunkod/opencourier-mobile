@@ -11,7 +11,7 @@ import {
   SettingsCellType,
 } from '@app/components/SettingsCell/SettingsCell';
 
-type Props = MainScreenProp<MainScreens.LanguageScreen>;
+type Props = MainScreenProp<'LanguageScreen'>;
 
 export const LanguageScreen = ({ navigation }: Props) => {
   const { t } = useTranslation();

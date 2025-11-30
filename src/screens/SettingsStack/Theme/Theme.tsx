@@ -11,7 +11,7 @@ import {
   SettingsCellType,
 } from '@app/components/SettingsCell/SettingsCell';
 
-type Props = MainScreenProp<MainScreens.ThemeScreen>;
+type Props = MainScreenProp<'ThemeScreen'>;
 
 export const ThemeScreen = ({ navigation }: Props) => {
   const { t } = useTranslation();

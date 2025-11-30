@@ -4,7 +4,7 @@
         "@testing-library/jest-native/extend-expect"
     ],
     "transformIgnorePatterns": [
-        "node_modules/(?!(react-native|@react-native|jazz-react-native|jazz-tools)/)"
+        "node_modules/(?!(react-native|@react-native|jazz-react-native|jazz-tools|cojson|cojson-transport-ws)/)"
     ],
     "moduleNameMapper": {
         "^@app/(.*)$": "<rootDir>/src/$1"

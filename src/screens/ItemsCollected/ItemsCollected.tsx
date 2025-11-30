@@ -11,7 +11,7 @@ import { OrderItemCell } from '@app/components/OrderItemCell/OrderItemCell';
 import { useTranslation } from 'react-i18next';
 import { Toast } from '@app/components/Toast/Toast';
 
-type Props = MainScreenProp<MainScreens.ItemsCollected>;
+type Props = MainScreenProp<'ItemsCollected'>;
 
 export const ItemsCollected = ({ navigation, route }: Props) => {
   const { t } = useTranslation();

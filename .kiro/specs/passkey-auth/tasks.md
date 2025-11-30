@@ -1,128 +1,128 @@
 # Implementation Plan
 
-- [ ] 1. Install and configure react-native-credentials-manager
-  - Install the package via yarn/npm
-  - Configure Android build.gradle with credential manager dependencies
-  - Configure iOS Podfile and entitlements for AuthenticationServices
-  - Add Associated Domains entitlement for iOS WebAuthn support
+- [x] 1. Install and configure react-native-credentials-manager
+  - [x] Install the package via yarn/npm
+  - [x] Configure Android build.gradle with credential manager dependencies
+  - [x] Configure iOS Podfile and entitlements for AuthenticationServices
+  - [x] Add Associated Domains entitlement for iOS WebAuthn support
   - _Requirements: 1.1, 2.1, 4.6_
 
-- [ ] 2. Create passkey type definitions and utilities
-  - [ ] 2.1 Create passkey type definitions
+- [x] 2. Create passkey type definitions and utilities
+  - [x] 2.1 Create passkey type definitions
     - Create `src/types/passkey.ts` with WebAuthn request/response interfaces
     - Define PasskeyRegistrationRequest, PasskeyAuthenticationRequest types
     - Define StoredPasskeyCredential interface for persistence
     - _Requirements: 1.2, 2.2_
-  - [ ] 2.2 Create auth error types and messages
+  - [x] 2.2 Create auth error types and messages
     - Create `src/types/authErrors.ts` with AuthErrorCode enum
     - Define AuthError interface with code, message, userMessage, recoverable fields
     - Create AUTH_ERROR_MESSAGES mapping for user-friendly error messages
     - _Requirements: 6.1, 6.2, 6.3, 6.4_
 
-- [ ] 3. Implement PasskeyAuthService
-  - [ ] 3.1 Create PasskeyAuthService module
+- [x] 3. Implement PasskeyAuthService
+  - [x] 3.1 Create PasskeyAuthService module
     - Create `src/services/passkeyAuthService.ts`
     - Implement generateChallenge() for cryptographic challenge creation
     - Implement buildRegistrationRequest() for WebAuthn registration options
     - Implement buildAuthenticationRequest() for WebAuthn authentication options
     - _Requirements: 1.2, 2.2_
-  - [ ] 3.2 Implement passkey registration flow
+  - [x] 3.2 Implement passkey registration flow
     - Implement registerPasskey() using signUpWithPasskeys from credentials-manager
     - Handle registration response and extract credential ID, public key
     - Store credential reference in AsyncStorage
     - _Requirements: 1.1, 1.3, 1.4_
-  - [ ] 3.3 Implement passkey authentication flow
+  - [x] 3.3 Implement passkey authentication flow
     - Implement authenticateWithPasskey() using signIn from credentials-manager
     - Handle authentication response and verify credential
     - Load stored credential reference from AsyncStorage
     - _Requirements: 2.1, 2.3, 2.4_
-  - [ ] 3.4 Implement sign out and utility methods
+  - [x] 3.4 Implement sign out and utility methods
     - Implement signOutPasskey() using signOut from credentials-manager
     - Implement isPasskeySupported() to check platform capabilities
     - Clear stored credentials on sign out
     - _Requirements: 3.4, 1.6_
 
-- [ ] 4. Create JazzAuthProvider
-  - [ ] 4.1 Create JazzAuthProvider context and types
+- [x] 4. Create JazzAuthProvider
+  - [x] 4.1 Create JazzAuthProvider context and types
     - Create `src/providers/JazzAuthProvider.tsx`
     - Define JazzAuthContextType interface with auth state and methods
     - Create JazzAuthContext with createContext
     - Implement useJazzAuth hook for consuming context
     - _Requirements: 3.1, 3.2_
-  - [ ] 4.2 Implement JazzAuthProvider component
+  - [x] 4.2 Implement JazzAuthProvider component
     - Implement provider component with auth state management
     - Integrate PasskeyAuthService for authentication operations
     - Wrap JazzProvider with authenticated account configuration
     - Handle session restoration on app launch
     - _Requirements: 3.1, 3.2, 3.3_
-  - [ ] 4.3 Implement auth methods in provider
+  - [x] 4.3 Implement auth methods in provider
     - Implement signInWithPasskey() method
     - Implement signUpWithPasskey() method with CourierAccount creation
     - Implement signOut() method with credential clearing
     - Handle loading and error states
     - _Requirements: 3.1, 3.4, 5.1, 5.2_
 
-- [ ] 5. Create Auth screen UI
-  - [ ] 5.1 Create Auth screen styles
-    - Create `src/screens/onboarding/Auth/Auth.styles.ts`
+- [x] 5. Create Auth screen UI
+  - [x] 5.1 Create Auth screen styles
+    - Create `src/screens/onboarding/Auth/Auth.styles.ts` (Implemented in PasskeyLoginScreen.tsx)
     - Style container with NoiseBG background matching existing screens
     - Style passkey buttons with app branding
     - Style loading indicator and error message components
     - _Requirements: 4.5_
-  - [ ] 5.2 Create Auth screen component
-    - Create `src/screens/onboarding/Auth/Auth.tsx`
+  - [x] 5.2 Create Auth screen component
+    - Create `src/screens/onboarding/Auth/Auth.tsx` (Implemented as src/screens/Auth/PasskeyLoginScreen.tsx)
     - Implement "Sign In with Passkey" button with onPress handler
     - Implement "Create Account with Passkey" button with onPress handler
     - Display OpenDeli branding and welcome text
     - _Requirements: 4.1, 4.2_
-  - [ ] 5.3 Implement Auth screen state management
+  - [x] 5.3 Implement Auth screen state management
     - Handle loading state during passkey operations
     - Display loading indicator and disable buttons during auth
     - Handle and display error messages with retry option
     - Navigate to main app on successful authentication
     - _Requirements: 4.3, 4.4_
 
-- [ ] 6. Update navigation and integrate auth flow
-  - [ ] 6.1 Update onboarding navigation types
-    - Add Auth screen to OnboardingScreen enum in `src/navigation/onboarding/types.ts`
+- [x] 6. Update navigation and integrate auth flow
+  - [x] 6.1 Update onboarding navigation types
+    - Add Auth screen to OnboardingScreen enum in `src/navigation/onboarding/types.ts` (Added to RootStack instead)
     - Add Auth screen params to OnboardingStackParamList
     - _Requirements: 4.1_
-  - [ ] 6.2 Update OnboardingNavigation
-    - Add Auth screen to OnboardingStack in `src/navigation/onboarding/OnboardingNavigation.tsx`
+  - [x] 6.2 Update OnboardingNavigation
+    - Add Auth screen to OnboardingStack in `src/navigation/onboarding/OnboardingNavigation.tsx` (Replaced OnboardingStack with direct PasskeyLoginScreen)
     - Configure screen options for Auth screen
     - _Requirements: 4.1_
-  - [ ] 6.3 Update Landing screen navigation
+  - [x] 6.3 Update Landing screen navigation
     - Modify `src/screens/onboarding/Landing/Landing.tsx` to navigate to Auth screen
     - Update continue button to go to Auth instead of Welcome for new auth flow
     - _Requirements: 4.1_
 
-- [ ] 7. Update App.tsx with JazzAuthProvider
-  - [ ] 7.1 Integrate JazzAuthProvider in App.tsx
+- [x] 7. Update App.tsx with JazzAuthProvider
+  - [x] 7.1 Integrate JazzAuthProvider in App.tsx
     - Wrap app with JazzAuthProvider
     - Remove or update existing JazzProvider configuration
     - Ensure proper provider nesting order
     - _Requirements: 3.1, 3.2_
-  - [ ] 7.2 Update Router to use auth state
+  - [x] 7.2 Update Router to use auth state
     - Update `src/navigation/router.tsx` to use JazzAuthProvider auth state
     - Replace useUser check with useJazzAuth isAuthenticated
     - Handle loading state during session restoration
     - _Requirements: 3.3_
 
-- [ ] 8. Implement usePasskeyAuth hook
-  - Create `src/hooks/usePasskeyAuth.ts` convenience hook
-  - Wrap useJazzAuth with additional passkey-specific utilities
-  - Expose isPasskeySupported, error handling helpers
+- [x] 8. Implement usePasskeyAuth hook
+  - [x] Create `src/hooks/usePasskeyAuth.ts` convenience hook
+  - [x] Wrap useJazzAuth with additional passkey-specific utilities
+  - [x] Expose isPasskeySupported, error handling helpers
   - _Requirements: 1.6, 6.5_
 
-- [ ] 9. Add unit tests for auth services
-  - [ ] 9.1 Create PasskeyAuthService tests
+- [x] 9. Add unit tests for auth services
+  - [x] 9.1 Create PasskeyAuthService tests
     - Create `src/services/__tests__/passkeyAuthService.test.ts`
     - Mock react-native-credentials-manager functions
     - Test registration request generation
     - Test authentication request generation
     - Test error handling scenarios
     - _Requirements: 6.4_
-  - [ ] 9.2 Create JazzAuthProvider tests
+  - [x] 9.2 Create JazzAuthProvider tests
     - Create `src/providers/__tests__/JazzAuthProvider.test.tsx`
     - Test context state management
     - Test auth flow state transitions

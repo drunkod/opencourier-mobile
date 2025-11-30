@@ -23,7 +23,7 @@ import { RootScreen } from '@app/navigation/types';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { QueryKeys } from '@app/utilities/queryKeys';
 
-type Props = MainScreenProp<MainScreens.MarkAsDelivered>;
+type Props = MainScreenProp<'MarkAsDelivered'>;
 
 type SectionListItem = {
   notes: string[];

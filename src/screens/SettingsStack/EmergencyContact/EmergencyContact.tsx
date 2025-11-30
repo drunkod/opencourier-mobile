@@ -10,7 +10,7 @@ import { Button, ButtonType } from '@app/components/Button/Button';
 import { Images } from '@app/utilities/images';
 import { Image } from 'react-native';
 
-type Props = MainScreenProp<MainScreens.EmergencyContact>;
+type Props = MainScreenProp<'EmergencyContact'>;
 
 type TextFieldErrors = {
   email: string | undefined;
