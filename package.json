@@ -8,9 +8,12 @@
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
-    "postinstall": "patch-package && npm-license-crawler -onlyDirectDependencies -json licenses.json"
+    "postinstall": "patch-package"
   },
   "proxy": "http://10.0.0.187:3001/",
+  "resolutions": {
+    "license-checker": "25.0.1"
+  },
   "dependencies": {
     "@notifee/react-native": "^7.8.0",
     "@op-engineering/op-sqlite": "^15.1.2",
@@ -74,7 +77,6 @@
     "eslint": "^8.19.0",
     "jest": "^29.6.3",
     "jest-environment-node": "^30.2.0",
-    "npm-license-crawler": "^0.2.1",
     "prettier": "2.8.8",
     "react-test-renderer": "18.2.0",
     "reactotron-react-native": "^5.1.8",
