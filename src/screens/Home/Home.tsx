@@ -30,7 +30,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import useUser from '@app/hooks/useUser';
 import { useFocusEffect } from '@react-navigation/native';
 
-type Props = DrawerScreenProp<DrawerScreens.Home>;
+type Props = DrawerScreenProp<'Home'>;
 
 export const HomeScreen = ({ navigation }: Props) => {
   const { bottom } = useSafeAreaInsets();

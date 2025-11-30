@@ -7,7 +7,9 @@ import { Earnings } from '@app/screens/Earnings/Earnings';
 import { PaymentMethods } from '@app/screens/PaymentMethods/PaymentMethods';
 import { SettingsScreen } from '@app/screens/Settings/Settings';
 
-const DrawerNavigator = createDrawerNavigator();
+import { DrawerStackParamList } from './types';
+
+const DrawerNavigator = createDrawerNavigator<DrawerStackParamList>();
 
 const DEFAULT_OPTIONS = { headerShown: false };
 

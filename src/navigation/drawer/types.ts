@@ -15,11 +15,11 @@ export type DrawerStackParamList = {
 };
 
 export type DrawerNavigationProp = NavigationProp<DrawerStackParamList>;
-export type DrawerRouteProp<T extends DrawerScreens> = RouteProp<
+export type DrawerRouteProp<T extends keyof DrawerStackParamList> = RouteProp<
   DrawerStackParamList,
   T
 >;
-export type DrawerScreenProp<T extends DrawerScreens> = {
+export type DrawerScreenProp<T extends keyof DrawerStackParamList> = {
   navigation: DrawerNavigationProp;
   route: DrawerRouteProp<T>;
 };

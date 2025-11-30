@@ -24,7 +24,7 @@ type SectionListItem = {
   cellData: SettingsOptions;
 };
 
-type Props = DrawerScreenProp<DrawerScreens.Settings>;
+type Props = DrawerScreenProp<'Settings'>;
 
 export const SettingsScreen = ({ navigation }: Props) => {
   const { t } = useTranslation();

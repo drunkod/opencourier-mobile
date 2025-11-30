@@ -17,11 +17,12 @@ import { CustomerNotes, Photo } from '@app/types/types';
 import { Images } from '@app/utilities/images';
 import { Button, ButtonType } from '@app/components/Button/Button';
 import { PhotoCell } from '@app/components/PhotoCell/PhotoCell';
-import { services } from '@app/services/service';
+// TODO: Legacy backend service - migrate to Jazz Tools
+// import { services } from '@app/services/service';
 import { useTranslation } from 'react-i18next';
 import { RootScreen } from '@app/navigation/types';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { QueryKeys } from '@app/utilities/queryKeys';
+// import { useMutation, useQueryClient } from '@tanstack/react-query';
+// import { QueryKeys } from '@app/utilities/queryKeys';
 
 type Props = MainScreenProp<'MarkAsDelivered'>;
 
@@ -31,7 +32,7 @@ type SectionListItem = {
 
 export const MarkAsDelivered = ({ navigation, route }: Props) => {
   const { t } = useTranslation();
-  const queryClient = useQueryClient();
+  // const queryClient = useQueryClient();
 
   const { order } = route.params;
   const [selectedPhoto, setSelectedPhoto] = useState<Photo | undefined>(
@@ -55,16 +56,17 @@ export const MarkAsDelivered = ({ navigation, route }: Props) => {
   ]);
   const [selectedNotes, setSelectedNotes] = useState<string[]>([]);
 
-  const { mutate: markAsDelivered, isPending } = useMutation({
-    mutationFn: services.orderService.markAsDelivered,
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: [QueryKeys.inProgressOrders, QueryKeys.orderHistory],
-      });
-      navigation.goBack();
-    },
-    onError: error => Alert.alert('Error marking as delivered', error.message),
-  });
+  // TODO: Migrate to Jazz Tools - legacy mutation commented out
+  // const { mutate: markAsDelivered, isPending } = useMutation({
+  //   mutationFn: services.orderService.markAsDelivered,
+  //   onSuccess: () => {
+  //     queryClient.invalidateQueries({
+  //       queryKey: [QueryKeys.inProgressOrders, QueryKeys.orderHistory],
+  //     });
+  //     navigation.goBack();
+  //   },
+  //   onError: error => Alert.alert('Error marking as delivered', error.message),
+  // });
 
   const handleNotePress = (note: string) => {
     const found = selectedNotes.filter(obj => obj === note);
@@ -90,6 +92,7 @@ export const MarkAsDelivered = ({ navigation, route }: Props) => {
   };
 
   const onAddNote = () => {
+    // @ts-ignore - Modal not in MainStackParamList, needs to be added to RootStackParamList
     navigation.navigate(RootScreen.AddNoteModal, {
       onNoteAdded: addNote,
       order: order,
@@ -154,10 +157,13 @@ export const MarkAsDelivered = ({ navigation, route }: Props) => {
   };
 
   const handleConfirm = () => {
-    markAsDelivered({
-      id: order.id,
-      note: selectedNotes.length > 0 ? selectedNotes[0] : '',
-    });
+    // TODO: Implement with Jazz Tools
+    // markAsDelivered({
+    //   id: order.id,
+    //   note: selectedNotes.length > 0 ? selectedNotes[0] : '',
+    // });
+    console.log('Mark as delivered:', order.id, selectedNotes);
+    navigation.goBack();
   };
 
   return (
@@ -212,7 +218,7 @@ export const MarkAsDelivered = ({ navigation, route }: Props) => {
         )}
 
         <Button
-          isLoading={isPending}
+          isLoading={false} // TODO: Add loading state with Jazz Tools
           style={styles.buttonConfirm}
           textStyle={styles.buttonTextStyle}
           icon={Images.CheckWhite}

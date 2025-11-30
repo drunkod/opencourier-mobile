@@ -20,7 +20,7 @@ import { formatMockDate } from '@app/utilities/dates';
 import { MainScreens } from '@app/navigation/main/types';
 import { useTranslation } from 'react-i18next';
 
-type Props = DrawerScreenProp<DrawerScreens.Earnings>;
+type Props = DrawerScreenProp<'Earnings'>;
 
 type DataSourceType = Order | string;
 
