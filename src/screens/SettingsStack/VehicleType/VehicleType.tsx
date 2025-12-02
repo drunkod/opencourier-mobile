@@ -30,7 +30,7 @@ export const VehicleTypeScreen = ({ navigation }: Props) => {
     }
     setSelectedVehicle(vehicle);
     updateSettings({
-      vehicleType: vehicle.toUpperCase(),
+      settings: { vehicleType: vehicle.toUpperCase() },
     });
   };
 

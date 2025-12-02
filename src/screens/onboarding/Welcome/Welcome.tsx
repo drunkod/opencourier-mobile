@@ -20,7 +20,8 @@ import { PopularNearbyInstances } from '@app/components/PopularNearbyInstances/P
 import { TEST_INSTANCES } from '@app/utilities/testData';
 import { InstanceCell } from '@app/components/InstanceCell/InstanceCell';
 import { Instance } from '@app/types/types';
-import { client } from '@app/services/Client';
+// TODO: Legacy backend client - removed during Jazz Tools migration
+// import { client } from '@app/services/Client';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type Props = OnboardingScreenProp<OnboardingScreen.Welcome>;
@@ -31,7 +32,8 @@ export const WelcomeScreen = ({ navigation }: Props) => {
 
   const onInstancePress = async (instance: Instance) => {
     console.log('Setting base url:', instance.link);
-    client.defaults.baseURL = instance.link;
+    // TODO: Legacy client setup - migrate to Jazz Tools
+    // client.defaults.baseURL = instance.link;
     await AsyncStorage.setItem('BASE_URL', instance.link);
     await AsyncStorage.setItem('SOCKET_BASE_URL', instance.ws_link);
     navigation.navigate(OnboardingScreen.InstanceDetails, {

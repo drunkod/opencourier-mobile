@@ -34,12 +34,12 @@ function getShiftRanges(dayAvailability: Date[][] | undefined) {
   console.log('dayAvailability', dayAvailability);
   return dayAvailability
     ? dayAvailability.map(
-        dates =>
-          ({
-            start: dates[0],
-            end: dates[1],
-          } as ShiftRange),
-      )
+      dates =>
+      ({
+        start: dates[0],
+        end: dates[1],
+      } as ShiftRange),
+    )
     : [];
 }
 
@@ -49,14 +49,14 @@ function getSelectedDays(
   console.log('shiftAvailability', shiftAvailability);
   return shiftAvailability
     ? Object.entries(shiftAvailability)
-        .filter(item => {
-          const shifts = item[1];
-          return shifts.length > 0;
-        })
-        .map(item => {
-          const dayOfTheWeek = item[0];
-          return capitalizeFirstLetter(dayOfTheWeek);
-        })
+      .filter(item => {
+        const shifts = item[1];
+        return shifts.length > 0;
+      })
+      .map(item => {
+        const dayOfTheWeek = item[0];
+        return capitalizeFirstLetter(dayOfTheWeek);
+      })
     : [];
 }
 
@@ -86,7 +86,7 @@ export const ShiftAvailabilityScreen = ({ navigation }: Props) => {
   );
 
   const { settings, updateSettings, isUpdating } = useUserSettings();
-  const availability = settings?.shiftAvailability ?? {};
+  const availability = (settings?.shiftAvailability ?? {}) as unknown as ShiftAvailability;
 
   const [selectedDays, setSelectedDays] = useState<string[]>(
     getSelectedDays(availability ?? []),
@@ -160,7 +160,7 @@ export const ShiftAvailabilityScreen = ({ navigation }: Props) => {
       item.day.toLowerCase(),
       range,
     );
-    updateSettings({ shiftAvailability: settingsUpdate });
+    updateSettings({ settings: { shiftAvailability: settingsUpdate as any } });
   };
 
   function getAddDateUpdate(
@@ -172,51 +172,51 @@ export const ShiftAvailabilityScreen = ({ navigation }: Props) => {
         sunday:
           day == 'sunday'
             ? [
-                ...shiftAvailability.sunday,
-                [shiftToAdd.start!, shiftToAdd.end!],
-              ]
+              ...shiftAvailability.sunday,
+              [shiftToAdd.start!, shiftToAdd.end!],
+            ]
             : shiftAvailability.sunday,
         monday:
           day == 'monday'
             ? [
-                ...shiftAvailability.monday,
-                [shiftToAdd.start!, shiftToAdd.end!],
-              ]
+              ...shiftAvailability.monday,
+              [shiftToAdd.start!, shiftToAdd.end!],
+            ]
             : shiftAvailability.monday,
         tuesday:
           day == 'tuesday'
             ? [
-                ...shiftAvailability.tuesday,
-                [shiftToAdd.start!, shiftToAdd.end!],
-              ]
+              ...shiftAvailability.tuesday,
+              [shiftToAdd.start!, shiftToAdd.end!],
+            ]
             : shiftAvailability.tuesday,
         wednesday:
           day == 'wednesday'
             ? [
-                ...shiftAvailability.wednesday,
-                [shiftToAdd.start!, shiftToAdd.end!],
-              ]
+              ...shiftAvailability.wednesday,
+              [shiftToAdd.start!, shiftToAdd.end!],
+            ]
             : shiftAvailability.wednesday,
         thursday:
           day == 'thursday'
             ? [
-                ...shiftAvailability.thursday,
-                [shiftToAdd.start!, shiftToAdd.end!],
-              ]
+              ...shiftAvailability.thursday,
+              [shiftToAdd.start!, shiftToAdd.end!],
+            ]
             : shiftAvailability.thursday,
         friday:
           day == 'friday'
             ? [
-                ...shiftAvailability.friday,
-                [shiftToAdd.start!, shiftToAdd.end!],
-              ]
+              ...shiftAvailability.friday,
+              [shiftToAdd.start!, shiftToAdd.end!],
+            ]
             : shiftAvailability.friday,
         saturday:
           day == 'saturday'
             ? [
-                ...shiftAvailability.saturday,
-                [shiftToAdd.start!, shiftToAdd.end!],
-              ]
+              ...shiftAvailability.saturday,
+              [shiftToAdd.start!, shiftToAdd.end!],
+            ]
             : shiftAvailability.saturday,
       } as ShiftAvailability;
     } else {
@@ -244,44 +244,44 @@ export const ShiftAvailabilityScreen = ({ navigation }: Props) => {
       sunday:
         day == 'sunday'
           ? shiftAvailability.sunday.filter(
-              shift => shift[0] != range.start && shift[1] != range.end,
-            )
+            shift => shift[0] != range.start && shift[1] != range.end,
+          )
           : shiftAvailability.sunday,
       monday:
         day == 'monday'
           ? shiftAvailability.monday.filter(
-              shift => shift[0] != range.start && shift[1] != range.end,
-            )
+            shift => shift[0] != range.start && shift[1] != range.end,
+          )
           : shiftAvailability.monday,
       tuesday:
         day == 'tuesday'
           ? shiftAvailability.tuesday.filter(
-              shift => shift[0] != range.start && shift[1] != range.end,
-            )
+            shift => shift[0] != range.start && shift[1] != range.end,
+          )
           : shiftAvailability.tuesday,
       wednesday:
         day == 'wednesday'
           ? shiftAvailability.wednesday.filter(
-              shift => shift[0] != range.start && shift[1] != range.end,
-            )
+            shift => shift[0] != range.start && shift[1] != range.end,
+          )
           : shiftAvailability.wednesday,
       thursday:
         day == 'thursday'
           ? shiftAvailability.thursday.filter(
-              shift => shift[0] != range.start && shift[1] != range.end,
-            )
+            shift => shift[0] != range.start && shift[1] != range.end,
+          )
           : shiftAvailability.thursday,
       friday:
         day == 'friday'
           ? shiftAvailability.friday.filter(
-              shift => shift[0] != range.start && shift[1] != range.end,
-            )
+            shift => shift[0] != range.start && shift[1] != range.end,
+          )
           : shiftAvailability.friday,
       saturday:
         day == 'saturday'
           ? shiftAvailability.saturday.filter(
-              shift => shift[0] != range.start && shift[1] != range.end,
-            )
+            shift => shift[0] != range.start && shift[1] != range.end,
+          )
           : shiftAvailability.saturday,
     } as ShiftAvailability;
   }
@@ -367,7 +367,7 @@ export const ShiftAvailabilityScreen = ({ navigation }: Props) => {
         day.toLowerCase(),
       );
 
-      updateSettings({ shiftAvailability: settingsUpdate });
+      updateSettings({ settings: { shiftAvailability: settingsUpdate as any } });
 
       setShiftToAdd({ start: undefined, end: undefined });
       setDayToAddShiftTo(undefined);
@@ -385,9 +385,9 @@ export const ShiftAvailabilityScreen = ({ navigation }: Props) => {
         </View>
         <TouchableOpacity
           onPress={() =>
-            navigation.navigate(RootScreen.SelectOrganizationModal, {
+            (navigation as any).navigate(RootScreen.SelectOrganizationModal, {
               preselected: selectedOrg,
-              onOrganizationSelect: org => setSelectedOrg(org),
+              onOrganizationSelect: (org: Organization) => setSelectedOrg(org),
             })
           }
           style={styles.org}>

@@ -4,7 +4,8 @@ import { RootScreen, RootScreenProp } from '@app/navigation/types';
 import { Images } from '@app/utilities/images';
 import { styles } from './Loading.styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { client } from '@app/services/Client';
+// TODO: Legacy backend client - removed during Jazz Tools migration
+// import { client } from '@app/services/Client';
 import useUser from '@app/hooks/useUser';
 
 type Props = RootScreenProp<RootScreen.Loading>;
@@ -22,7 +23,8 @@ export const LoadingScreen = ({ navigation }: Props) => {
     const savedToken = await AsyncStorage.getItem('token');
     const baseUrl = await AsyncStorage.getItem('BASE_URL');
     if (savedToken && baseUrl) {
-      client.defaults.baseURL = baseUrl;
+      // TODO: Legacy client setup - migrate to Jazz Tools
+      // client.defaults.baseURL = baseUrl;
       setToken(savedToken);
     } else {
       navigation.navigate(RootScreen.Onboarding);

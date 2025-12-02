@@ -42,7 +42,7 @@ export const WeightOrderScreen = ({ navigation }: Props) => {
     }
 
     setSelectedOrder(result);
-    updateSettings({ foodPreferences: result });
+    updateSettings({ settings: { foodPreferences: result } });
   };
 
   const renderItem = ({ item }: { item: string; index: number }) => {

@@ -198,46 +198,46 @@ export const SettingsScreen = ({ navigation }: Props) => {
 
   const onPressCell = (item: string) => {
     if (item === SettingsOptions.licenses) {
-      navigation.navigate(MainScreens.Licences);
+      (navigation as any).navigate(MainScreens.Licences);
     }
     if (item === SettingsOptions.language) {
-      navigation.navigate(MainScreens.LanguageScreen);
+      (navigation as any).navigate(MainScreens.LanguageScreen);
     }
     if (item === SettingsOptions.theme) {
-      navigation.navigate(MainScreens.ThemeScreen);
+      (navigation as any).navigate(MainScreens.ThemeScreen);
     }
     if (item === SettingsOptions.operatingArea) {
-      navigation.navigate(MainScreens.OperatingArea);
+      (navigation as any).navigate(MainScreens.OperatingArea);
     }
     if (item === SettingsOptions.accessibility) {
-      navigation.navigate(MainScreens.Accessibility);
+      (navigation as any).navigate(MainScreens.Accessibility);
     }
     if (item === SettingsOptions.emergencyContact) {
-      navigation.navigate(MainScreens.EmergencyContact);
+      (navigation as any).navigate(MainScreens.EmergencyContact);
     }
     if (item === SettingsOptions.navigation) {
-      navigation.navigate(MainScreens.NavigationScreen);
+      (navigation as any).navigate(MainScreens.NavigationScreen);
     }
     if (item === SettingsOptions.vehicleType) {
-      navigation.navigate(MainScreens.VehicleTypeScreen);
+      (navigation as any).navigate(MainScreens.VehicleTypeScreen);
     }
     if (item === SettingsOptions.restaurantTypes) {
-      navigation.navigate(MainScreens.RestaurantTypeScreen);
+      (navigation as any).navigate(MainScreens.RestaurantTypeScreen);
     }
     if (item === SettingsOptions.cuisineTypes) {
-      navigation.navigate(MainScreens.CuisineTypeScreen);
+      (navigation as any).navigate(MainScreens.CuisineTypeScreen);
     }
     if (item === SettingsOptions.earningMethod) {
-      navigation.navigate(MainScreens.EarningsMethodScreen);
+      (navigation as any).navigate(MainScreens.EarningsMethodScreen);
     }
     if (item === SettingsOptions.orderTypes) {
-      navigation.navigate(MainScreens.OrderPreferenceScreen);
+      (navigation as any).navigate(MainScreens.OrderPreferenceScreen);
     }
     if (item === SettingsOptions.weightOrder) {
-      navigation.navigate(MainScreens.WeightOrderScreen);
+      (navigation as any).navigate(MainScreens.WeightOrderScreen);
     }
     if (item === SettingsOptions.shiftAvailability) {
-      navigation.navigate(MainScreens.ShiftAvailabilityScreen);
+      (navigation as any).navigate(MainScreens.ShiftAvailabilityScreen);
     }
   };
   const renderItem = ({
@@ -254,7 +254,7 @@ export const SettingsScreen = ({ navigation }: Props) => {
         subtitle={cellSubtitleForSetting(item.cellData)}
         cellType={item.cellType}
         onPress={onPressCell}
-        switchValue={form[item.cellData] ?? false}
+        switchValue={(form as any)[item.cellData] ?? false}
         onSwitchValueChange={isOn => {
           setForm({
             ...form,
@@ -285,7 +285,7 @@ export const SettingsScreen = ({ navigation }: Props) => {
     <View style={styles.container}>
       <SafeAreaView style={styles.safe}>
         <View style={styles.navHeader}>
-          <BackNavButton onPress={() => navigation.toggleDrawer()} />
+          <BackNavButton onPress={() => (navigation as any).toggleDrawer()} />
           <Text style={styles.title}>{t('translations:settings')}</Text>
         </View>
 

@@ -27,8 +27,11 @@ export const ThemeScreen = ({ navigation }: Props) => {
         title={item.name}
         subtitle={undefined}
         cellType={SettingsCellType.radioButton}
-        onSelect={lng => setSelectedTheme(lng)}
-        isSelected={selectedTheme === item.name}
+        onSelect={themeName => {
+          const found = SUPPORTED_THEMES.find(t => t.name === themeName);
+          if (found) setSelectedTheme(found);
+        }}
+        isSelected={selectedTheme.name === item.name}
       />
     );
   };

@@ -140,7 +140,7 @@ export const AccessibilityScreen = ({ navigation }: Props) => {
         subtitle={cellSubtitleForSetting(item.cellData)}
         style={{ marginBottom: 16 }}
         onPress={onPress}
-        switchValue={form[item.cellData]}
+        switchValue={(form as any)[item.cellData]}
         onSwitchValueChange={isOn =>
           setForm({ ...form, [item.cellData]: isOn })
         }

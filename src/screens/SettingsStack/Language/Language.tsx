@@ -27,8 +27,11 @@ export const LanguageScreen = ({ navigation }: Props) => {
         title={item.name}
         subtitle={`(${item.abreviation})`}
         cellType={SettingsCellType.radioButton}
-        onSelect={lng => setSelectedLanguage(lng)}
-        isSelected={selectedLanguage === item.name}
+        onSelect={lng => {
+          const found = SUPPORTED_LANGUAGES.find(l => l.name === lng);
+          if (found) setSelectedLanguage(found);
+        }}
+        isSelected={selectedLanguage.name === item.name}
       />
     );
   };

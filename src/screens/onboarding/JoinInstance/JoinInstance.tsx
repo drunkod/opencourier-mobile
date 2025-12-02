@@ -12,7 +12,8 @@ import { Images } from '@app/utilities/images';
 import { TextField } from '@app/components/TextField/TextField';
 import { validateEmail } from '@app/utilities/text';
 import { useMutation } from '@tanstack/react-query';
-import { services } from '@app/services/service';
+// TODO: Legacy backend service - removed during Jazz Tools migration
+// import { services } from '@app/services/service';
 import useUser from '@app/hooks/useUser';
 
 type Props = OnboardingScreenProp<OnboardingScreen.JoinInstance>;
@@ -44,21 +45,23 @@ export const JoinInstance = ({ navigation, route }: Props) => {
 
   const { refetchUser } = useUser();
 
-  const { mutate: register, isPending } = useMutation({
-    mutationFn: services.userService.signup,
-    onSuccess: () => {
-      refetchUser();
-    },
-    onError: error => {
-      setErrors({
-        email: error.message ?? 'Wrong email or password',
-        password: undefined,
-        firstname: undefined,
-        lastname: undefined,
-        confirmPassword: undefined,
-      });
-    },
-  });
+  // TODO: Legacy mutation - migrate to Jazz Tools
+  // const { mutate: register, isPending } = useMutation({
+  //   mutationFn: services.userService.signup,
+  //   onSuccess: () => {
+  //     refetchUser();
+  //   },
+  //   onError: error => {
+  //     setErrors({
+  //       email: error.message ?? 'Wrong email or password',
+  //       password: undefined,
+  //       firstname: undefined,
+  //       lastname: undefined,
+  //       confirmPassword: undefined,
+  //     });
+  //   },
+  // });
+  const isPending = false;
 
   const validateFields = () => {
     var oldState = errors;
@@ -104,7 +107,10 @@ export const JoinInstance = ({ navigation, route }: Props) => {
   }, [firstName, lastName, email, password, confirmPassword]);
 
   const onSignupHandle = () => {
-    register({ firstName, lastName, password, email });
+    // TODO: Implement with Jazz Tools
+    // joinInstance({ firstName, lastName, password, email });
+    console.log('Join instance', { firstName, lastName, password, email });
+    navigation.goBack();
   };
 
   return (

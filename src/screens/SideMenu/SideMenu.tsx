@@ -26,9 +26,12 @@ import Geolocation from 'react-native-geolocation-service';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import useUser from '@app/hooks/useUser';
 import { useQueryClient } from '@tanstack/react-query';
-import { services } from '@app/services/service';
+// TODO: Legacy backend service - removed during Jazz Tools migration
+// import { services } from '@app/services/service';
 
-type Props = RootScreenProp<RootScreen.Loading>;
+import { DrawerContentComponentProps } from '@react-navigation/drawer';
+
+type Props = DrawerContentComponentProps;
 
 const section1 = [SideMenuItem.Location, SideMenuItem.AutoOrders];
 const section2 = [
@@ -129,25 +132,26 @@ export const SideMenu = ({ navigation }: Props) => {
 
   const onLogoutHandle = async () => {
     await AsyncStorage.multiRemove(['token', 'BASE_URL', 'SOCKET_BASE_URL']);
-    services.logout();
+    // TODO: Implement Jazz Tools logout
+    // services.logout();
     queryClient.resetQueries();
   };
 
   const handlePress = (item: SideMenuItem) => {
     switch (item) {
       case SideMenuItem.Orders:
-        navigation.navigate(DrawerScreens.Home);
+        (navigation as any).navigate(DrawerScreens.Home);
         break;
       case SideMenuItem.Earnings:
-        navigation.navigate(DrawerScreens.Earnings);
+        (navigation as any).navigate(DrawerScreens.Earnings);
         break;
       case SideMenuItem.Payout:
-        navigation.navigate(DrawerScreens.PaymentMethods);
+        (navigation as any).navigate(DrawerScreens.PaymentMethods);
         break;
       case SideMenuItem.Support:
         break;
       case SideMenuItem.Settings:
-        navigation.navigate(DrawerScreens.Settings);
+        (navigation as any).navigate(DrawerScreens.Settings);
         break;
       case SideMenuItem.Logout:
         Alert.alert('Notice', 'Are you sure you want to log out?', [
@@ -181,7 +185,7 @@ export const SideMenu = ({ navigation }: Props) => {
         <View style={styles.containerProfile}>
           <ProfileBadge
             discreteStatusIndicator
-            userStatus={status}
+            userStatus={status as UserStatus}
             onPress={() => undefined}
           />
           <Text style={styles.textName}>
@@ -201,7 +205,7 @@ export const SideMenu = ({ navigation }: Props) => {
         />
         <UserStatusSelector
           style={styles.cell}
-          selected={status}
+          selected={status as UserStatus}
           onPress={onUserStatusSelect}
         />
         <View style={styles.separator} />

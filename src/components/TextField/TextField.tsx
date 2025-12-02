@@ -21,7 +21,7 @@ type Props = {
 
 type TextFieldProps = TextInputProps & Props;
 
-export const TextField = forwardRef((props: TextFieldProps, ref) => {
+export const TextField = forwardRef<TextInput, TextFieldProps>((props, ref) => {
   const {
     value,
     placeholder,

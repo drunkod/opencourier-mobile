@@ -37,7 +37,7 @@ export const OrderPreferenceScreen = ({ navigation }: Props) => {
 
     setSelectedPreference(result);
     updateSettings({
-      foodPreferences: result,
+      settings: { foodPreferences: result },
     });
   };
 

@@ -35,7 +35,7 @@ export const CuisineTypeScreen = ({ navigation }: Props) => {
       result = [...selectedCuisine, cuisine];
     }
     setSelectedCuisine(result);
-    updateSettings({ cuisineTypes: result });
+    updateSettings({ settings: { cuisineTypes: result } });
   };
 
   const renderItem = ({ item }: { item: string; index: number }) => {

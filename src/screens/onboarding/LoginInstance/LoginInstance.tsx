@@ -13,7 +13,8 @@ import { TextField } from '@app/components/TextField/TextField';
 import { validateEmail } from '@app/utilities/text';
 import { Colors } from '@app/styles/colors';
 import { generateBoxShadowStyle } from '@app/utilities/styles';
-import { services } from '@app/services/service';
+// TODO: Legacy backend service - removed during Jazz Tools migration
+// import { services } from '@app/services/service';
 import { useMutation } from '@tanstack/react-query';
 import useUser from '@app/hooks/useUser';
 
@@ -43,19 +44,22 @@ export const LoginInstance = ({ navigation, route }: Props) => {
     password: undefined,
   });
 
-  const {
-    data,
-    mutate: loginUser,
-    isPending,
-  } = useMutation({
-    mutationFn: services.userService.login,
-    onError: error => {
-      setErrors({
-        email: error.message ?? 'Wrong email or password',
-        password: undefined,
-      });
-    },
-  });
+  // TODO: Legacy mutation - migrate to Jazz Tools
+  // const {
+  //   data,
+  //   mutate: loginUser,
+  //   isPending,
+  // } = useMutation({
+  //   mutationFn: services.userService.login,
+  //   onError: error => {
+  //     setErrors({
+  //       email: error.message ?? 'Wrong email or password',
+  //       password: undefined,
+  //     });
+  //   },
+  // });
+  const isPending = false;
+  const data = undefined;
 
   const { user } = useUser(data !== undefined);
 
@@ -82,7 +86,10 @@ export const LoginInstance = ({ navigation, route }: Props) => {
   }, [email, password]);
 
   const onLoginHandle = () => {
-    loginUser({ email, password });
+    // TODO: Implement with Jazz Tools
+    // loginUser({ email, password });
+    console.log('Login', { email, password });
+    navigation.goBack();
   };
 
   return (

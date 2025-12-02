@@ -36,9 +36,7 @@ export const RestaurantTypeScreen = ({ navigation }: Props) => {
     }
 
     setSelectedRestaurant(result);
-    updateSettings({
-      restaurantTypes: result,
-    });
+    updateSettings({ settings: { restaurantTypes: result } });
   };
 
   const renderItem = ({ item }: { item: string; index: number }) => {

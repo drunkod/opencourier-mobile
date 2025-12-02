@@ -73,7 +73,7 @@ export const HomeScreen = ({ navigation }: Props) => {
   });
 
   const onProfilePress = () => {
-    navigation.toggleDrawer();
+    (navigation as any).toggleDrawer();
   };
 
   const emptyState = useMemo(() => {
@@ -161,13 +161,15 @@ export const HomeScreen = ({ navigation }: Props) => {
               })
             }
             onOrderItemsListForCustomer={() => {
-              navigation.navigate(MainScreens.ItemsCollected, {
+              // @ts-ignore - Cross-stack navigation
+              (navigation as any).navigate(MainScreens.ItemsCollected, {
                 customerName: item.dropoffName,
                 items: item.orderItems,
               });
             }}
             onReportIssue={order =>
-              navigation.navigate(MainScreens.ReportIssue, { order: order })
+              // @ts-ignore - Cross-stack navigation
+              (navigation as any).navigate(MainScreens.ReportIssue, { order: order })
             }
           />
         );
@@ -308,14 +310,6 @@ export const HomeScreen = ({ navigation }: Props) => {
     })();
   }, []);
 
-  const ListEmptyComponent = useCallback(() => {
-    if (isLoading) {
-      return <HistorySkeleton />;
-    } else {
-      return <HomeEmptyStateComponent state={emptyState} />;
-    }
-  }, [HistorySkeleton, emptyState, isLoading]);
-
   const HistorySkeleton = useCallback(() => {
     if (
       selectedTab === HomeTabItem.History &&
@@ -333,6 +327,20 @@ export const HomeScreen = ({ navigation }: Props) => {
       return null;
     }
   }, [dataSource.length, isLoadingOrders, selectedTab]);
+
+  const ListEmptyComponent = useCallback(() => {
+    if (isLoading) {
+      return <HistorySkeleton />;
+    } else {
+      return <HomeEmptyStateComponent state={emptyState} />;
+    }
+  }, [HistorySkeleton, emptyState, isLoading]);
+
+  useEffect(() => {
+    if (showMapActionSheet !== undefined) {
+      showActionSheeet(showMapActionSheet.order);
+    }
+  }, [showMapActionSheet]);
 
   return (
     <View style={styles.container}>
@@ -379,10 +387,7 @@ export const HomeScreen = ({ navigation }: Props) => {
         />
       )}
 
-      <>
-        {showMapActionSheet !== undefined &&
-          showActionSheeet(showMapActionSheet.order)}
-      </>
+
     </View>
   );
 };

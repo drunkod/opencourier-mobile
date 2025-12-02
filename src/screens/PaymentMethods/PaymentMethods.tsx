@@ -41,7 +41,7 @@ export const PaymentMethods = ({ navigation }: Props) => {
       />
       <SafeAreaView style={styles.safe}>
         <View style={styles.navHeader}>
-          <BackNavButton onPress={() => navigation.toggleDrawer()} />
+          <BackNavButton onPress={() => (navigation as any).toggleDrawer()} />
           <Text style={styles.title}>{t('translations:payment_methods')}</Text>
         </View>
         <PaymentTabs

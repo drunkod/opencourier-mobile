@@ -22,7 +22,15 @@ import { useTranslation } from 'react-i18next';
 
 type Props = DrawerScreenProp<'Earnings'>;
 
-type DataSourceType = Order | string;
+// TODO: Remove LegacyOrder when migrating to Jazz Tools
+type LegacyOrder = {
+  id: string;
+  restaurant: { name: string };
+  date: string;
+  price: number;
+};
+
+type DataSourceType = LegacyOrder | string;
 
 export const Earnings = ({ navigation }: Props) => {
   const { t } = useTranslation();
@@ -81,7 +89,7 @@ export const Earnings = ({ navigation }: Props) => {
           />
           <Button
             title={t('translations:see_payout_history')}
-            onPress={() => navigation.navigate(MainScreens.PayoutActivity)}
+            onPress={() => (navigation as any).navigate(MainScreens.PayoutActivity)}
             type={ButtonType.white}
           />
         </View>
@@ -100,12 +108,12 @@ export const Earnings = ({ navigation }: Props) => {
       return emptyCell();
     }
     if (typeof item === 'object') {
-      const order: Order = item;
+      const order = item as LegacyOrder;
       return (
         <EarningsCell
           restaurantName={
             selectedTab === EarningsTabItem.Today
-              ? item.restaurant.name
+              ? order.restaurant.name
               : undefined
           }
           date={moment(order.date, formatMockDate)}
@@ -114,11 +122,12 @@ export const Earnings = ({ navigation }: Props) => {
         />
       );
     }
+    return null;
   };
 
   useEffect(() => {
     if (selectedTab === EarningsTabItem.Today) {
-      const filtered = TEST_EARNINGS_ORDERS.filter(order => {
+      const filtered = (TEST_EARNINGS_ORDERS as unknown as LegacyOrder[]).filter(order => {
         const moment1 = moment(order.date, formatMockDate);
         const moment2 = moment();
         return moment1.isSame(moment2, 'day');
@@ -133,8 +142,8 @@ export const Earnings = ({ navigation }: Props) => {
     }
 
     if (selectedTab === EarningsTabItem.All) {
-      setDataSource(TEST_EARNINGS_ORDERS);
-      const total: number = TEST_EARNINGS_ORDERS.reduce(
+      setDataSource(TEST_EARNINGS_ORDERS as unknown as LegacyOrder[]);
+      const total: number = (TEST_EARNINGS_ORDERS as unknown as LegacyOrder[]).reduce(
         (sum, current) => sum + current.price,
         0,
       );
@@ -143,7 +152,7 @@ export const Earnings = ({ navigation }: Props) => {
     }
 
     if (selectedTab === EarningsTabItem.Weekly) {
-      const filtered = TEST_EARNINGS_ORDERS.filter(order => {
+      const filtered = (TEST_EARNINGS_ORDERS as unknown as LegacyOrder[]).filter(order => {
         const moment1 = moment(order.date, formatMockDate);
         const moment2 = moment();
         return moment1.isSame(moment2, 'week');
@@ -176,7 +185,7 @@ export const Earnings = ({ navigation }: Props) => {
   }, [selectedTab, orderCount]);
 
   const handleWeekChange = (start: Moment, end: Moment) => {
-    const filtered = TEST_EARNINGS_ORDERS.filter(order => {
+    const filtered = (TEST_EARNINGS_ORDERS as unknown as LegacyOrder[]).filter(order => {
       const moment1 = moment(order.date, formatMockDate);
       return moment1.isSame(start, 'week');
     });
@@ -197,7 +206,7 @@ export const Earnings = ({ navigation }: Props) => {
       />
       <SafeAreaView style={styles.safe}>
         <View style={styles.navHeader}>
-          <BackNavButton onPress={() => navigation.toggleDrawer()} />
+          <BackNavButton onPress={() => (navigation as any).toggleDrawer()} />
           <Text style={styles.title}>{t('translations:earnings')}</Text>
         </View>
         <View style={styles.containerEarnings}>
@@ -222,7 +231,7 @@ export const Earnings = ({ navigation }: Props) => {
           keyExtractor={(item, index) => index.toString()}
           data={dataSource}
           renderItem={renderItem}
-          ListFooterComponent={renderFooter}
+          ListFooterComponent={renderFooter()}
         />
       </SafeAreaView>
     </View>

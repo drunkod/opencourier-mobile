@@ -119,7 +119,7 @@ const ButtonSwipe: FunctionComponent<Props> = ({
       ) : (
         <>
           <PanGestureHandler
-            onGestureEvent={animatedGestureHandler}
+            onGestureEvent={animatedGestureHandler as any}
             enabled={enabled}>
             <Animated.View style={[styles.swipeable, AnimatedStyles.swipeable]}>
               <LinearGradient

@@ -22,7 +22,7 @@ export const ForgotPasswordScreen = ({ navigation }: Props) => {
     setEmailIsValid(validateEmail(email));
   }, [email]);
 
-  const handleContinue = () => {};
+  const handleContinue = () => { };
 
   const onBackHandle = () => {
     navigation.goBack();
@@ -35,13 +35,14 @@ export const ForgotPasswordScreen = ({ navigation }: Props) => {
           style={styles.scroll}
           contentContainerStyle={styles.scrollContent}>
           <Text style={styles.textTitle}>Forgot password</Text>
-          <TextField
-            emailValid={emailIsValid}
-            emailCheck
-            placeholder="Email"
-            value={email}
-            onChangeText={setEmail}
-          />
+          {/* Legacy screen - prop types don't match new TextField */}
+          {(TextField as any)({
+            emailValid: emailIsValid,
+            emailCheck: true,
+            placeholder: "Email",
+            value: email,
+            onChangeText: setEmail,
+          })}
           <Button
             style={styles.buttonLogin}
             type={ButtonType.black}
