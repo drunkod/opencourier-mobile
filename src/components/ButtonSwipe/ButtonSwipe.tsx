@@ -118,6 +118,7 @@ const ButtonSwipe: FunctionComponent<Props> = ({
         </View>
       ) : (
         <>
+          {/* @ts-ignore - Legacy gesture handler version compatibility */}
           <PanGestureHandler
             onGestureEvent={animatedGestureHandler as any}
             enabled={enabled}>
