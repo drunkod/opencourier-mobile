@@ -16,7 +16,7 @@ export const useJazzInit = () => {
     // @ts-ignore
     if (!me.profile || !me.profile.firstName) {
       console.log('[Jazz Init] Initializing profile...');
-      // @ts-ignore
+      // @ts-ignore - Legacy initialization pattern, will be refactored with proper Jazz schema
       me.profile = {
         firstName: 'Courier',
         lastName: 'User',
@@ -27,14 +27,14 @@ export const useJazzInit = () => {
           latitude: 0,
           longitude: 0,
         },
-      };
+      } as any;
     }
 
     // Initialize root if not exists
     // @ts-ignore
     if (!me.root) {
       console.log('[Jazz Init] Initializing root...');
-      // @ts-ignore
+      // @ts-ignore - Legacy initialization pattern, will be refactored with proper Jazz schema
       me.root = {
         orders: [],
         settings: {
@@ -48,7 +48,7 @@ export const useJazzInit = () => {
           preferredRestaurantPartners: [],
           dietaryRestrictions: [],
         },
-      };
+      } as any;
     }
   }, [me]);
 
