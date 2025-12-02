@@ -4,13 +4,13 @@ export const Location = co.map({
     id: z.string(),
     addressLine1: z.string(),
     addressLine2: z.string(),
-    street: z.optional(z.string()),
-    houseNumber: z.optional(z.string()),
-    state: z.optional(z.string()),
-    city: z.optional(z.string()),
-    postCode: z.optional(z.string()),
-    stateCode: z.optional(z.string()),
-    countryCode: z.optional(z.string()),
+    street: z.string().optional(),
+    houseNumber: z.string().optional(),
+    state: z.string().optional(),
+    city: z.string().optional(),
+    postCode: z.string().optional(),
+    stateCode: z.string().optional(),
+    countryCode: z.string().optional(),
     longitude: z.number(),
     latitude: z.number(),
     formattedAddress: z.string(),
@@ -69,7 +69,7 @@ export const Order = co.map({
     pickupPhoneNumber: z.string(),
     pickupBusinessName: z.string(),
     pickupNotes: z.string(),
-    pickupVerification: co.optional(Verification),
+    pickupVerification: Verification.optional(),
     pickupLocationId: z.string(),
     pickupReadyAt: z.string(),
     pickupDeadlineAt: z.string(),
@@ -78,13 +78,13 @@ export const Order = co.map({
     dropoffBusinessName: z.string(),
     dropoffNotes: z.string(),
     dropoffSellerNotes: z.string(),
-    dropoffVerification: co.optional(Verification),
+    dropoffVerification: Verification.optional(),
     dropoffReadyAt: z.string(),
     dropoffEta: z.string(),
     dropoffDeadlineAt: z.string(),
     deliverableAction: z.string(),
     undeliverableAction: z.string(),
-    undeliverableReason: z.optional(z.string()),
+    undeliverableReason: z.string().optional(),
     dropoffLocationId: z.string(),
     deliveryTypes: z.array(z.string()),
     requiresDropoffSignature: z.string(),
@@ -98,13 +98,13 @@ export const Order = co.map({
     totalCost: z.number(),
     fee: z.number(),
     // pay: any
-    tips: z.optional(z.number()),
+    tips: z.number().optional(),
     totalCompensation: z.number(),
     pickupTypes: z.array(z.string()),
     // imageType, imageName, imageDate
     idempotencyKey: z.string(),
     externalStoreId: z.string(),
-    returnVerification: co.optional(Verification),
+    returnVerification: Verification.optional(),
     externalId: z.string(),
     courierId: z.string(),
     partnerId: z.string(),
@@ -119,56 +119,37 @@ export const Order = co.map({
 export const OrderList = co.list(Order);
 
 export const CourierProfile = co.profile({
-    firstName: z.string(),
-    lastName: z.string(),
-    phoneNumber: z.optional(z.string()),
-    status: z.optional(z.string()), // UserStatus
-    deliverySetting: z.optional(z.string()),
-    currentLocation: z.optional(z.object({
-        latitude: z.number(),
-        longitude: z.number(),
-    })),
+  name: z.string(),
+  firstName: z.string(),
+  lastName: z.string(),
+  phoneNumber: z.string().optional(),
+  status: z.string().optional(),
+  deliverySetting: z.string().optional(),
+  currentLocation: z
+    .object({
+      latitude: z.number(),
+      longitude: z.number(),
+    })
+    .optional(),
 });
 
 export const UserSettings = co.map({
-    vehicleType: z.optional(z.string()),
+    vehicleType: z.string().optional(),
     preferredAreas: z.array(z.string()),
     shiftAvailability: z.array(z.array(z.string())), // Simplified
     deliveryPreferences: z.array(z.string()),
     foodPreferences: z.array(z.string()),
-    earningGoals: z.optional(z.string()),
-    deliverySpeed: z.optional(z.string()),
+    earningGoals: z.string().optional(),
+    deliverySpeed: z.string().optional(),
     restaurantTypes: z.array(z.string()),
     cuisineTypes: z.array(z.string()),
     preferredRestaurantPartners: z.array(z.string()),
     dietaryRestrictions: z.array(z.string()),
-    payRate: z.optional(z.string()),
-    courierId: z.optional(z.string()),
+    payRate: z.string().optional(),
+    courierId: z.string().optional(),
 });
 
-export const CourierAccountRoot = co.map({
+export const CoMap = co.map({
     orders: OrderList,
-    settings: co.optional(UserSettings),
-});
-
-export const CourierAccount = co.account({
-    root: CourierAccountRoot,
-    profile: CourierProfile,
-}).withMigration((account) => {
-    if (!account.$jazz.has('root')) {
-        account.$jazz.set('root', CourierAccountRoot.create({
-            orders: OrderList.create([], { owner: account }),
-            settings: UserSettings.create({
-                vehicleType: 'car',
-                preferredAreas: [],
-                shiftAvailability: [],
-                deliveryPreferences: [],
-                foodPreferences: [],
-                restaurantTypes: [],
-                cuisineTypes: [],
-                preferredRestaurantPartners: [],
-                dietaryRestrictions: [],
-            }, { owner: account }),
-        }, { owner: account }));
-    }
+    settings: UserSettings.optional(),
 });

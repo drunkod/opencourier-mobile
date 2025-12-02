@@ -8,12 +8,17 @@ import {
   View,
   ViewStyle,
 } from 'react-native';
-import { PanGestureHandler } from 'react-native-gesture-handler';
+import {
+  Gesture,
+  GestureDetector,
+  GestureStateChangeEvent,
+  GestureUpdateEvent,
+  PanGestureHandlerEventPayload,
+} from 'react-native-gesture-handler';
 import Animated, {
   Extrapolate,
   interpolate,
   runOnJS,
-  useAnimatedGestureHandler,
   useAnimatedStyle,
   useSharedValue,
   withTiming,
@@ -55,23 +60,30 @@ const ButtonSwipe: FunctionComponent<Props> = ({
     }
   }, [isSwiped]);
 
-  const animatedGestureHandler = useAnimatedGestureHandler({
-    onStart: (_, ctx: { completed: boolean }) => {
-      ctx.completed = isSwiped;
-    },
-    onActive: (e, ctx) => {
+  const wasSwiped = useSharedValue(false);
+
+  const panGesture = Gesture.Pan()
+    .onBegin(
+      (event: GestureStateChangeEvent<PanGestureHandlerEventPayload>) => {
+        'worklet';
+        wasSwiped.value = isSwiped;
+      },
+    )
+    .onUpdate((event: GestureUpdateEvent<PanGestureHandlerEventPayload>) => {
+      'worklet';
       let newValue;
 
-      if (ctx.completed) {
-        newValue = H_SWIPE_RANGE + e.translationX;
+      if (wasSwiped.value) {
+        newValue = H_SWIPE_RANGE + event.translationX;
       } else {
-        newValue = e.translationX;
+        newValue = event.translationX;
       }
       if (newValue >= 0 && newValue <= H_SWIPE_RANGE) {
         X.value = newValue;
       }
-    },
-    onEnd: () => {
+    })
+    .onEnd(() => {
+      'worklet';
       if (X.value < BUTTON_WIDTH / 2 - SWIPEABLE_DIMENSIONS / 2) {
         X.value = withTiming(0);
         runOnJS(onSwiped)(false);
@@ -79,8 +91,8 @@ const ButtonSwipe: FunctionComponent<Props> = ({
         X.value = withTiming(H_SWIPE_RANGE);
         runOnJS(onSwiped)(true);
       }
-    },
-  });
+    })
+    .enabled(enabled);
 
   const AnimatedStyles = {
     swipeable: useAnimatedStyle(() => {
@@ -118,10 +130,7 @@ const ButtonSwipe: FunctionComponent<Props> = ({
         </View>
       ) : (
         <>
-          {/* @ts-ignore - Legacy gesture handler version compatibility */}
-          <PanGestureHandler
-            onGestureEvent={animatedGestureHandler as any}
-            enabled={enabled}>
+          <GestureDetector gesture={panGesture}>
             <Animated.View style={[styles.swipeable, AnimatedStyles.swipeable]}>
               <LinearGradient
                 style={[styles.containerGradient]}
@@ -134,7 +143,7 @@ const ButtonSwipe: FunctionComponent<Props> = ({
                 </View>
               </LinearGradient>
             </Animated.View>
-          </PanGestureHandler>
+          </GestureDetector>
           <View>
             <Animated.Text style={[styles.swipeText, AnimatedStyles.swipeText]}>
               {title}

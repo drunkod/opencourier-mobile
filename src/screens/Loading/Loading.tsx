@@ -13,7 +13,7 @@ type Props = RootScreenProp<RootScreen.Loading>;
 export const LoadingScreen = ({ navigation }: Props) => {
   const [token, setToken] = useState<string>();
 
-  const { user } = useUser(token !== undefined);
+  const { user } = useUser();
 
   useEffect(() => {
     checkForToken();

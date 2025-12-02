@@ -7,7 +7,6 @@ import {
     isPasskeySupported,
 } from '../services/passkeyAuthService';
 import { AuthError, AuthErrorCode, PasskeyError } from '../types/authErrors';
-import { CourierAccount } from '../schema';
 
 interface JazzAuthContextType {
     isAuthenticated: boolean;

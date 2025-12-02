@@ -61,7 +61,7 @@ export const LoginInstance = ({ navigation, route }: Props) => {
   const isPending = false;
   const data = undefined;
 
-  const { user } = useUser(data !== undefined);
+  const { user } = useUser();
 
   const validateFields = () => {
     let emailError;

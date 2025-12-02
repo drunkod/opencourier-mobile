@@ -1,56 +1,57 @@
-import { useAccount } from 'jazz-react-native';
-import { CourierAccount } from '../schema';
+import { useAccount } from 'jazz-tools/react-native';
 import { UserStatus } from '@app/types/types';
+import { getLoadedOrUndefined } from 'jazz-tools';
 
-const useUser = (enabled: boolean = true) => {
-  const { me } = useAccount();
+const useUser = () => {
+  const me = useAccount();
+  const loadedMe = getLoadedOrUndefined(me);
 
-  const user = me?.profile ? {
-    id: me.id,
+  const user = loadedMe?.profile ? {
+    id: loadedMe.$jazz.id,
     email: 'local@user',
     role: ['COURIER'],
     // @ts-ignore - Custom profile fields
-    firstName: me.profile.firstName || 'Local',
+    firstName: loadedMe.profile.firstName || 'Local',
     // @ts-ignore - Custom profile fields
-    lastName: me.profile.lastName || 'Courier',
+    lastName: loadedMe.profile.lastName || 'Courier',
     // @ts-ignore - Custom profile fields
-    phoneNumber: me.profile.phoneNumber,
+    phoneNumber: loadedMe.profile.phoneNumber,
     // @ts-ignore - Custom profile fields
-    status: (me.profile.status as UserStatus) || UserStatus.Offline,
+    status: (loadedMe.profile.status as UserStatus) || UserStatus.Offline,
     // @ts-ignore - Custom profile fields
-    deliverySetting: me.profile.deliverySetting,
+    deliverySetting: loadedMe.profile.deliverySetting,
     // @ts-ignore - Custom profile fields
-    currentLocation: me.profile.currentLocation,
+    currentLocation: loadedMe.profile.currentLocation,
     // Add other fields required by User type if missing
     createdAt: new Date().toISOString(),
     node_uri: 'local',
-    userId: me.id,
+    userId: loadedMe.$jazz.id,
   } : undefined;
 
   const updateStatus = (status: string) => {
-    if (me?.profile) {
+    if (loadedMe?.profile) {
       // @ts-ignore - Custom profile fields
-      me.profile.status = status;
+      loadedMe.profile.status = status;
     }
   };
 
   const updateDeliverySettings = (settings: string) => {
-    if (me?.profile) {
+    if (loadedMe?.profile) {
       // @ts-ignore - Custom profile fields
-      me.profile.deliverySetting = settings;
+      loadedMe.profile.deliverySetting = settings;
     }
   };
 
   const updateUserLocation = (params: { latitude: number; longitude: number }) => {
-    if (me?.profile) {
+    if (loadedMe?.profile) {
       // @ts-ignore - Custom profile fields
-      me.profile.currentLocation = params;
+      loadedMe.profile.currentLocation = params;
     }
   };
 
   return {
     user,
-    isLoading: !me,
+    isLoading: !loadedMe,
     refetchUser: () => { },
     updateStatus,
     updateDeliverySettings,

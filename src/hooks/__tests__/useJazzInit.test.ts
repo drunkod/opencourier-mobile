@@ -21,6 +21,12 @@ describe('useJazzInit', () => {
             id: 'test-account-id',
             profile: null,
             root: { orders: [], settings: {} },
+            $jazz: {
+                set: jest.fn((key, value) => {
+                    // @ts-ignore
+                    mockAccount[key] = value;
+                }),
+            },
         };
 
         (useAccount as jest.Mock).mockReturnValue({ me: mockAccount });
@@ -41,6 +47,12 @@ describe('useJazzInit', () => {
             id: 'test-account-id',
             profile: { firstName: 'Test', lastName: 'User' },
             root: null,
+            $jazz: {
+                set: jest.fn((key, value) => {
+                    // @ts-ignore
+                    mockAccount[key] = value;
+                }),
+            },
         };
 
         (useAccount as jest.Mock).mockReturnValue({ me: mockAccount });
@@ -61,6 +73,9 @@ describe('useJazzInit', () => {
             id: 'test-account-id',
             profile: { firstName: 'Existing', lastName: 'User' },
             root: { orders: [], settings: {} },
+            $jazz: {
+                set: jest.fn(),
+            },
         };
 
         const originalProfile = mockAccount.profile;
@@ -72,11 +87,33 @@ describe('useJazzInit', () => {
         expect(mockAccount.profile).toBe(originalProfile);
     });
 
+    it('should not re-initialize if root already exists', () => {
+        const mockAccount = {
+            id: 'test-account-id',
+            profile: { firstName: 'Existing', lastName: 'User' },
+            root: { orders: [], settings: {} },
+            $jazz: {
+                set: jest.fn(),
+            },
+        };
+
+        const originalRoot = mockAccount.root;
+
+        (useAccount as jest.Mock).mockReturnValue({ me: mockAccount });
+
+        renderHook(() => useJazzInit());
+
+        expect(mockAccount.root).toBe(originalRoot);
+    });
+
     it('should return me from useAccount', () => {
         const mockAccount = {
             id: 'test-account-id',
             profile: { firstName: 'Test', lastName: 'User' },
             root: { orders: [], settings: {} },
+            $jazz: {
+                set: jest.fn(),
+            },
         };
 
         (useAccount as jest.Mock).mockReturnValue({ me: mockAccount });
